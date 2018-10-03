@@ -46,6 +46,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CatalogEntities">
+      <HintPath>..\..\..\..\Phone\Копии\Test Copy\Catalogue\CatalogEntities\bin\Debug\CatalogEntities.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
