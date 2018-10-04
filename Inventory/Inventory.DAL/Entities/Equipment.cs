@@ -18,10 +18,14 @@ namespace Inventory.DAL.Entities
         public virtual EquipmentType EquipmentType { get; set; }
 
         public virtual ICollection<EquipmentComponent> EquipmentComponents { get; set; }
+        public virtual ICollection<History> Histories { get; set; }
+        public virtual ICollection<EquipmentEmployees> EquipmentEmployees { get; set; }
 
         public Equipment()
         {
             EquipmentComponents = new List<EquipmentComponent>();
+            Histories = new List<History>();
+            EquipmentEmployees = new List<EquipmentEmployees>();
         }
     }
 }

@@ -61,6 +61,7 @@
     <Compile Include="Entities\ComponentType.cs" />
     <Compile Include="Entities\Equipment.cs" />
     <Compile Include="Entities\EquipmentComponent.cs" />
+    <Compile Include="Entities\EquipmentEmployees.cs" />
     <Compile Include="Entities\EquipmentType.cs" />
     <Compile Include="Entities\History.cs" />
     <Compile Include="Entities\RepairPlace.cs" />
