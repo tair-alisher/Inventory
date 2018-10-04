@@ -34,7 +34,7 @@
       <HintPath>..\packages\AutoMapper.7.0.1\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="CatalogEntities">
-      <HintPath>..\..\..\..\Phone\Копии\Test Copy\Catalogue\CatalogEntities\bin\Debug\CatalogEntities.dll</HintPath>
+      <HintPath>..\CatalogEntities.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
@@ -61,11 +61,11 @@
     <Compile Include="Entities\ComponentType.cs" />
     <Compile Include="Entities\Equipment.cs" />
     <Compile Include="Entities\EquipmentComponent.cs" />
-    <Compile Include="Entities\EquipmentEmployees.cs" />
+    <Compile Include="Entities\EquipmentEmployee.cs" />
     <Compile Include="Entities\EquipmentType.cs" />
     <Compile Include="Entities\History.cs" />
     <Compile Include="Entities\RepairPlace.cs" />
-    <Compile Include="Entities\TypeStatus.cs" />
+    <Compile Include="Entities\StatusType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

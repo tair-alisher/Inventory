@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Inventory.DAL.Entities
 {
+    [Table("Components")]
     public class Component
     {
         public Guid Id { get; set; }
@@ -13,8 +12,8 @@ namespace Inventory.DAL.Entities
         public string ModelName { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public double Price { get; set; }
-        public int InventNumber { get; set; }
+        public decimal Price { get; set; }
+        public string InventNumber { get; set; }
         public string Supplier { get; set; }
         
         public virtual ComponentType ComponentType { get; set; }

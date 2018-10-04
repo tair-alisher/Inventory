@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Inventory.DAL.Entities
 {
+    [Table("EquipmentComponent")]
     public class EquipmentComponent
     {
         public Guid Id { get; set; }
         public Guid EquipmentId { get; set; }
         public Guid ComponentId { get; set; }
-        public DateTime CreateDate { get; set; }
-        public Nullable<DateTime> UpdateDate { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public Nullable<DateTime> UpdatedDate { get; set; }
         public bool IsActual { get; set; }
 
         public virtual Equipment Equipment { get; set; }

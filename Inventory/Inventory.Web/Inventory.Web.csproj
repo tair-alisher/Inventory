@@ -47,7 +47,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CatalogEntities">
-      <HintPath>..\..\..\..\Phone\Копии\Test Copy\Catalogue\CatalogEntities\bin\Debug\CatalogEntities.dll</HintPath>
+      <HintPath>..\CatalogEntities.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
