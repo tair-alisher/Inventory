@@ -1,6 +1,8 @@
-﻿namespace Inventory.BLL.Interfaces
+﻿using Inventory.BLL.DTO;
+
+namespace Inventory.BLL.Interfaces
 {
-    public interface IEquipmentService
+    public interface IEquipmentService : IService<EquipmentDTO>
     {
     }
 }
