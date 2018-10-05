@@ -53,23 +53,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\AdministrationDTO.cs" />
     <Compile Include="DTO\ComponentDTO.cs" />
     <Compile Include="DTO\ComponentTypeDTO.cs" />
+    <Compile Include="DTO\DepartmentDTO.cs" />
+    <Compile Include="DTO\DivisionDTO.cs" />
+    <Compile Include="DTO\EmployeeDTO.cs" />
     <Compile Include="DTO\EquipmentComponentDTO.cs" />
     <Compile Include="DTO\EquipmentDTO.cs" />
     <Compile Include="DTO\EquipmentEmployeeDTO.cs" />
     <Compile Include="DTO\EquipmentTypeDTO.cs" />
     <Compile Include="DTO\HistoryDTO.cs" />
+    <Compile Include="DTO\PositionDTO.cs" />
     <Compile Include="DTO\RepairPlaceDTO.cs" />
     <Compile Include="DTO\StatusTypeDTO.cs" />
     <Compile Include="Infrastructure\ServiceModule.cs" />
     <Compile Include="Interfaces\IComponentService.cs" />
     <Compile Include="Interfaces\IComponentTypeService.cs" />
+    <Compile Include="Interfaces\IEmployeeService.cs" />
     <Compile Include="Interfaces\IEquipmentComponentService.cs" />
     <Compile Include="Interfaces\IEquipmentEmployeeService.cs" />
     <Compile Include="Interfaces\IEquipmentService.cs" />
     <Compile Include="Interfaces\IEquipmentTypeService.cs" />
     <Compile Include="Interfaces\IHistoryService.cs" />
+    <Compile Include="Interfaces\IPartialService.cs" />
     <Compile Include="Interfaces\IRepairPlaceService.cs" />
     <Compile Include="Interfaces\IService.cs" />
     <Compile Include="Interfaces\IStatusTypeService.cs" />
@@ -79,6 +86,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Services\EmployeeService.cs" />
     <Compile Include="Services\EquipmentService.cs" />
   </ItemGroup>
   <ItemGroup>

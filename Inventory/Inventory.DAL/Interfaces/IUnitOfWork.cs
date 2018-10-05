@@ -1,4 +1,5 @@
 ﻿using Inventory.DAL.Entities;
+using CatalogEntities;
 using System;
 
 namespace Inventory.DAL.Interfaces
@@ -14,6 +15,9 @@ namespace Inventory.DAL.Interfaces
         IRepository<History> History { get; }
         IRepository<RepairPlace> RepairPlaces { get; }
         IRepository<StatusType> StatusTypes { get; }
+
+        IPartialRepository<Employee> Employees { get; }
+
         void Save();
     }
 }

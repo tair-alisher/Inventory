@@ -1,6 +1,7 @@
 ﻿using Inventory.DAL.EF;
 using Inventory.DAL.Entities;
 using Inventory.DAL.Interfaces;
+using CatalogEntities;
 using System;
 
 namespace Inventory.DAL.Repositories
@@ -16,6 +17,8 @@ namespace Inventory.DAL.Repositories
         private BaseRepository<History> historyRepository;
         private BaseRepository<RepairPlace> repairPlaceRepository;
         private BaseRepository<StatusType> statusTypeRepository;
+
+        private PartialRepository<Employee> employeeRepository;
 
         private InventoryContext context;
 
@@ -111,6 +114,16 @@ namespace Inventory.DAL.Repositories
                 if (statusTypeRepository == null)
                     statusTypeRepository = new BaseRepository<StatusType>(context);
                 return statusTypeRepository;
+            }
+        }
+
+        public IPartialRepository<Employee> Employees
+        {
+            get
+            {
+                if (employeeRepository == null)
+                    employeeRepository = new PartialRepository<Employee>(context);
+                return employeeRepository;
             }
         }
 

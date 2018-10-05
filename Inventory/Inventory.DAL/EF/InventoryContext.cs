@@ -14,6 +14,12 @@ namespace Inventory.DAL.EF
         public DbSet<History> History { get; set; }
         public DbSet<RepairPlace> RepairPlaces { get; set; }
         public DbSet<StatusType> StatusTypes { get; set; }
+        
+        public DbSet<CatalogEntities.Administration> Administrations { get; set; }
+        public DbSet<CatalogEntities.Department> Departments { get; set; }
+        public DbSet<CatalogEntities.Division> Divisions { get; set; }
+        public DbSet<CatalogEntities.Employee> Employees { get; set; }
+        public DbSet<CatalogEntities.Position> Positions { get; set; }
 
         public InventoryContext(string connectionString) : base(connectionString) { }
     }
