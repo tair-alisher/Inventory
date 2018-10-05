@@ -9,7 +9,7 @@ namespace Inventory.DAL.Entities
     {
         public Guid Id { get; set; }
         public int EmployeeId { get; set; }
-        public Guid EqupmentId { get; set; }
+        public Guid EquipmentId { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
         public bool IsOwner { get; set; }

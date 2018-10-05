@@ -30,8 +30,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=7.0.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.7.0.1\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="CatalogEntities">
+      <HintPath>..\CatalogEntities.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,7 +53,39 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\ComponentDTO.cs" />
+    <Compile Include="DTO\ComponentTypeDTO.cs" />
+    <Compile Include="DTO\EquipmentComponentDTO.cs" />
+    <Compile Include="DTO\EquipmentDTO.cs" />
+    <Compile Include="DTO\EquipmentEmployeeDTO.cs" />
+    <Compile Include="DTO\EquipmentTypeDTO.cs" />
+    <Compile Include="DTO\HistoryDTO.cs" />
+    <Compile Include="DTO\RepairPlaceDTO.cs" />
+    <Compile Include="DTO\StatusTypeDTO.cs" />
+    <Compile Include="Infrastructure\ServiceModule.cs" />
+    <Compile Include="Interfaces\IComponentService.cs" />
+    <Compile Include="Interfaces\IComponentTypeService.cs" />
+    <Compile Include="Interfaces\IEquipmentComponentService.cs" />
+    <Compile Include="Interfaces\IEquipmentEmployeeService.cs" />
+    <Compile Include="Interfaces\IEquipmentService.cs" />
+    <Compile Include="Interfaces\IEquipmentTypeService.cs" />
+    <Compile Include="Interfaces\IHistoryService.cs" />
+    <Compile Include="Interfaces\IRepairPlaceService.cs" />
+    <Compile Include="Interfaces\IService.cs" />
+    <Compile Include="Interfaces\IStatusTypeService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Inventory.DAL\Inventory.DAL.csproj">
+      <Project>{e0b2f13f-08f2-43cb-b61a-4616cc47ac30}</Project>
+      <Name>Inventory.DAL</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
