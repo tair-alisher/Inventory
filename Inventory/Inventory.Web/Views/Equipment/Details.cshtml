@@ -1,0 +1,64 @@
+﻿@model Inventory.Web.Models.EquipmentVM
+
+@{
+    ViewBag.Title = "Оборудование";
+}
+
+<h2>@Model.EquipmentType.Name</h2>
+
+<div>
+    <h4>Инвентаризационный номер: <b>@Model.InventNumber</b></h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.EquipmentTypeId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EquipmentType.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InventNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InventNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.QRCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QRCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Supplier)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Supplier)
+        </dd>
+
+    @if (ViewBag.Employee != null)
+    {
+        <dt>Владелец</dt>
+        <dd>@ViewBag.Employee.EmployeeFullName</dd>
+    }
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Редактировать", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Назад", "Index")
+</p>

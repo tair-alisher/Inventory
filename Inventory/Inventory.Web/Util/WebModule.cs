@@ -9,6 +9,8 @@ namespace Inventory.Web.Util
         public override void Load()
         {
             Bind<IEquipmentService>().To<EquipmentService>();
+            Bind<IEquipmentTypeService>().To<EquipmentTypeService>();
+            Bind<IEmployeeService>().To<EmployeeService>();
         }
     }
 }

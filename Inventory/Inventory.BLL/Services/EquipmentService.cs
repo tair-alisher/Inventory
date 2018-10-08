@@ -13,6 +13,7 @@ namespace Inventory.BLL.Services
     public class EquipmentService : IEquipmentService
     {
         private IUnitOfWork _unitOfWork { get; set; }
+        MapperConfiguration config;
         public EquipmentService(IUnitOfWork uow)
         {
             _unitOfWork = uow;
@@ -26,7 +27,7 @@ namespace Inventory.BLL.Services
         public EquipmentDTO Get(Guid id)
         {
             Equipment equipment = _unitOfWork.Equipments.Get(id);
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<EmployeeDTO, EmployeeDTO>());
+            config = new MapperConfiguration(cfg => cfg.CreateMap<Equipment, EquipmentDTO>());
 
             return config.CreateMapper().Map<EquipmentDTO>(equipment);
         }
@@ -34,18 +35,55 @@ namespace Inventory.BLL.Services
         public IEnumerable<EquipmentDTO> GetAll()
         {
             List<Equipment> allEquipments = _unitOfWork.Equipments.GetAll().ToList();
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<Equipment, EquipmentDTO>());
+            config = new MapperConfiguration(cfg => cfg.CreateMap<Equipment, EquipmentDTO>());
             
             return config.CreateMapper().Map<List<EquipmentDTO>>(allEquipments);
+        }
+        public void Add(EquipmentDTO item)
+        {
+            config = new MapperConfiguration(cfg => cfg.CreateMap<EquipmentDTO, Equipment>());
+
+            Equipment equipment = config.CreateMapper().Map<Equipment>(item);
+            equipment.Id = Guid.NewGuid();
+
+            _unitOfWork.Equipments.Create(equipment);
+            _unitOfWork.Save();
+        }
+
+
+        public Guid AddAndGetId(EquipmentDTO item)
+        {
+            config = new MapperConfiguration(cfg => cfg.CreateMap<EquipmentDTO, Equipment>());
+
+            Equipment equipment = config.CreateMapper().Map<Equipment>(item);
+            equipment.Id = Guid.NewGuid();
+
+            _unitOfWork.Equipments.Create(equipment);
+            _unitOfWork.Save();
+
+            return equipment.Id;
+        }
+
+        public void Delete(Guid id)
+        {
+            Equipment equipment = _unitOfWork.Equipments.Get(id);
+            if (equipment != null)
+            {
+                _unitOfWork.Equipments.Delete(id);
+                _unitOfWork.Save();
+            }  
         }
 
         public EmployeeDTO GetEquipmentOwner(Guid id)
         {
-            int employeeId = _unitOfWork.EquipmentEmployee.Find(e => e.EquipmentId == id).First().EmployeeId;
+            IEnumerable<EquipmentEmployee> equipmentEmployee = _unitOfWork.EquipmentEmployee.Find(e => e.EquipmentId == id);
 
-            Employee employee = _unitOfWork.Employees.Get(employeeId);
+            if (equipmentEmployee.Count() <= 0)
+                return null;
 
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<Employee, EmployeeDTO>());
+            Employee employee = _unitOfWork.Employees.Get(equipmentEmployee.First().EmployeeId);
+
+            config = new MapperConfiguration(cfg => cfg.CreateMap<Employee, EmployeeDTO>());
 
             return config.CreateMapper().Map<EmployeeDTO>(employee);
         }

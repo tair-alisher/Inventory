@@ -88,6 +88,7 @@
     </Compile>
     <Compile Include="Services\EmployeeService.cs" />
     <Compile Include="Services\EquipmentService.cs" />
+    <Compile Include="Services\EquipmentTypeService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Inventory.DAL\Inventory.DAL.csproj">

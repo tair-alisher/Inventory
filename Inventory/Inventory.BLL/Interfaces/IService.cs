@@ -7,6 +7,8 @@ namespace Inventory.BLL.Interfaces
     {
         IEnumerable<T> GetAll();
         T Get(Guid id);
+        void Add(T item);
+        void Delete(Guid id);
         void Dispose();
     }
 }
