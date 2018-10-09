@@ -67,6 +67,7 @@
     <Compile Include="DTO\PositionDTO.cs" />
     <Compile Include="DTO\RepairPlaceDTO.cs" />
     <Compile Include="DTO\StatusTypeDTO.cs" />
+    <Compile Include="Infrastructure\NotFoundException.cs" />
     <Compile Include="Infrastructure\ServiceModule.cs" />
     <Compile Include="Interfaces\IComponentService.cs" />
     <Compile Include="Interfaces\IComponentTypeService.cs" />
@@ -87,6 +88,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Services\EmployeeService.cs" />
+    <Compile Include="Services\EquipmentEmployeeService.cs" />
     <Compile Include="Services\EquipmentService.cs" />
     <Compile Include="Services\EquipmentTypeService.cs" />
   </ItemGroup>

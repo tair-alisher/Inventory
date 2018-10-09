@@ -79,7 +79,9 @@ namespace Inventory.Web.Controllers
                 config = new MapperConfiguration(cfg => cfg.CreateMap<EquipmentVM, EquipmentDTO>());
                 EquipmentDTO equipmentDTO = config.CreateMapper().Map<EquipmentDTO>(equipmentVM);
 
-                Guid createdEquipmentId = EquipmentService.Add(equipmentDTO);
+                Guid createdEquipmentId = EquipmentService.AddAndGetId(equipmentDTO);
+
+
 
                 return RedirectToAction("Index");
             }

@@ -21,6 +21,9 @@ namespace Inventory.DAL.EF
         public DbSet<CatalogEntities.Employee> Employees { get; set; }
         public DbSet<CatalogEntities.Position> Positions { get; set; }
 
-        public InventoryContext(string connectionString) : base(connectionString) { }
+        public InventoryContext(string connectionString) : base(connectionString)
+		{
+			Database.SetInitializer<InventoryContext>(null);
+		}
     }
 }

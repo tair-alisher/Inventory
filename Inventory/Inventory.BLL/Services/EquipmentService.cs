@@ -7,6 +7,8 @@ using Inventory.BLL.Interfaces;
 using Inventory.DAL.Entities;
 using Inventory.DAL.Interfaces;
 using CatalogEntities;
+using System.Net;
+using Inventory.BLL.Infrastructure;
 
 namespace Inventory.BLL.Services
 {
@@ -19,39 +21,18 @@ namespace Inventory.BLL.Services
             _unitOfWork = uow;
         }
 
-        public void Dispose()
-        {
-            _unitOfWork.Dispose();
-        }
+		public void Add(EquipmentDTO item)
+		{
+			config = new MapperConfiguration(cfg => cfg.CreateMap<EquipmentDTO, Equipment>());
 
-        public EquipmentDTO Get(Guid id)
-        {
-            Equipment equipment = _unitOfWork.Equipments.Get(id);
-            config = new MapperConfiguration(cfg => cfg.CreateMap<Equipment, EquipmentDTO>());
+			Equipment equipment = config.CreateMapper().Map<Equipment>(item);
+			equipment.Id = Guid.NewGuid();
 
-            return config.CreateMapper().Map<EquipmentDTO>(equipment);
-        }
+			_unitOfWork.Equipments.Create(equipment);
+			_unitOfWork.Save();
+		}
 
-        public IEnumerable<EquipmentDTO> GetAll()
-        {
-            List<Equipment> allEquipments = _unitOfWork.Equipments.GetAll().ToList();
-            config = new MapperConfiguration(cfg => cfg.CreateMap<Equipment, EquipmentDTO>());
-            
-            return config.CreateMapper().Map<List<EquipmentDTO>>(allEquipments);
-        }
-        public void Add(EquipmentDTO item)
-        {
-            config = new MapperConfiguration(cfg => cfg.CreateMap<EquipmentDTO, Equipment>());
-
-            Equipment equipment = config.CreateMapper().Map<Equipment>(item);
-            equipment.Id = Guid.NewGuid();
-
-            _unitOfWork.Equipments.Create(equipment);
-            _unitOfWork.Save();
-        }
-
-
-        public Guid AddAndGetId(EquipmentDTO item)
+		public Guid AddAndGetId(EquipmentDTO item)
         {
             config = new MapperConfiguration(cfg => cfg.CreateMap<EquipmentDTO, Equipment>());
 
@@ -64,15 +45,31 @@ namespace Inventory.BLL.Services
             return equipment.Id;
         }
 
-        public void Delete(Guid id)
+		public EquipmentDTO Get(Guid id)
+		{
+			Equipment equipment = _unitOfWork.Equipments.Get(id);
+			config = new MapperConfiguration(cfg => cfg.CreateMap<Equipment, EquipmentDTO>());
+
+			return config.CreateMapper().Map<EquipmentDTO>(equipment);
+		}
+
+		public IEnumerable<EquipmentDTO> GetAll()
+		{
+			List<Equipment> allEquipments = _unitOfWork.Equipments.GetAll().ToList();
+			config = new MapperConfiguration(cfg => cfg.CreateMap<Equipment, EquipmentDTO>());
+
+			return config.CreateMapper().Map<List<EquipmentDTO>>(allEquipments);
+		}
+
+		public void Delete(Guid id)
         {
             Equipment equipment = _unitOfWork.Equipments.Get(id);
-            if (equipment != null)
-            {
-                _unitOfWork.Equipments.Delete(id);
-                _unitOfWork.Save();
-            }  
-        }
+			if (equipment == null)
+				throw new NotFoundException("Item with given id was not found.");
+
+			_unitOfWork.Equipments.Delete(id);
+			_unitOfWork.Save();
+		}
 
         public EmployeeDTO GetEquipmentOwner(Guid id)
         {
@@ -87,5 +84,10 @@ namespace Inventory.BLL.Services
 
             return config.CreateMapper().Map<EmployeeDTO>(employee);
         }
-    }
+
+		public void Dispose()
+		{
+			_unitOfWork.Dispose();
+		}
+	}
 }

@@ -38,5 +38,26 @@ namespace Inventory.BLL.Services
 
             return config.CreateMapper().Map<List<EquipmentType>, List<EquipmentTypeDTO>>(equipmentTypes);
         }
-    }
+
+		public void Add(EquipmentTypeDTO item)
+		{
+			config = new MapperConfiguration(cfg => cfg.CreateMap<EquipmentTypeDTO, EquipmentType>());
+
+			EquipmentType equipmentType = config.CreateMapper().Map<EquipmentType>(item);
+			equipmentType.Id = Guid.NewGuid();
+
+			_unitOfWork.EquipmentTypes.Create(equipmentType);
+			_unitOfWork.Save();
+		}
+
+		public void Delete(Guid id)
+		{
+			EquipmentType equipmentType = _unitOfWork.EquipmentTypes.Get(id);
+			if (equipmentType != null)
+			{
+				_unitOfWork.EquipmentTypes.Delete(id);
+				_unitOfWork.Save();
+			}
+		}
+	}
 }
