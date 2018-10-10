@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Inventory.BLL.DTO;
 using Inventory.BLL.Infrastructure;
@@ -25,6 +26,9 @@ namespace Inventory.BLL.Services
 			EquipmentEmployee equipmentEmployeeRelation = config.CreateMapper().Map<EquipmentEmployee>(item);
 
 			equipmentEmployeeRelation.Id = Guid.NewGuid();
+			equipmentEmployeeRelation.IsOwner = false;
+			equipmentEmployeeRelation.CreatedDate = DateTime.Now;
+			equipmentEmployeeRelation.UpdatedDate = DateTime.Now;
 
 			_unitOfWork.EquipmentEmployee.Create(equipmentEmployeeRelation);
 			_unitOfWork.Save();
@@ -40,7 +44,10 @@ namespace Inventory.BLL.Services
 
 		public IEnumerable<EquipmentEmployeeDTO> GetAll()
 		{
-			throw new NotImplementedException();
+			List<EquipmentEmployee> equipmentEmployeeRelations = _unitOfWork.EquipmentEmployee.GetAll().ToList();
+			config = new MapperConfiguration(cfg => cfg.CreateMap<EquipmentEmployee, EquipmentEmployeeDTO>());
+
+			return config.CreateMapper().Map<List<EquipmentEmployeeDTO>>(equipmentEmployeeRelations);
 		}
 
 		public void Delete(Guid id)

@@ -13,16 +13,19 @@ namespace Inventory.Web.Controllers
     {
         private IEquipmentService EquipmentService;
         private IEquipmentTypeService EquipmentTypeService;
+		private IEquipmentEmployeeService EquipmentEmployeeService;
         private IEmployeeService EmployeeService;
         MapperConfiguration config;
 
         public EquipmentController
             (IEquipmentService equipmentService,
             IEmployeeService employeeService,
+			IEquipmentEmployeeService equipmentEmployeeService,
             IEquipmentTypeService equipmentTypeService)
         {
             EquipmentService = equipmentService;
             EmployeeService = employeeService;
+			EquipmentEmployeeService = equipmentEmployeeService;
             EquipmentTypeService = equipmentTypeService;
         }
 
@@ -81,7 +84,12 @@ namespace Inventory.Web.Controllers
 
                 Guid createdEquipmentId = EquipmentService.AddAndGetId(equipmentDTO);
 
-
+				EquipmentEmployeeDTO equipmentEmployeeRelation = new EquipmentEmployeeDTO
+				{
+					EquipmentId = createdEquipmentId,
+					EmployeeId = int.Parse(EmployeeId)
+				};
+				EquipmentEmployeeService.Add(equipmentEmployeeRelation);
 
                 return RedirectToAction("Index");
             }
@@ -93,7 +101,7 @@ namespace Inventory.Web.Controllers
                     equipmentVM.EquipmentTypeId
                 );
             ViewBag.EquipmentTypeId = new SelectList(
-                    EquipmentService.GetAll(),
+                    EquipmentTypeService.GetAll(),
                     "Id",
                     "Name",
                     EmployeeId
