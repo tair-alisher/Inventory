@@ -8,8 +8,8 @@ namespace Inventory.DAL.EF
         public DbSet<Component> Components { get; set; }
         public DbSet<ComponentType> ComponentTypes { get; set; }
         public DbSet<Equipment> Equipments { get; set; }
-        public DbSet<EquipmentComponent> EquipmentComponent { get; set; }
-        public DbSet<EquipmentEmployee> EquipmentEmployee { get; set; }
+        public DbSet<EquipmentComponentRelation> EquipmentComponentRelations { get; set; }
+        public DbSet<EquipmentEmployeeRelation> EquipmentEmployeeRelations { get; set; }
         public DbSet<EquipmentType> EquipmentTypes { get; set; }
         public DbSet<History> History { get; set; }
         public DbSet<RepairPlace> RepairPlaces { get; set; }

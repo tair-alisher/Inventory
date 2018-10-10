@@ -59,9 +59,9 @@
     <Compile Include="DTO\DepartmentDTO.cs" />
     <Compile Include="DTO\DivisionDTO.cs" />
     <Compile Include="DTO\EmployeeDTO.cs" />
-    <Compile Include="DTO\EquipmentComponentDTO.cs" />
+    <Compile Include="DTO\EquipmentComponentRelationDTO.cs" />
     <Compile Include="DTO\EquipmentDTO.cs" />
-    <Compile Include="DTO\EquipmentEmployeeDTO.cs" />
+    <Compile Include="DTO\EquipmentEmployeeRelationDTO.cs" />
     <Compile Include="DTO\EquipmentTypeDTO.cs" />
     <Compile Include="DTO\HistoryDTO.cs" />
     <Compile Include="DTO\PositionDTO.cs" />
@@ -72,8 +72,8 @@
     <Compile Include="Interfaces\IComponentService.cs" />
     <Compile Include="Interfaces\IComponentTypeService.cs" />
     <Compile Include="Interfaces\IEmployeeService.cs" />
-    <Compile Include="Interfaces\IEquipmentComponentService.cs" />
-    <Compile Include="Interfaces\IEquipmentEmployeeService.cs" />
+    <Compile Include="Interfaces\IEquipmentComponentRelationService.cs" />
+    <Compile Include="Interfaces\IEquipmentEmployeeRelationService.cs" />
     <Compile Include="Interfaces\IEquipmentService.cs" />
     <Compile Include="Interfaces\IEquipmentTypeService.cs" />
     <Compile Include="Interfaces\IHistoryService.cs" />
@@ -88,7 +88,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Services\EmployeeService.cs" />
-    <Compile Include="Services\EquipmentEmployeeService.cs" />
+    <Compile Include="Services\EquipmentEmployeeRelationService.cs" />
     <Compile Include="Services\EquipmentService.cs" />
     <Compile Include="Services\EquipmentTypeService.cs" />
   </ItemGroup>

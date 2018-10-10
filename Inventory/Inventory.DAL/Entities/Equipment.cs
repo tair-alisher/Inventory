@@ -16,15 +16,15 @@ namespace Inventory.DAL.Entities
 
         public virtual EquipmentType EquipmentType { get; set; }
 
-        public virtual ICollection<EquipmentComponent> EquipmentComponent { get; set; }
+        public virtual ICollection<EquipmentComponentRelation> EquipmentComponentRelations { get; set; }
         public virtual ICollection<History> History { get; set; }
-        public virtual ICollection<EquipmentEmployee> EquipmentEmployee { get; set; }
+        public virtual ICollection<EquipmentEmployeeRelation> EquipmentEmployeeRelations { get; set; }
 
         public Equipment()
         {
-            EquipmentComponent = new List<EquipmentComponent>();
+            EquipmentComponentRelations = new List<EquipmentComponentRelation>();
             History = new List<History>();
-            EquipmentEmployee = new List<EquipmentEmployee>();
+			EquipmentEmployeeRelations = new List<EquipmentEmployeeRelation>();
         }
     }
 }

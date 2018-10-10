@@ -22,8 +22,8 @@ namespace Inventory.Web.Models
 
         public EquipmentTypeDTO EquipmentType { get; set; }
 
-        public ICollection<EquipmentComponentDTO> EquipmentComponent { get; set; }
+        public ICollection<EquipmentComponentRelationDTO> EquipmentComponentRelations { get; set; }
         public ICollection<HistoryDTO> History { get; set; }
-        public ICollection<EquipmentEmployeeDTO> EquipmentEmployee { get; set; }
+        public ICollection<EquipmentEmployeeRelationDTO> EquipmentEmployeeRelations { get; set; }
     }
 }

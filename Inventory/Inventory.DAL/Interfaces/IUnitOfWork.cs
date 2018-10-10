@@ -9,8 +9,8 @@ namespace Inventory.DAL.Interfaces
         IRepository<Component> Components { get; }
         IRepository<ComponentType> ComponentTypes { get; }
         IRepository<Equipment> Equipments { get; }
-        IRepository<EquipmentComponent> EquipmentComponent { get; }
-        IRepository<EquipmentEmployee> EquipmentEmployee { get; }
+        IRepository<EquipmentComponentRelation> EquipmentComponentRelations { get; }
+        IRepository<EquipmentEmployeeRelation> EquipmentEmployeeRelations { get; }
         IRepository<EquipmentType> EquipmentTypes { get; }
         IRepository<History> History { get; }
         IRepository<RepairPlace> RepairPlaces { get; }

@@ -11,8 +11,8 @@ namespace Inventory.DAL.Repositories
         private BaseRepository<Component> componentRepository;
         private BaseRepository<ComponentType> componentTypeRepository;
         private BaseRepository<Equipment> equipmentRepository;
-        private BaseRepository<EquipmentComponent> equipmentComponentRepository;
-        private BaseRepository<EquipmentEmployee> equipmentEmployeeRepository;
+        private BaseRepository<EquipmentComponentRelation> equipmentComponentRelationsRepository;
+        private BaseRepository<EquipmentEmployeeRelation> equipmentEmployeeRelationsRepository;
         private BaseRepository<EquipmentType> equipmentTypeRepository;
         private BaseRepository<History> historyRepository;
         private BaseRepository<RepairPlace> repairPlaceRepository;
@@ -57,23 +57,23 @@ namespace Inventory.DAL.Repositories
             }
         }
 
-        public IRepository<EquipmentComponent> EquipmentComponent
-        {
+        public IRepository<EquipmentComponentRelation> EquipmentComponentRelations
+		{
             get
             {
-                if (equipmentComponentRepository == null)
-                    equipmentComponentRepository = new BaseRepository<EquipmentComponent>(context);
-                return equipmentComponentRepository;
+                if (equipmentComponentRelationsRepository == null)
+					equipmentComponentRelationsRepository = new BaseRepository<EquipmentComponentRelation>(context);
+                return equipmentComponentRelationsRepository;
             }
         }
 
-        public IRepository<EquipmentEmployee> EquipmentEmployee
-        {
+        public IRepository<EquipmentEmployeeRelation> EquipmentEmployeeRelations
+		{
             get
             {
-                if (equipmentEmployeeRepository == null)
-                    equipmentEmployeeRepository = new BaseRepository<EquipmentEmployee>(context);
-                return equipmentEmployeeRepository;
+                if (equipmentEmployeeRelationsRepository == null)
+                    equipmentEmployeeRelationsRepository = new BaseRepository<EquipmentEmployeeRelation>(context);
+                return equipmentEmployeeRelationsRepository;
             }
         }
 

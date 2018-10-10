@@ -13,19 +13,19 @@ namespace Inventory.Web.Controllers
     {
         private IEquipmentService EquipmentService;
         private IEquipmentTypeService EquipmentTypeService;
-		private IEquipmentEmployeeService EquipmentEmployeeService;
+		private IEquipmentEmployeeRelationService EquipmentEmployeeRelationService;
         private IEmployeeService EmployeeService;
         MapperConfiguration config;
 
         public EquipmentController
             (IEquipmentService equipmentService,
             IEmployeeService employeeService,
-			IEquipmentEmployeeService equipmentEmployeeService,
+			IEquipmentEmployeeRelationService equipmentEmployeeRelationService,
             IEquipmentTypeService equipmentTypeService)
         {
             EquipmentService = equipmentService;
             EmployeeService = employeeService;
-			EquipmentEmployeeService = equipmentEmployeeService;
+			EquipmentEmployeeRelationService = equipmentEmployeeRelationService;
             EquipmentTypeService = equipmentTypeService;
         }
 
@@ -84,12 +84,12 @@ namespace Inventory.Web.Controllers
 
                 Guid createdEquipmentId = EquipmentService.AddAndGetId(equipmentDTO);
 
-				EquipmentEmployeeDTO equipmentEmployeeRelation = new EquipmentEmployeeDTO
+				EquipmentEmployeeRelationDTO equipmentEmployeeRelation = new EquipmentEmployeeRelationDTO
 				{
 					EquipmentId = createdEquipmentId,
 					EmployeeId = int.Parse(EmployeeId)
 				};
-				EquipmentEmployeeService.Add(equipmentEmployeeRelation);
+				EquipmentEmployeeRelationService.Add(equipmentEmployeeRelation);
 
                 return RedirectToAction("Index");
             }

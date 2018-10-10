@@ -10,7 +10,7 @@ namespace Inventory.Web.Util
         {
             Bind<IEquipmentService>().To<EquipmentService>();
             Bind<IEquipmentTypeService>().To<EquipmentTypeService>();
-			Bind<IEquipmentEmployeeService>().To<EquipmentEmployeeService>();
+			Bind<IEquipmentEmployeeRelationService>().To<EquipmentEmployeeRelationService>();
             Bind<IEmployeeService>().To<EmployeeService>();
         }
     }

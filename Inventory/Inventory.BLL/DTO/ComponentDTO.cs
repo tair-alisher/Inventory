@@ -15,6 +15,6 @@ namespace Inventory.BLL.DTO
         public string Supplier { get; set; }
 
         public ComponentTypeDTO ComponentType { get; set; }
-        public ICollection<EquipmentComponentDTO> EquipmentComponents { get; set; }
+        public ICollection<EquipmentComponentRelationDTO> EquipmentComponentRelations { get; set; }
     }
 }

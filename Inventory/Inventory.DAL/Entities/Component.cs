@@ -18,11 +18,11 @@ namespace Inventory.DAL.Entities
         
         public virtual ComponentType ComponentType { get; set; }
 
-        public virtual ICollection<EquipmentComponent> EquipmentComponents { get; set; }
+        public virtual ICollection<EquipmentComponentRelation> EquipmentComponentRelations { get; set; }
 
         public Component()
         {
-            EquipmentComponents = new List<EquipmentComponent>();
+            EquipmentComponentRelations = new List<EquipmentComponentRelation>();
         }
     }
 }

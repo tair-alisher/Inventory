@@ -7,7 +7,6 @@ using Inventory.BLL.Interfaces;
 using Inventory.DAL.Entities;
 using Inventory.DAL.Interfaces;
 using CatalogEntities;
-using System.Net;
 using Inventory.BLL.Infrastructure;
 
 namespace Inventory.BLL.Services
@@ -73,7 +72,7 @@ namespace Inventory.BLL.Services
 
         public EmployeeDTO GetEquipmentOwner(Guid id)
         {
-            IEnumerable<EquipmentEmployee> equipmentEmployee = _unitOfWork.EquipmentEmployee.Find(e => e.EquipmentId == id);
+            IEnumerable<EquipmentEmployeeRelation> equipmentEmployee = _unitOfWork.EquipmentEmployeeRelations.Find(e => e.EquipmentId == id);
 
             if (equipmentEmployee.Count() <= 0)
                 return null;

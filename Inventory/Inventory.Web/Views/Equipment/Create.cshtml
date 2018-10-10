@@ -59,7 +59,7 @@
         <label for="EquipmentTypeId" class="col-md-2">Ответственный сотрудник</label>
         <div class="col-md-10">
             @Html.DropDownList("EmployeeId", null, "Ответственный сотрудник", htmlAttributes: new { @class = "form-control", @required = "required" })
-            @Html.ValidationMessageFor(model => model.EquipmentEmployee, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(model => model.EquipmentEmployeeRelations, "", new { @class = "text-danger" })
         </div>
     </div>
 
