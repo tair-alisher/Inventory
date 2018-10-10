@@ -110,6 +110,19 @@ namespace Inventory.Web.Controllers
             return View(equipmentVM);
         }
 
+		public ActionResult Edit(Guid id)
+		{
+
+			return View();
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult Edit()
+		{
+			return View();
+		}
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)

@@ -23,7 +23,10 @@
             <td>@Html.DisplayFor(modelItem => item.EquipmentType.Name)</td>
             <td>@Html.DisplayFor(modelItem => item.InventNumber)</td>
             <td>@Html.DisplayFor(modelItem => item.Price)</td>
-            <td>@Html.ActionLink("Подробне", "Details", "Equipment", new { id = item.Id }, null)</td>
+            <td>
+				@Html.ActionLink("Подробне", "Details", "Equipment", new { id = item.Id }, null)
+				@Html.ActionLink("Редактировать", "Edit", new { id = item.Id })
+			</td>
         </tr>
     }
 </table>
