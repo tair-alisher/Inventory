@@ -40,19 +40,19 @@ namespace Inventory.Web.Controllers
             return View(equipmentVMs);
         }
 
-        public ActionResult Details(Guid id)
+        public ActionResult Details(Guid? id)
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            EquipmentDTO equipmentDTO = EquipmentService.Get(id);
+            EquipmentDTO equipmentDTO = EquipmentService.Get((Guid)id);
             if (equipmentDTO == null)
                 return HttpNotFound();
 
             config = new MapperConfiguration(cfg => cfg.CreateMap<EquipmentDTO, EquipmentVM>());
             EquipmentVM equipmentVM = config.CreateMapper().Map<EquipmentDTO, EquipmentVM>(equipmentDTO);
 
-            var employee = EquipmentService.GetEquipmentOwner(id);
+            var employee = EquipmentService.GetEquipmentOwner((Guid)id);
             ViewBag.Employee = employee;
 
             return View(equipmentVM);

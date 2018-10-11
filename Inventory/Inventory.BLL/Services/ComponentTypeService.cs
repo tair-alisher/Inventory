@@ -49,7 +49,7 @@ namespace Inventory.BLL.Services
 		{
 			ComponentType componentType = _unitOfWork.ComponentTypes.Get(id);
 			if (componentType == null)
-				throw new NotFoundException("Item with given id was not found.");
+				throw new NotFoundException();
 
 			_unitOfWork.ComponentTypes.Delete(id);
 			_unitOfWork.Save();

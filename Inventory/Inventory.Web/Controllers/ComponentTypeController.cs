@@ -32,12 +32,12 @@ namespace Inventory.Web.Controllers
             return View(componentTypeVMs);
         }
 
-		public ActionResult Details(Guid id)
+		public ActionResult Details(Guid? id)
 		{
 			if (id == null)
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-			ComponentTypeDTO componentTypeDTO = ComponentTypeService.Get(id);
+			ComponentTypeDTO componentTypeDTO = ComponentTypeService.Get((Guid)id);
 			if (componentTypeDTO == null)
 				return HttpNotFound();
 

@@ -54,7 +54,7 @@ namespace Inventory.BLL.Services
 		{
 			EquipmentEmployeeRelation equipmentEmployeeRelatiion = _unitOfWork.EquipmentEmployeeRelations.Get(id);
 			if (equipmentEmployeeRelatiion == null)
-				throw new NotFoundException("Item with given id was not found.");
+				throw new NotFoundException();
 
 			_unitOfWork.EquipmentEmployeeRelations.Delete(id);
 			_unitOfWork.Save();

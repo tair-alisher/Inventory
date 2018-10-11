@@ -50,7 +50,7 @@ namespace Inventory.BLL.Services
 		{
 			EquipmentType equipmentType = _unitOfWork.EquipmentTypes.Get(id);
 			if (equipmentType == null)
-				throw new NotFoundException("Item with given id was not found.");
+				throw new NotFoundException();
 
 			_unitOfWork.EquipmentTypes.Delete(id);
 			_unitOfWork.Save();

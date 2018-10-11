@@ -32,12 +32,12 @@ namespace Inventory.Web.Controllers
             return View(equipmentTypeVMs);
         }
 
-		public ActionResult Details(Guid id)
+		public ActionResult Details(Guid? id)
 		{
 			if (id == null)
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-			EquipmentTypeDTO equipmentTypeDTO = EquipmentTypeService.Get(id);
+			EquipmentTypeDTO equipmentTypeDTO = EquipmentTypeService.Get((Guid)id);
 			if (equipmentTypeDTO == null)
 				return HttpNotFound();
 
