@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Inventory.BLL.DTO;
+using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.DAL.Entities;
 using Inventory.DAL.Interfaces;
@@ -18,11 +19,6 @@ namespace Inventory.BLL.Services
             _unitOfWork = uow;
         }
 
-        public void Dispose()
-        {
-            _unitOfWork.Dispose();
-        }
-
         public EquipmentTypeDTO Get(Guid id)
         {
             EquipmentType equipmentType = _unitOfWork.EquipmentTypes.Get(id);
@@ -36,7 +32,7 @@ namespace Inventory.BLL.Services
             List<EquipmentType> equipmentTypes = _unitOfWork.EquipmentTypes.GetAll().ToList();
             config = new MapperConfiguration(cfg => cfg.CreateMap<EquipmentType, EquipmentTypeDTO>());
 
-            return config.CreateMapper().Map<List<EquipmentType>, List<EquipmentTypeDTO>>(equipmentTypes);
+            return config.CreateMapper().Map<List<EquipmentTypeDTO>>(equipmentTypes);
         }
 
 		public void Add(EquipmentTypeDTO item)
@@ -53,11 +49,16 @@ namespace Inventory.BLL.Services
 		public void Delete(Guid id)
 		{
 			EquipmentType equipmentType = _unitOfWork.EquipmentTypes.Get(id);
-			if (equipmentType != null)
-			{
-				_unitOfWork.EquipmentTypes.Delete(id);
-				_unitOfWork.Save();
-			}
+			if (equipmentType == null)
+				throw new NotFoundException("Item with given id was not found.");
+
+			_unitOfWork.EquipmentTypes.Delete(id);
+			_unitOfWork.Save();
+		}
+
+		public void Dispose()
+		{
+			_unitOfWork.Dispose();
 		}
 	}
 }

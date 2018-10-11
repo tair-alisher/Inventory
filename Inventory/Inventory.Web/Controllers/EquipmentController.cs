@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Inventory.BLL.DTO;
+using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.Web.Models;
 using System;
@@ -127,13 +128,8 @@ namespace Inventory.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
         {
-            try
-            {
-                EquipmentService.Delete(id);
-            } catch (Exception ex)
-            {
-                return Content(ex.Message);
-            }
+            try { EquipmentService.Delete(id); }
+			catch (NotFoundException) { return HttpNotFound(); }
 
             return RedirectToAction("Index");
         }

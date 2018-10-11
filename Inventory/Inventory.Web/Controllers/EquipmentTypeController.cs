@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Inventory.BLL.DTO;
+using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.Web.Models;
 using System;
@@ -20,10 +21,13 @@ namespace Inventory.Web.Controllers
 
         public ActionResult Index()
         {
-			IEnumerable<EquipmentTypeDTO> equipmentTypeDTOs = EquipmentTypeService.GetAll();
-
+			IEnumerable<EquipmentTypeDTO> equipmentTypeDTOs = EquipmentTypeService
+				.GetAll();
 			config = new MapperConfiguration(cfg => cfg.CreateMap<EquipmentTypeDTO, EquipmentTypeVM>());
-			IEnumerable<EquipmentTypeVM> equipmentTypeVMs = config.CreateMapper().Map<IEnumerable<EquipmentTypeVM>>(equipmentTypeDTOs);
+
+			IEnumerable<EquipmentTypeVM> equipmentTypeVMs = config
+				.CreateMapper()
+				.Map<IEnumerable<EquipmentTypeVM>>(equipmentTypeDTOs);
 
             return View(equipmentTypeVMs);
         }
@@ -69,13 +73,8 @@ namespace Inventory.Web.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult DeleteConfirmed(Guid id)
 		{
-			try
-			{
-				EquipmentTypeService.Delete(id);
-			} catch (Exception ex)
-			{
-				return Content(ex.Message);
-			}
+			try { EquipmentTypeService.Delete(id); }
+			catch (NotFoundException) { return HttpNotFound(); }
 
 			return RedirectToAction("Index");
 		}
