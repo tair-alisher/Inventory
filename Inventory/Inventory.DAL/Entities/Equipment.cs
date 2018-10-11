@@ -24,7 +24,7 @@ namespace Inventory.DAL.Entities
         {
             EquipmentComponentRelations = new List<EquipmentComponentRelation>();
             History = new List<History>();
-			EquipmentEmployeeRelations = new List<EquipmentEmployeeRelation>();
+            EquipmentEmployeeRelations = new List<EquipmentEmployeeRelation>();
         }
     }
 }

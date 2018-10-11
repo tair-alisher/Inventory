@@ -15,18 +15,18 @@ namespace Inventory.Web.Controllers
     {
         private IEquipmentService EquipmentService;
         private IEquipmentTypeService EquipmentTypeService;
-		private IEquipmentEmployeeRelationService EquipmentEmployeeRelationService;
+        private IEquipmentEmployeeRelationService EquipmentEmployeeRelationService;
         private IEmployeeService EmployeeService;
 
         public EquipmentController
             (IEquipmentService equipmentService,
             IEmployeeService employeeService,
-			IEquipmentEmployeeRelationService equipmentEmployeeRelationService,
+            IEquipmentEmployeeRelationService equipmentEmployeeRelationService,
             IEquipmentTypeService equipmentTypeService)
         {
             EquipmentService = equipmentService;
             EmployeeService = employeeService;
-			EquipmentEmployeeRelationService = equipmentEmployeeRelationService;
+            EquipmentEmployeeRelationService = equipmentEmployeeRelationService;
             EquipmentTypeService = equipmentTypeService;
         }
 
@@ -81,12 +81,12 @@ namespace Inventory.Web.Controllers
 
                 Guid createdEquipmentId = EquipmentService.AddAndGetId(equipmentDTO);
 
-				EquipmentEmployeeRelationDTO equipmentEmployeeRelation = new EquipmentEmployeeRelationDTO
-				{
-					EquipmentId = createdEquipmentId,
-					EmployeeId = int.Parse(EmployeeId)
-				};
-				EquipmentEmployeeRelationService.Add(equipmentEmployeeRelation);
+                EquipmentEmployeeRelationDTO equipmentEmployeeRelation = new EquipmentEmployeeRelationDTO
+                {
+                    EquipmentId = createdEquipmentId,
+                    EmployeeId = int.Parse(EmployeeId)
+                };
+                EquipmentEmployeeRelationService.Add(equipmentEmployeeRelation);
 
                 return RedirectToAction("Index");
             }
@@ -107,24 +107,24 @@ namespace Inventory.Web.Controllers
             return View(equipmentVM);
         }
 
-		public ActionResult Edit(Guid id)
-		{
-			return View();
-		}
+        public ActionResult Edit(Guid id)
+        {
+            return View();
+        }
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Edit()
-		{
-			return View();
-		}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit()
+        {
+            return View();
+        }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
         {
             try { EquipmentService.Delete(id); }
-			catch (NotFoundException) { return HttpNotFound(); }
+            catch (NotFoundException) { return HttpNotFound(); }
 
             return RedirectToAction("Index");
         }

@@ -9,57 +9,57 @@ using Inventory.DAL.Interfaces;
 
 namespace Inventory.BLL.Services
 {
-	public class EquipmentEmployeeRelationService : IEquipmentEmployeeRelationService
-	{
-		private IUnitOfWork _unitOfWork { get; set; }
-		public EquipmentEmployeeRelationService(IUnitOfWork uow)
-		{
-			_unitOfWork = uow;
-		}
+    public class EquipmentEmployeeRelationService : IEquipmentEmployeeRelationService
+    {
+        private IUnitOfWork _unitOfWork { get; set; }
+        public EquipmentEmployeeRelationService(IUnitOfWork uow)
+        {
+            _unitOfWork = uow;
+        }
 
-		public void Add(EquipmentEmployeeRelationDTO item)
-		{
-			EquipmentEmployeeRelation relation = BLLEquipmentEmployeeMapper.DtoToEntity(item);
+        public void Add(EquipmentEmployeeRelationDTO item)
+        {
+            EquipmentEmployeeRelation relation = BLLEquipmentEmployeeMapper.DtoToEntity(item);
 
             relation.Id = Guid.NewGuid();
             relation.IsOwner = false;
             relation.CreatedAt = DateTime.Now;
             relation.UpdatedAt = DateTime.Now;
 
-			_unitOfWork.EquipmentEmployeeRelations.Create(relation);
-			_unitOfWork.Save();
-		}
+            _unitOfWork.EquipmentEmployeeRelations.Create(relation);
+            _unitOfWork.Save();
+        }
 
-		public EquipmentEmployeeRelationDTO Get(Guid id)
-		{
-			EquipmentEmployeeRelation relation = _unitOfWork.EquipmentEmployeeRelations.Get(id);
+        public EquipmentEmployeeRelationDTO Get(Guid id)
+        {
+            EquipmentEmployeeRelation relation = _unitOfWork.EquipmentEmployeeRelations.Get(id);
 
-			return BLLEquipmentEmployeeMapper.EntityToDto(relation);
-		}
+            return BLLEquipmentEmployeeMapper.EntityToDto(relation);
+        }
 
-		public IEnumerable<EquipmentEmployeeRelationDTO> GetAll()
-		{
-			List<EquipmentEmployeeRelation> equipmentEmployeeRelations = _unitOfWork
+        public IEnumerable<EquipmentEmployeeRelationDTO> GetAll()
+        {
+            List<EquipmentEmployeeRelation> equipmentEmployeeRelations = _unitOfWork
                 .EquipmentEmployeeRelations
                 .GetAll()
                 .ToList();
 
-			return BLLEquipmentEmployeeMapper.EntityToDto(equipmentEmployeeRelations);
-		}
+            return BLLEquipmentEmployeeMapper.EntityToDto(equipmentEmployeeRelations);
+        }
 
-		public void Delete(Guid id)
-		{
-			EquipmentEmployeeRelation equipmentEmployeeRelatiion = _unitOfWork.EquipmentEmployeeRelations.Get(id);
-			if (equipmentEmployeeRelatiion == null)
-				throw new NotFoundException();
+        public void Delete(Guid id)
+        {
+            EquipmentEmployeeRelation equipmentEmployeeRelatiion = _unitOfWork.EquipmentEmployeeRelations.Get(id);
+            if (equipmentEmployeeRelatiion == null)
+                throw new NotFoundException();
 
-			_unitOfWork.EquipmentEmployeeRelations.Delete(id);
-			_unitOfWork.Save();
-		}
+            _unitOfWork.EquipmentEmployeeRelations.Delete(id);
+            _unitOfWork.Save();
+        }
 
-		public void Dispose()
-		{
-			_unitOfWork.Dispose();
-		}
-	}
+        public void Dispose()
+        {
+            _unitOfWork.Dispose();
+        }
+    }
 }

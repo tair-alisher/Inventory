@@ -22,8 +22,8 @@ namespace Inventory.DAL.EF
         public DbSet<CatalogEntities.Position> Positions { get; set; }
 
         public InventoryContext(string connectionString) : base(connectionString)
-		{
-			Database.SetInitializer<InventoryContext>(null);
-		}
+        {
+            Database.SetInitializer<InventoryContext>(null);
+        }
     }
 }

@@ -18,16 +18,16 @@ namespace Inventory.BLL.Services
             _unitOfWork = uow;
         }
 
-		public void Add(EquipmentDTO item)
-		{
-			Equipment equipment = BLLEquipmentMapper.DtoToEntity(item);
-			equipment.Id = Guid.NewGuid();
+        public void Add(EquipmentDTO item)
+        {
+            Equipment equipment = BLLEquipmentMapper.DtoToEntity(item);
+            equipment.Id = Guid.NewGuid();
 
-			_unitOfWork.Equipments.Create(equipment);
-			_unitOfWork.Save();
-		}
+            _unitOfWork.Equipments.Create(equipment);
+            _unitOfWork.Save();
+        }
 
-		public Guid AddAndGetId(EquipmentDTO item)
+        public Guid AddAndGetId(EquipmentDTO item)
         {
             Equipment equipment = BLLEquipmentMapper.DtoToEntity(item);
             equipment.Id = Guid.NewGuid();
@@ -38,29 +38,29 @@ namespace Inventory.BLL.Services
             return equipment.Id;
         }
 
-		public EquipmentDTO Get(Guid id)
-		{
-			Equipment equipment = _unitOfWork.Equipments.Get(id);
-
-			return BLLEquipmentMapper.EntityToDto(equipment);
-		}
-
-		public IEnumerable<EquipmentDTO> GetAll()
-		{
-			List<Equipment> equipments = _unitOfWork.Equipments.GetAll().ToList();
-
-			return BLLEquipmentMapper.EntityToDto(equipments);
-		}
-
-		public void Delete(Guid id)
+        public EquipmentDTO Get(Guid id)
         {
             Equipment equipment = _unitOfWork.Equipments.Get(id);
-			if (equipment == null)
-				throw new NotFoundException();
 
-			_unitOfWork.Equipments.Delete(id);
-			_unitOfWork.Save();
-		}
+            return BLLEquipmentMapper.EntityToDto(equipment);
+        }
+
+        public IEnumerable<EquipmentDTO> GetAll()
+        {
+            List<Equipment> equipments = _unitOfWork.Equipments.GetAll().ToList();
+
+            return BLLEquipmentMapper.EntityToDto(equipments);
+        }
+
+        public void Delete(Guid id)
+        {
+            Equipment equipment = _unitOfWork.Equipments.Get(id);
+            if (equipment == null)
+                throw new NotFoundException();
+
+            _unitOfWork.Equipments.Delete(id);
+            _unitOfWork.Save();
+        }
 
         public EmployeeDTO GetEquipmentOwner(Guid id)
         {
@@ -78,9 +78,9 @@ namespace Inventory.BLL.Services
             return BLLEmployeeMapper.EntityToDto(employee);
         }
 
-		public void Dispose()
-		{
-			_unitOfWork.Dispose();
-		}
-	}
+        public void Dispose()
+        {
+            _unitOfWork.Dispose();
+        }
+    }
 }

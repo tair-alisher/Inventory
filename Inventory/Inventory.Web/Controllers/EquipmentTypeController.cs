@@ -13,73 +13,73 @@ namespace Inventory.Web.Controllers
 {
     public class EquipmentTypeController : Controller
     {
-		private IEquipmentTypeService EquipmentTypeService;
-		public EquipmentTypeController(IEquipmentTypeService equipmentTypeService)
-		{
-			EquipmentTypeService = equipmentTypeService;
-		}
+        private IEquipmentTypeService EquipmentTypeService;
+        public EquipmentTypeController(IEquipmentTypeService equipmentTypeService)
+        {
+            EquipmentTypeService = equipmentTypeService;
+        }
 
         public ActionResult Index()
         {
-			IEnumerable<EquipmentTypeDTO> equipmentTypeDTOs = EquipmentTypeService
-				.GetAll()
+            IEnumerable<EquipmentTypeDTO> equipmentTypeDTOs = EquipmentTypeService
+                .GetAll()
                 .ToList();
-			IEnumerable<EquipmentTypeVM> equipmentTypeVMs = WebEquipmentTypeMapper
+            IEnumerable<EquipmentTypeVM> equipmentTypeVMs = WebEquipmentTypeMapper
                 .DtoToVm(equipmentTypeDTOs);
 
             return View(equipmentTypeVMs.ToList());
         }
 
-		public ActionResult Details(Guid? id)
-		{
-			if (id == null)
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        public ActionResult Details(Guid? id)
+        {
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-			EquipmentTypeDTO equipmentTypeDTO = EquipmentTypeService.Get((Guid)id);
-			if (equipmentTypeDTO == null)
-				return HttpNotFound();
+            EquipmentTypeDTO equipmentTypeDTO = EquipmentTypeService.Get((Guid)id);
+            if (equipmentTypeDTO == null)
+                return HttpNotFound();
 
-			EquipmentTypeVM equipmentTypeVM = WebEquipmentTypeMapper
+            EquipmentTypeVM equipmentTypeVM = WebEquipmentTypeMapper
                 .DtoToVm(equipmentTypeDTO);
 
-			return View(equipmentTypeVM);
-		}
+            return View(equipmentTypeVM);
+        }
 
-		public ActionResult Create()
-		{
-			return View();
-		}
+        public ActionResult Create()
+        {
+            return View();
+        }
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Create([Bind(Include = "Name")] EquipmentTypeVM equipmentTypeVM)
-		{
-			if (ModelState.IsValid)
-			{
-				EquipmentTypeDTO equipmentTypeDTO = WebEquipmentTypeMapper
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "Name")] EquipmentTypeVM equipmentTypeVM)
+        {
+            if (ModelState.IsValid)
+            {
+                EquipmentTypeDTO equipmentTypeDTO = WebEquipmentTypeMapper
                     .VmToDto(equipmentTypeVM);
-				EquipmentTypeService
+                EquipmentTypeService
                     .Add(equipmentTypeDTO);
 
-				return RedirectToAction("Index");
-			}
+                return RedirectToAction("Index");
+            }
 
-			return View();
-		}
+            return View();
+        }
 
-		[HttpPost, ActionName("Delete")]
-		[ValidateAntiForgeryToken]
-		public ActionResult DeleteConfirmed(Guid id)
-		{
-			try { EquipmentTypeService.Delete(id); }
-			catch (NotFoundException) { return HttpNotFound(); }
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(Guid id)
+        {
+            try { EquipmentTypeService.Delete(id); }
+            catch (NotFoundException) { return HttpNotFound(); }
 
-			return RedirectToAction("Index");
-		}
+            return RedirectToAction("Index");
+        }
 
-		protected override void Dispose(bool disposing)
-		{
-			base.Dispose(disposing);
-		}
-	}
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+        }
+    }
 }

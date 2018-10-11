@@ -34,28 +34,28 @@ namespace Inventory.BLL.Services
             return BLLEquipmentTypeMapper.EntityToDto(equipmentTypes);
         }
 
-		public void Add(EquipmentTypeDTO item)
-		{
-			EquipmentType equipmentType = BLLEquipmentTypeMapper.DtoToEntity(item);
-			equipmentType.Id = Guid.NewGuid();
+        public void Add(EquipmentTypeDTO item)
+        {
+            EquipmentType equipmentType = BLLEquipmentTypeMapper.DtoToEntity(item);
+            equipmentType.Id = Guid.NewGuid();
 
-			_unitOfWork.EquipmentTypes.Create(equipmentType);
-			_unitOfWork.Save();
-		}
+            _unitOfWork.EquipmentTypes.Create(equipmentType);
+            _unitOfWork.Save();
+        }
 
-		public void Delete(Guid id)
-		{
-			EquipmentType equipmentType = _unitOfWork.EquipmentTypes.Get(id);
-			if (equipmentType == null)
-				throw new NotFoundException();
+        public void Delete(Guid id)
+        {
+            EquipmentType equipmentType = _unitOfWork.EquipmentTypes.Get(id);
+            if (equipmentType == null)
+                throw new NotFoundException();
 
-			_unitOfWork.EquipmentTypes.Delete(id);
-			_unitOfWork.Save();
-		}
+            _unitOfWork.EquipmentTypes.Delete(id);
+            _unitOfWork.Save();
+        }
 
-		public void Dispose()
-		{
-			_unitOfWork.Dispose();
-		}
-	}
+        public void Dispose()
+        {
+            _unitOfWork.Dispose();
+        }
+    }
 }

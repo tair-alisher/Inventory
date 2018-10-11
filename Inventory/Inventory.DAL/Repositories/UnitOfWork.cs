@@ -58,17 +58,17 @@ namespace Inventory.DAL.Repositories
         }
 
         public IRepository<EquipmentComponentRelation> EquipmentComponentRelations
-		{
+        {
             get
             {
                 if (equipmentComponentRelationsRepository == null)
-					equipmentComponentRelationsRepository = new BaseRepository<EquipmentComponentRelation>(context);
+                    equipmentComponentRelationsRepository = new BaseRepository<EquipmentComponentRelation>(context);
                 return equipmentComponentRelationsRepository;
             }
         }
 
         public IRepository<EquipmentEmployeeRelation> EquipmentEmployeeRelations
-		{
+        {
             get
             {
                 if (equipmentEmployeeRelationsRepository == null)
