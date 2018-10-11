@@ -47,6 +47,11 @@ namespace Inventory.BLL.Services
             return BLLEquipmentEmployeeMapper.EntityToDto(equipmentEmployeeRelations);
         }
 
+        public void Update(EquipmentEmployeeRelationDTO item)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Delete(Guid id)
         {
             EquipmentEmployeeRelation equipmentEmployeeRelatiion = _unitOfWork.EquipmentEmployeeRelations.Get(id);

@@ -34,8 +34,17 @@ namespace Inventory.BLL.Services
         public void Add(ComponentTypeDTO item)
         {
             ComponentType componentType = BLLComponentTypeMapper.DtoToEntity(item);
+            componentType.Id = Guid.NewGuid();
 
             _unitOfWork.ComponentTypes.Create(componentType);
+            _unitOfWork.Save();
+        }
+
+        public void Update(ComponentTypeDTO item)
+        {
+            ComponentType componentType = BLLComponentTypeMapper.DtoToEntity(item);
+
+            _unitOfWork.ComponentTypes.Update(componentType);
             _unitOfWork.Save();
         }
 

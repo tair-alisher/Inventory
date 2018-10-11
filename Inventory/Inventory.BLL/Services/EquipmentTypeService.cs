@@ -43,6 +43,14 @@ namespace Inventory.BLL.Services
             _unitOfWork.Save();
         }
 
+        public void Update(EquipmentTypeDTO item)
+        {
+            EquipmentType equipmentType = BLLEquipmentTypeMapper.DtoToEntity(item);
+
+            _unitOfWork.EquipmentTypes.Update(equipmentType);
+            _unitOfWork.Save();
+        }
+
         public void Delete(Guid id)
         {
             EquipmentType equipmentType = _unitOfWork.EquipmentTypes.Get(id);

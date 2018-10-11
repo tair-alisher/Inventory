@@ -67,6 +67,35 @@ namespace Inventory.Web.Controllers
             return View();
         }
 
+        public ActionResult Edit(Guid? id)
+        {
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            EquipmentTypeDTO equipmentTypeDTO = EquipmentTypeService.Get((Guid)id);
+            if (equipmentTypeDTO == null)
+                return HttpNotFound();
+
+            EquipmentTypeVM equipmentTypeVM = WebEquipmentTypeMapper.DtoToVm(equipmentTypeDTO);
+
+            return View(equipmentTypeVM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "Name")] EquipmentTypeVM equipmentTypeVM)
+        {
+            if (ModelState.IsValid)
+            {
+                EquipmentTypeDTO equipmentTypeDTO = WebEquipmentTypeMapper.VmToDto(equipmentTypeVM);
+                EquipmentTypeService.Update(equipmentTypeDTO);
+
+                return RedirectToAction("Index");
+            }
+
+            return View();
+        }
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)

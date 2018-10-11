@@ -52,6 +52,11 @@ namespace Inventory.BLL.Services
             return BLLEquipmentMapper.EntityToDto(equipments);
         }
 
+        public void Update(EquipmentDTO item)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Delete(Guid id)
         {
             Equipment equipment = _unitOfWork.Equipments.Get(id);
