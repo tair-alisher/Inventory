@@ -1,10 +1,11 @@
-﻿using AutoMapper;
-using Inventory.BLL.DTO;
+﻿using Inventory.BLL.DTO;
 using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.Web.Models;
+using Inventory.Web.Util;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 
@@ -16,7 +17,6 @@ namespace Inventory.Web.Controllers
         private IEquipmentTypeService EquipmentTypeService;
 		private IEquipmentEmployeeRelationService EquipmentEmployeeRelationService;
         private IEmployeeService EmployeeService;
-        MapperConfiguration config;
 
         public EquipmentController
             (IEquipmentService equipmentService,
@@ -32,12 +32,12 @@ namespace Inventory.Web.Controllers
 
         public ActionResult Index()
         {
-            IEnumerable<EquipmentDTO> equipmentDTOs = EquipmentService.GetAll();
+            IEnumerable<EquipmentDTO> equipmentDTOs = EquipmentService
+                .GetAll()
+                .ToList();
+            IEnumerable<EquipmentVM> equipmentVMs = WebEquipmentMapper.DtoToVm(equipmentDTOs);
 
-            config = new MapperConfiguration(cfg => cfg.CreateMap<EquipmentDTO, EquipmentVM>());
-            IEnumerable<EquipmentVM> equipmentVMs = config.CreateMapper().Map<IEnumerable<EquipmentDTO>, List<EquipmentVM>>(equipmentDTOs);
-
-            return View(equipmentVMs);
+            return View(equipmentVMs.ToList());
         }
 
         public ActionResult Details(Guid? id)
@@ -49,11 +49,8 @@ namespace Inventory.Web.Controllers
             if (equipmentDTO == null)
                 return HttpNotFound();
 
-            config = new MapperConfiguration(cfg => cfg.CreateMap<EquipmentDTO, EquipmentVM>());
-            EquipmentVM equipmentVM = config.CreateMapper().Map<EquipmentDTO, EquipmentVM>(equipmentDTO);
-
-            var employee = EquipmentService.GetEquipmentOwner((Guid)id);
-            ViewBag.Employee = employee;
+            ViewBag.Employee = EquipmentService.GetEquipmentOwner((Guid)id);
+            EquipmentVM equipmentVM = WebEquipmentMapper.DtoToVm(equipmentDTO);
 
             return View(equipmentVM);
         }
@@ -80,8 +77,7 @@ namespace Inventory.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                config = new MapperConfiguration(cfg => cfg.CreateMap<EquipmentVM, EquipmentDTO>());
-                EquipmentDTO equipmentDTO = config.CreateMapper().Map<EquipmentDTO>(equipmentVM);
+                EquipmentDTO equipmentDTO = WebEquipmentMapper.VmToDto(equipmentVM);
 
                 Guid createdEquipmentId = EquipmentService.AddAndGetId(equipmentDTO);
 
@@ -113,7 +109,6 @@ namespace Inventory.Web.Controllers
 
 		public ActionResult Edit(Guid id)
 		{
-
 			return View();
 		}
 

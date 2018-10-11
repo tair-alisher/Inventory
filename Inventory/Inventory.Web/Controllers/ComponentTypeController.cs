@@ -1,10 +1,11 @@
-﻿using AutoMapper;
-using Inventory.BLL.DTO;
+﻿using Inventory.BLL.DTO;
 using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.Web.Models;
+using Inventory.Web.Util;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 
@@ -13,7 +14,6 @@ namespace Inventory.Web.Controllers
     public class ComponentTypeController : Controller
     {
 		private IComponentTypeService ComponentTypeService;
-		MapperConfiguration config;
 		public ComponentTypeController(IComponentTypeService componentTypeService)
 		{
 			ComponentTypeService = componentTypeService;
@@ -22,12 +22,10 @@ namespace Inventory.Web.Controllers
         public ActionResult Index()
         {
 			IEnumerable<ComponentTypeDTO> componentTypeDTOs = ComponentTypeService
-				.GetAll();
-			config = new MapperConfiguration(cfg => cfg.CreateMap<ComponentTypeDTO, ComponentTypeVM>());
-
-			IEnumerable<ComponentTypeVM> componentTypeVMs = config
-				.CreateMapper()
-				.Map<IEnumerable<ComponentTypeVM>>(componentTypeDTOs);
+				.GetAll()
+                .ToList();
+            IEnumerable<ComponentTypeVM> componentTypeVMs = WebComponentTypeMapper
+                .DtoToVm(componentTypeDTOs);
 
             return View(componentTypeVMs);
         }
@@ -41,9 +39,8 @@ namespace Inventory.Web.Controllers
 			if (componentTypeDTO == null)
 				return HttpNotFound();
 
-			config = new MapperConfiguration(cfg => cfg.CreateMap<ComponentTypeDTO, ComponentTypeVM>());
-
-			ComponentTypeVM componentTypeVM = config.CreateMapper().Map<ComponentTypeVM>(componentTypeDTO);
+			ComponentTypeVM componentTypeVM = WebComponentTypeMapper
+                .DtoToVm(componentTypeDTO);
 
 			return View(componentTypeVM);
 		}
@@ -59,12 +56,12 @@ namespace Inventory.Web.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				config = new MapperConfiguration(cfg => cfg.CreateMap<ComponentTypeVM, ComponentTypeDTO>());
-				ComponentTypeDTO componentTypeDTO = config.CreateMapper().Map<ComponentTypeDTO>(componentTypeVM);
+				ComponentTypeDTO componentTypeDTO = WebComponentTypeMapper
+                    .VmToDto(componentTypeVM);
+				ComponentTypeService
+                    .Add(componentTypeDTO);
 
-				ComponentTypeService.Add(componentTypeDTO);
-
-				return RedirectToAction("index");
+				return RedirectToAction("Index");
 			}
 
 			return View();

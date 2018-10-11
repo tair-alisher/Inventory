@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 using Inventory.BLL.DTO;
 using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
@@ -13,7 +12,6 @@ namespace Inventory.BLL.Services
 	public class ComponentTypeService : IComponentTypeService
 	{
 		private IUnitOfWork _unitOfWork { get; set; }
-		MapperConfiguration config;
 		public ComponentTypeService(IUnitOfWork uow)
 		{
 			_unitOfWork = uow;
@@ -22,24 +20,20 @@ namespace Inventory.BLL.Services
 		public ComponentTypeDTO Get(Guid id)
 		{
 			ComponentType componentType = _unitOfWork.ComponentTypes.Get(id);
-			config = new MapperConfiguration(cfg => cfg.CreateMap<ComponentType, ComponentTypeDTO>());
 
-			return config.CreateMapper().Map<ComponentTypeDTO>(componentType);
+			return BLLComponentTypeMapper.EntityToDto(componentType);
 		}
 
 		public IEnumerable<ComponentTypeDTO> GetAll()
 		{
 			List<ComponentType> componentTypes = _unitOfWork.ComponentTypes.GetAll().ToList();
-			config = new MapperConfiguration(cfg => cfg.CreateMap<ComponentType, ComponentTypeDTO>());
 
-			return config.CreateMapper().Map<List<ComponentTypeDTO>>(componentTypes);
+			return BLLComponentTypeMapper.EntityToDto(componentTypes);
 		}
 
 		public void Add(ComponentTypeDTO item)
 		{
-			config = new MapperConfiguration(cfg => cfg.CreateMap<ComponentTypeDTO, ComponentType>());
-
-			ComponentType componentType = config.CreateMapper().Map<ComponentType>(item);
+			ComponentType componentType = BLLComponentTypeMapper.DtoToEntity(item);
 
 			_unitOfWork.ComponentTypes.Create(componentType);
 			_unitOfWork.Save();

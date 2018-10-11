@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 using Inventory.BLL.DTO;
 using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
@@ -13,7 +12,6 @@ namespace Inventory.BLL.Services
 	public class EquipmentEmployeeRelationService : IEquipmentEmployeeRelationService
 	{
 		private IUnitOfWork _unitOfWork { get; set; }
-		MapperConfiguration config;
 		public EquipmentEmployeeRelationService(IUnitOfWork uow)
 		{
 			_unitOfWork = uow;
@@ -21,33 +19,32 @@ namespace Inventory.BLL.Services
 
 		public void Add(EquipmentEmployeeRelationDTO item)
 		{
-			config = new MapperConfiguration(cfg => cfg.CreateMap<EquipmentEmployeeRelationDTO, EquipmentEmployeeRelation>());
+			EquipmentEmployeeRelation relation = BLLEquipmentEmployeeMapper.DtoToEntity(item);
 
-			EquipmentEmployeeRelation equipmentEmployeeRelation = config.CreateMapper().Map<EquipmentEmployeeRelation>(item);
+            relation.Id = Guid.NewGuid();
+            relation.IsOwner = false;
+            relation.CreatedAt = DateTime.Now;
+            relation.UpdatedAt = DateTime.Now;
 
-			equipmentEmployeeRelation.Id = Guid.NewGuid();
-			equipmentEmployeeRelation.IsOwner = false;
-			equipmentEmployeeRelation.CreatedAt = DateTime.Now;
-			equipmentEmployeeRelation.UpdatedAt = DateTime.Now;
-
-			_unitOfWork.EquipmentEmployeeRelations.Create(equipmentEmployeeRelation);
+			_unitOfWork.EquipmentEmployeeRelations.Create(relation);
 			_unitOfWork.Save();
 		}
 
 		public EquipmentEmployeeRelationDTO Get(Guid id)
 		{
-			EquipmentEmployeeRelation equipmentEmployeeRelation = _unitOfWork.EquipmentEmployeeRelations.Get(id);
-			config = new MapperConfiguration(cfg => cfg.CreateMap<EquipmentEmployeeRelation, EquipmentEmployeeRelationDTO>());
+			EquipmentEmployeeRelation relation = _unitOfWork.EquipmentEmployeeRelations.Get(id);
 
-			return config.CreateMapper().Map<EquipmentEmployeeRelationDTO>(equipmentEmployeeRelation);
+			return BLLEquipmentEmployeeMapper.EntityToDto(relation);
 		}
 
 		public IEnumerable<EquipmentEmployeeRelationDTO> GetAll()
 		{
-			List<EquipmentEmployeeRelation> equipmentEmployeeRelations = _unitOfWork.EquipmentEmployeeRelations.GetAll().ToList();
-			config = new MapperConfiguration(cfg => cfg.CreateMap<EquipmentEmployeeRelation, EquipmentEmployeeRelationDTO>());
+			List<EquipmentEmployeeRelation> equipmentEmployeeRelations = _unitOfWork
+                .EquipmentEmployeeRelations
+                .GetAll()
+                .ToList();
 
-			return config.CreateMapper().Map<List<EquipmentEmployeeRelationDTO>>(equipmentEmployeeRelations);
+			return BLLEquipmentEmployeeMapper.EntityToDto(equipmentEmployeeRelations);
 		}
 
 		public void Delete(Guid id)

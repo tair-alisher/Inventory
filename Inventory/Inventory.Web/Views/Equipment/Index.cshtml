@@ -6,9 +6,9 @@
 
 <h2>Оборудование</h2>
 
-<a href="@Url.Action("Create", "Equipment")" class="btn btn-primary" type="button">Добавить оборудование</a>
-<br />
-<br />
+<p>
+    <a href="@Url.Action("Create", "Equipment")" class="btn btn-primary" type="button">Добавить оборудование</a>
+</p>
 <table class="table">
     <tr>
         <th>@Html.DisplayNameFor(model => model.EquipmentType.Name)</th>
@@ -24,9 +24,10 @@
             <td>@Html.DisplayFor(modelItem => item.InventNumber)</td>
             <td>@Html.DisplayFor(modelItem => item.Price)</td>
             <td>
-				@Html.ActionLink("Подробне", "Details", "Equipment", new { id = item.Id }, null)
-				@Html.ActionLink("Редактировать", "Edit", new { id = item.Id })
-			</td>
+                @Html.ActionLink("Подробнее", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Редактировать", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Удалить", "Delete", new { id = item.Id })
+            </td>
         </tr>
     }
 </table>

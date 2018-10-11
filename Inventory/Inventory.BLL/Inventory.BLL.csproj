@@ -67,6 +67,11 @@
     <Compile Include="DTO\PositionDTO.cs" />
     <Compile Include="DTO\RepairPlaceDTO.cs" />
     <Compile Include="DTO\StatusTypeDTO.cs" />
+    <Compile Include="Infrastructure\BLLComponentTypeMapper.cs" />
+    <Compile Include="Infrastructure\BLLEmployeeMapper.cs" />
+    <Compile Include="Infrastructure\BLLEquipmentEmployeeMapper.cs" />
+    <Compile Include="Infrastructure\BLLEquipmentMapper.cs" />
+    <Compile Include="Infrastructure\BLLEquipmentTypeMapper.cs" />
     <Compile Include="Infrastructure\NotFoundException.cs" />
     <Compile Include="Infrastructure\ServiceModule.cs" />
     <Compile Include="Interfaces\IComponentService.cs" />

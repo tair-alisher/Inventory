@@ -1,10 +1,11 @@
-﻿using AutoMapper;
-using Inventory.BLL.DTO;
+﻿using Inventory.BLL.DTO;
 using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.Web.Models;
+using Inventory.Web.Util;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 
@@ -13,7 +14,6 @@ namespace Inventory.Web.Controllers
     public class EquipmentTypeController : Controller
     {
 		private IEquipmentTypeService EquipmentTypeService;
-		MapperConfiguration config;
 		public EquipmentTypeController(IEquipmentTypeService equipmentTypeService)
 		{
 			EquipmentTypeService = equipmentTypeService;
@@ -22,14 +22,12 @@ namespace Inventory.Web.Controllers
         public ActionResult Index()
         {
 			IEnumerable<EquipmentTypeDTO> equipmentTypeDTOs = EquipmentTypeService
-				.GetAll();
-			config = new MapperConfiguration(cfg => cfg.CreateMap<EquipmentTypeDTO, EquipmentTypeVM>());
+				.GetAll()
+                .ToList();
+			IEnumerable<EquipmentTypeVM> equipmentTypeVMs = WebEquipmentTypeMapper
+                .DtoToVm(equipmentTypeDTOs);
 
-			IEnumerable<EquipmentTypeVM> equipmentTypeVMs = config
-				.CreateMapper()
-				.Map<IEnumerable<EquipmentTypeVM>>(equipmentTypeDTOs);
-
-            return View(equipmentTypeVMs);
+            return View(equipmentTypeVMs.ToList());
         }
 
 		public ActionResult Details(Guid? id)
@@ -41,8 +39,8 @@ namespace Inventory.Web.Controllers
 			if (equipmentTypeDTO == null)
 				return HttpNotFound();
 
-			config = new MapperConfiguration(cfg => cfg.CreateMap<EquipmentTypeDTO, EquipmentTypeVM>());
-			EquipmentTypeVM equipmentTypeVM = config.CreateMapper().Map<EquipmentTypeVM>(equipmentTypeDTO);
+			EquipmentTypeVM equipmentTypeVM = WebEquipmentTypeMapper
+                .DtoToVm(equipmentTypeDTO);
 
 			return View(equipmentTypeVM);
 		}
@@ -58,10 +56,10 @@ namespace Inventory.Web.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				config = new MapperConfiguration(cfg => cfg.CreateMap<EquipmentTypeVM, EquipmentTypeDTO>());
-				EquipmentTypeDTO equipmentTypeDTO = config.CreateMapper().Map<EquipmentTypeDTO>(equipmentTypeVM);
-
-				EquipmentTypeService.Add(equipmentTypeDTO);
+				EquipmentTypeDTO equipmentTypeDTO = WebEquipmentTypeMapper
+                    .VmToDto(equipmentTypeVM);
+				EquipmentTypeService
+                    .Add(equipmentTypeDTO);
 
 				return RedirectToAction("Index");
 			}
