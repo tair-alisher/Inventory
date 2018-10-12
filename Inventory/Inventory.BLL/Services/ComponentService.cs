@@ -33,11 +33,18 @@ namespace Inventory.BLL.Services
 
         public void Add(ComponentDTO item)
         {
-            Component component = BLLComponentMapper.DtoToEntity(item);
+            AddAndGetId(item);
+        }
+
+        public Guid AddAndGetId(ComponentDTO componentDTO)
+        {
+            Component component = BLLComponentMapper.DtoToEntity(componentDTO);
             component.Id = Guid.NewGuid();
 
             _unitOfWork.Components.Create(component);
             _unitOfWork.Save();
+
+            return component.Id;
         }
 
         public void Update(ComponentDTO item)
@@ -47,12 +54,22 @@ namespace Inventory.BLL.Services
 
         public void Delete(Guid id)
         {
+            if (HasRelations(id))
+                throw new HasRelationsException();
+
             Component component = _unitOfWork.Components.Get(id);
             if (component == null)
                 throw new NotFoundException();
 
             _unitOfWork.Components.Delete(id);
             _unitOfWork.Save();
+        }
+
+        public bool HasRelations(Guid id)
+        {
+            var relations = _unitOfWork.EquipmentComponentRelations.Find(r => r.ComponentId == id);
+
+            return relations.Count() > 0;
         }
 
         public void Dispose()

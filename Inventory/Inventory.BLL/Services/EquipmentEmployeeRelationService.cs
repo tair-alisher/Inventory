@@ -17,19 +17,6 @@ namespace Inventory.BLL.Services
             _unitOfWork = uow;
         }
 
-        public void Add(EquipmentEmployeeRelationDTO item)
-        {
-            EquipmentEmployeeRelation relation = BLLEquipmentEmployeeMapper.DtoToEntity(item);
-
-            relation.Id = Guid.NewGuid();
-            relation.IsOwner = false;
-            relation.CreatedAt = DateTime.Now;
-            relation.UpdatedAt = DateTime.Now;
-
-            _unitOfWork.EquipmentEmployeeRelations.Create(relation);
-            _unitOfWork.Save();
-        }
-
         public EquipmentEmployeeRelationDTO Get(Guid id)
         {
             EquipmentEmployeeRelation relation = _unitOfWork.EquipmentEmployeeRelations.Get(id);
@@ -39,12 +26,35 @@ namespace Inventory.BLL.Services
 
         public IEnumerable<EquipmentEmployeeRelationDTO> GetAll()
         {
-            List<EquipmentEmployeeRelation> equipmentEmployeeRelations = _unitOfWork
+            List<EquipmentEmployeeRelation> relations = _unitOfWork
                 .EquipmentEmployeeRelations
                 .GetAll()
                 .ToList();
 
-            return BLLEquipmentEmployeeMapper.EntityToDto(equipmentEmployeeRelations);
+            return BLLEquipmentEmployeeMapper.EntityToDto(relations);
+        }
+
+        public void Create(Guid equipmentId, int employeeId)
+        {
+            EquipmentEmployeeRelationDTO relation = new EquipmentEmployeeRelationDTO
+            {
+                EquipmentId = equipmentId,
+                EmployeeId = employeeId
+            };
+            this.Add(relation);
+        }
+
+        public void Add(EquipmentEmployeeRelationDTO item)
+        {
+            EquipmentEmployeeRelation relation = BLLEquipmentEmployeeMapper.DtoToEntity(item);
+
+            relation.Id = Guid.NewGuid();
+            relation.CreatedAt = DateTime.Now;
+            relation.UpdatedAt = DateTime.Now;
+            relation.IsOwner = false;
+
+            _unitOfWork.EquipmentEmployeeRelations.Create(relation);
+            _unitOfWork.Save();
         }
 
         public void Update(EquipmentEmployeeRelationDTO item)
@@ -54,8 +64,8 @@ namespace Inventory.BLL.Services
 
         public void Delete(Guid id)
         {
-            EquipmentEmployeeRelation equipmentEmployeeRelatiion = _unitOfWork.EquipmentEmployeeRelations.Get(id);
-            if (equipmentEmployeeRelatiion == null)
+            EquipmentEmployeeRelation relation = _unitOfWork.EquipmentEmployeeRelations.Get(id);
+            if (relation == null)
                 throw new NotFoundException();
 
             _unitOfWork.EquipmentEmployeeRelations.Delete(id);

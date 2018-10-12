@@ -50,12 +50,22 @@ namespace Inventory.BLL.Services
 
         public void Delete(Guid id)
         {
+            if (HasRelations(id))
+                throw new HasRelationsException();
+
             ComponentType componentType = _unitOfWork.ComponentTypes.Get(id);
             if (componentType == null)
                 throw new NotFoundException();
 
             _unitOfWork.ComponentTypes.Delete(id);
             _unitOfWork.Save();
+        }
+
+        public bool HasRelations(Guid id)
+        {
+            var relations = _unitOfWork.Components.Find(c => c.ComponentTypeId == id);
+
+            return relations.Count() > 0;
         }
 
         public void Dispose()

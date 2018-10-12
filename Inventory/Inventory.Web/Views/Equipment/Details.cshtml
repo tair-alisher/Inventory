@@ -50,10 +50,13 @@
             @Html.DisplayFor(model => model.Supplier)
         </dd>
 
-    @if (ViewBag.Employee != null)
+    @if (ViewBag.OwnerHistory != null)
     {
-        <dt>Владелец</dt>
-        <dd>@ViewBag.Employee.EmployeeFullName</dd>
+        <dt>История владельцев</dt>
+        foreach (var owner in ViewBag.OwnerHistory)
+        {
+            <dd>@owner.FullName (@owner.StartDate @{ if (!owner.IsActual) { String.Format("- {0}", owner.EndDate); } }) <a href="http://phone.stat.kg/crud/Employee/Details/@owner.EmployeeId" target="_blank">Просмотреть</a></dd>
+        }
     }
 
     </dl>

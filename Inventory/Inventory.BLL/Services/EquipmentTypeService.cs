@@ -53,12 +53,22 @@ namespace Inventory.BLL.Services
 
         public void Delete(Guid id)
         {
+            if (HasRelations(id))
+                throw new HasRelationsException();
+
             EquipmentType equipmentType = _unitOfWork.EquipmentTypes.Get(id);
             if (equipmentType == null)
                 throw new NotFoundException();
 
             _unitOfWork.EquipmentTypes.Delete(id);
             _unitOfWork.Save();
+        }
+
+        public bool HasRelations(Guid id)
+        {
+            var relations = _unitOfWork.Equipments.Find(e => e.EquipmentTypeId == id);
+
+            return relations.Count() > 0;
         }
 
         public void Dispose()

@@ -1,4 +1,5 @@
 ﻿using Inventory.BLL.DTO;
+using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.Web.Models;
 using Inventory.Web.Util;
@@ -14,13 +15,19 @@ namespace Inventory.Web.Controllers
     {
         private IComponentService ComponentService;
         private IComponentTypeService ComponentTypeService;
+        private IEquipmentService EquipmentService;
+        private IEquipmentComponentRelationService EquipmentComponentRelationService;
         public ComponentController(
             IComponentService componentService,
-            IComponentTypeService componentTypeService
+            IComponentTypeService componentTypeService,
+            IEquipmentService equipmentService,
+            IEquipmentComponentRelationService equipmentComponentRelationService
             )
         {
             ComponentService = componentService;
             ComponentTypeService = componentTypeService;
+            EquipmentService = equipmentService;
+            EquipmentComponentRelationService = equipmentComponentRelationService;
         }
 
         public ActionResult Index()
@@ -49,20 +56,58 @@ namespace Inventory.Web.Controllers
 
         public ActionResult Create()
         {
+            ViewBag.EquipmentId = new SelectList(
+                EquipmentService.GetAll(),
+                "Id",
+                "InventNumber");
             ViewBag.ComponentTypeId = new SelectList(
                 ComponentTypeService.GetAll(),
                 "Id",
-                "Name"
-                );
+                "Name");
 
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ComponentTypeId,ModelName,Name,Description,Price,InventNumber,Supplier")
+        public ActionResult Create([Bind(Include = "ComponentTypeId,ModelName,Name,Description,Price,InventNumber,Supplier")] ComponentVM componentVM, Guid? EquipmentId)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                ComponentDTO componentDTO = WebComponentMapper.VmToDto(componentVM);
+                Guid componentId = ComponentService.AddAndGetId(componentDTO);
+
+                if (EquipmentId != null)
+                    EquipmentComponentRelationService.Create(componentId, (Guid)EquipmentId);
+
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.EquipmentId = new SelectList(
+                EquipmentService.GetAll(),
+                "Id",
+                "InventNumber");
+            ViewBag.ComponentTypeId = new SelectList(
+                ComponentTypeService.GetAll(),
+                "Id",
+                "Name");
+
+            return View(componentVM);
+        }
+
+        [ActionName("Delete")]
+        public ActionResult DeleteConfirmed(Guid id)
+        {
+            try { ComponentService.Delete(id); }
+            catch (NotFoundException) { return HttpNotFound(); }
+            catch (HasRelationsException) { return Content("Удаление невозможно."); }
+
+            return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
         }
     }
 }

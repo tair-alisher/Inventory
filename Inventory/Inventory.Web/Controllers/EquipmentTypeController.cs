@@ -96,12 +96,12 @@ namespace Inventory.Web.Controllers
             return View();
         }
 
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        [ActionName("Delete")]
         public ActionResult DeleteConfirmed(Guid id)
         {
             try { EquipmentTypeService.Delete(id); }
             catch (NotFoundException) { return HttpNotFound(); }
+            catch (HasRelationsException) { return Content("Удаление невозможно."); }
 
             return RedirectToAction("Index");
         }

@@ -15,14 +15,14 @@ namespace Inventory.Web.Controllers
     {
         private IEquipmentService EquipmentService;
         private IEquipmentTypeService EquipmentTypeService;
-        private IEquipmentEmployeeRelationService EquipmentEmployeeRelationService;
         private IEmployeeService EmployeeService;
+        private IEquipmentEmployeeRelationService EquipmentEmployeeRelationService;
 
         public EquipmentController
             (IEquipmentService equipmentService,
             IEmployeeService employeeService,
-            IEquipmentEmployeeRelationService equipmentEmployeeRelationService,
-            IEquipmentTypeService equipmentTypeService)
+            IEquipmentTypeService equipmentTypeService,
+            IEquipmentEmployeeRelationService equipmentEmployeeRelationService)
         {
             EquipmentService = equipmentService;
             EmployeeService = employeeService;
@@ -49,7 +49,7 @@ namespace Inventory.Web.Controllers
             if (equipmentDTO == null)
                 return HttpNotFound();
 
-            ViewBag.Employee = EquipmentService.GetEquipmentOwner((Guid)id);
+            ViewBag.OwnerHistory = EquipmentService.GetOwnerHistory((Guid)id);
             EquipmentVM equipmentVM = WebEquipmentMapper.DtoToVm(equipmentDTO);
 
             return View(equipmentVM);
@@ -60,13 +60,11 @@ namespace Inventory.Web.Controllers
             ViewBag.EmployeeId = new SelectList(
                 EmployeeService.GetAll(),
                 "EmployeeId",
-                "EmployeeFullName"
-                );
+                "EmployeeFullName");
             ViewBag.EquipmentTypeId = new SelectList(
                 EquipmentTypeService.GetAll(),
                 "Id",
-                "Name"
-                );
+                "Name");
 
             return View();
         }
@@ -78,15 +76,10 @@ namespace Inventory.Web.Controllers
             if (ModelState.IsValid)
             {
                 EquipmentDTO equipmentDTO = WebEquipmentMapper.VmToDto(equipmentVM);
+                Guid equipmentId = EquipmentService.AddAndGetId(equipmentDTO);
 
-                Guid createdEquipmentId = EquipmentService.AddAndGetId(equipmentDTO);
-
-                EquipmentEmployeeRelationDTO equipmentEmployeeRelation = new EquipmentEmployeeRelationDTO
-                {
-                    EquipmentId = createdEquipmentId,
-                    EmployeeId = int.Parse(EmployeeId)
-                };
-                EquipmentEmployeeRelationService.Add(equipmentEmployeeRelation);
+                if (!string.IsNullOrEmpty(EmployeeId))
+                    EquipmentEmployeeRelationService.Create(equipmentId, int.Parse(EmployeeId));
 
                 return RedirectToAction("Index");
             }
@@ -95,14 +88,12 @@ namespace Inventory.Web.Controllers
                     EmployeeService.GetAll(),
                     "EmployeeId",
                     "EmployeeFullName",
-                    equipmentVM.EquipmentTypeId
-                );
+                    equipmentVM.EquipmentTypeId);
             ViewBag.EquipmentTypeId = new SelectList(
                     EquipmentTypeService.GetAll(),
                     "Id",
                     "Name",
-                    EmployeeId
-                );
+                    EmployeeId);
 
             return View(equipmentVM);
         }
@@ -119,12 +110,12 @@ namespace Inventory.Web.Controllers
             return View();
         }
 
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        [ActionName("Delete")]
         public ActionResult DeleteConfirmed(Guid id)
         {
             try { EquipmentService.Delete(id); }
             catch (NotFoundException) { return HttpNotFound(); }
+            catch (HasRelationsException) { return Content("Удаление невозможно."); }
 
             return RedirectToAction("Index");
         }
