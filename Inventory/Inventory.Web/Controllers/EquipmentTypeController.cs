@@ -83,7 +83,7 @@ namespace Inventory.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Name")] EquipmentTypeVM equipmentTypeVM)
+        public ActionResult Edit([Bind(Include = "Id,Name")] EquipmentTypeVM equipmentTypeVM)
         {
             if (ModelState.IsValid)
             {

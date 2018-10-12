@@ -67,6 +67,7 @@
     <Compile Include="DTO\PositionDTO.cs" />
     <Compile Include="DTO\RepairPlaceDTO.cs" />
     <Compile Include="DTO\StatusTypeDTO.cs" />
+    <Compile Include="Infrastructure\BLLComponentMapper.cs" />
     <Compile Include="Infrastructure\BLLComponentTypeMapper.cs" />
     <Compile Include="Infrastructure\BLLEmployeeMapper.cs" />
     <Compile Include="Infrastructure\BLLEquipmentEmployeeMapper.cs" />
@@ -92,6 +93,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Services\ComponentService.cs" />
     <Compile Include="Services\ComponentTypeService.cs" />
     <Compile Include="Services\EmployeeService.cs" />
     <Compile Include="Services\EquipmentEmployeeRelationService.cs" />

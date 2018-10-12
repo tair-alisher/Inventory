@@ -176,6 +176,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ComponentController.cs" />
     <Compile Include="Controllers\ComponentTypeController.cs" />
     <Compile Include="Controllers\EquipmentController.cs" />
     <Compile Include="Controllers\EquipmentTypeController.cs" />
@@ -191,6 +192,7 @@
     <Compile Include="Models\RepairPlaceVM.cs" />
     <Compile Include="Models\StatusTypeVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\WebComponentMapper.cs" />
     <Compile Include="Util\WebComponentTypeMapper.cs" />
     <Compile Include="Util\WebEquipmentMapper.cs" />
     <Compile Include="Util\WebEquipmentTypeMapper.cs" />
@@ -247,6 +249,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Component\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
