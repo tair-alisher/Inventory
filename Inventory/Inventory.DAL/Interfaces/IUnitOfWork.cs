@@ -17,6 +17,11 @@ namespace Inventory.DAL.Interfaces
         IRepository<StatusType> StatusTypes { get; }
 
         IPartialRepository<Employee> Employees { get; }
+        IPartialRepository<Position> Positions { get; }
+        IPartialRepository<Department> Departments { get; }
+        IPartialRepository<Administration> Administrations { get; }
+        IPartialRepository<Division> Divisions { get; }
+
 
         void Save();
     }

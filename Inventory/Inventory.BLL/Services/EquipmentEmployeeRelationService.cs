@@ -44,6 +44,16 @@ namespace Inventory.BLL.Services
             this.Add(relation);
         }
 
+        public void Create(Guid equipmentId, string[] employeeIds)
+        {
+            foreach (string employeeId in employeeIds)
+                this.Add(new EquipmentEmployeeRelationDTO
+                {
+                    EquipmentId = equipmentId,
+                    EmployeeId = int.Parse(employeeId)
+                });
+        }
+
         public void Add(EquipmentEmployeeRelationDTO item)
         {
             EquipmentEmployeeRelation relation = BLLEquipmentEmployeeMapper.DtoToEntity(item);
@@ -60,6 +70,17 @@ namespace Inventory.BLL.Services
         public void Update(EquipmentEmployeeRelationDTO item)
         {
             throw new NotImplementedException();
+        }
+
+        public void DeleteEquipmentRelations(Guid id)
+        {
+            IEnumerable<Guid> relationIds = _unitOfWork
+                .EquipmentEmployeeRelations
+                .Find(r => r.EquipmentId == id)
+                .Select(r => r.Id);
+
+            foreach (Guid relationId in relationIds)
+                this.Delete(relationId);
         }
 
         public void Delete(Guid id)

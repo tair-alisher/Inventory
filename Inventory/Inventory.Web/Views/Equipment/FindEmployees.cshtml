@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Inventory.BLL.DTO.OwnerInfoDTO>
+
+<div class="row" id="found-employees">
+    @if (Model.Count() <= 0)
+    {
+        <p>Нет результатов</p>
+    }
+    else
+    {
+        <table class="table table-hover table-responsive table-striped" id="found-employees-list">
+            <caption>Список найденных сотрудников</caption>
+            <thead>
+                <tr>
+                    <th>Действие</th>
+                    <th>ФИО</th>
+                    <th>Кабинет</th>
+                    <th>Должность</th>
+                    <th>Отдел</th>
+                    <th>Орган управления</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Inventory.BLL.DTO.OwnerInfoDTO employee in Model)
+                {
+                <tr id="@employee.EmployeeId">
+                    <td><input type="checkbox" onchange="attachEmployee(@employee.EmployeeId)" name="employeeId[]" /></td>
+                    <td class="name">@Html.DisplayFor(model => employee.FullName)</td>
+                    <td class="room">@Html.DisplayFor(model => employee.Room)</td>
+                    <td class="position">@Html.DisplayFor(model => employee.Position)</td>
+                    <td class="department">@Html.DisplayFor(model => employee.Department)</td>
+                    <td class="administration">@Html.DisplayFor(model => employee.Administration)</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

@@ -57,10 +57,6 @@ namespace Inventory.Web.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.EmployeeId = new SelectList(
-                EmployeeService.GetAll(),
-                "EmployeeId",
-                "EmployeeFullName");
             ViewBag.EquipmentTypeId = new SelectList(
                 EquipmentTypeService.GetAll(),
                 "Id",
@@ -71,29 +67,27 @@ namespace Inventory.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="EquipmentTypeId,InventNumber,QRCode,Price,Supplier")] EquipmentVM equipmentVM, string EmployeeId)
+        public ActionResult Create([Bind(Include="EquipmentTypeId,InventNumber,QRCode,Price,Supplier")] EquipmentVM equipmentVM, string[] employeeId)
         {
             if (ModelState.IsValid)
             {
                 EquipmentDTO equipmentDTO = WebEquipmentMapper.VmToDto(equipmentVM);
                 Guid equipmentId = EquipmentService.AddAndGetId(equipmentDTO);
 
-                if (!string.IsNullOrEmpty(EmployeeId))
-                    EquipmentEmployeeRelationService.Create(equipmentId, int.Parse(EmployeeId));
+                if (!(employeeId.Length <= 0))
+                {
+                    try { EquipmentEmployeeRelationService.Create(equipmentId, employeeId); }
+                    catch { EquipmentEmployeeRelationService.DeleteEquipmentRelations(equipmentId); }
+                }
 
                 return RedirectToAction("Index");
             }
 
-            ViewBag.EmployeeId = new SelectList(
-                    EmployeeService.GetAll(),
-                    "EmployeeId",
-                    "EmployeeFullName",
-                    equipmentVM.EquipmentTypeId);
             ViewBag.EquipmentTypeId = new SelectList(
                     EquipmentTypeService.GetAll(),
                     "Id",
                     "Name",
-                    EmployeeId);
+                    equipmentVM.EquipmentTypeId);
 
             return View(equipmentVM);
         }
@@ -118,6 +112,34 @@ namespace Inventory.Web.Controllers
             catch (HasRelationsException) { return Content("Удаление невозможно."); }
 
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult FindEmployees(string name)
+        {
+            const int MaxNumberOfWordsInFullName = 3;
+
+            name = name.Trim();
+            if (name.Length <= 0)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            string[] nameParts = name.Split(' ');
+            int wordsAmount;
+            if (nameParts.Length < MaxNumberOfWordsInFullName)
+                wordsAmount = nameParts.Length;
+            else
+                wordsAmount = MaxNumberOfWordsInFullName;
+
+            IEnumerable<OwnerInfoDTO> employees = Enumerable.Empty<OwnerInfoDTO>();
+            if (wordsAmount == 1)
+                employees = EmployeeService.GetEmployeesByName(nameParts.First());
+            else if (wordsAmount == 2)
+                employees = EmployeeService.GetEmployeesByName(nameParts[0], nameParts[1]);
+            else if (wordsAmount == 3)
+                employees = EmployeeService.GetEmployeesByName(nameParts[0], nameParts[1], nameParts[2]);
+
+            return PartialView(employees);
         }
 
         protected override void Dispose(bool disposing)

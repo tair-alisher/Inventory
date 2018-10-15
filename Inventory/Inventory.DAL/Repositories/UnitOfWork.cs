@@ -19,6 +19,10 @@ namespace Inventory.DAL.Repositories
         private BaseRepository<StatusType> statusTypeRepository;
 
         private PartialRepository<Employee> employeeRepository;
+        private PartialRepository<Position> positionRepository;
+        private PartialRepository<Department> departmentRepository;
+        private PartialRepository<Administration> administrationRepository;
+        private PartialRepository<Division> divisionRepository;
 
         private InventoryContext context;
 
@@ -124,6 +128,46 @@ namespace Inventory.DAL.Repositories
                 if (employeeRepository == null)
                     employeeRepository = new PartialRepository<Employee>(context);
                 return employeeRepository;
+            }
+        }
+
+        public IPartialRepository<Department> Departments
+        {
+            get
+            {
+                if (departmentRepository == null)
+                    departmentRepository = new PartialRepository<Department>(context);
+                return departmentRepository;
+            }
+        }
+
+        public IPartialRepository<Administration> Administrations
+        {
+            get
+            {
+                if (administrationRepository == null)
+                    administrationRepository = new PartialRepository<Administration>(context);
+                return administrationRepository;
+            }
+        }
+
+        public IPartialRepository<Division> Divisions
+        {
+            get
+            {
+                if (divisionRepository == null)
+                    divisionRepository = new PartialRepository<Division>(context);
+                return divisionRepository;
+            }
+        }
+
+        public IPartialRepository<Position> Positions
+        {
+            get
+            {
+                if (positionRepository == null)
+                    positionRepository = new PartialRepository<Position>(context);
+                return positionRepository;
             }
         }
 
