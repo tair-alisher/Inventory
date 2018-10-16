@@ -10,6 +10,7 @@
             "name": employeeName
         },
         success: function (html) {
+            $("#found-employees-area").empty();
             $("#found-employees-area").append(html);
         },
         error: function (XMLHttpRequest) {
@@ -35,6 +36,11 @@ function attachEmployee(employeeId) {
     var newTr = document.createElement("tr");
     newTr.id = "pinned-" + employeeId;
 
+    var inputId = document.createElement("input");
+    inputId.type = "hidden";
+    inputId.name = "employeeId[]";
+    inputId.value = employeeId;
+
     var button = document.createElement("button");
     button.classList.add("btn", "btn-danger");
     button.type = "button";
@@ -42,10 +48,9 @@ function attachEmployee(employeeId) {
     button.dataset.id = employeeId;
     button.setAttribute("onclick", "detachEmployee(" + employeeId + ")");
 
-    var inputId = document.createElement("input");
-    inputId.type = "hidden";
-    inputId.name = "employeeId[]";
-    inputId.value = employeeId;
+    var buttonTd = document.createElement("td");
+    buttonTd.appendChild(inputId);
+    buttonTd.appendChild(button);
 
     var nameTd = createTd("name", name);
     var roomTd = createTd("room", room);
@@ -53,9 +58,18 @@ function attachEmployee(employeeId) {
     var departmentTd = createTd("department", department);
     var administrationTd = createTd("administration", administration);
 
-    var buttonTd = document.createElement("td");
-    buttonTd.appendChild(inputId);
-    buttonTd.appendChild(button);
+    var label = document.createElement("label");
+
+    var inputOwner = document.createElement("input");
+    inputOwner.type = "radio";
+    inputOwner.name = "ownerId";
+    inputOwner.value = employeeId;
+
+    label.appendChild(inputOwner);
+    label.appendChild(document.createTextNode("Текущий владелец"));
+    
+    var ownerTd = document.createElement("td");
+    ownerTd.appendChild(label);
 
     newTr.appendChild(buttonTd);
     newTr.appendChild(nameTd);
@@ -63,6 +77,7 @@ function attachEmployee(employeeId) {
     newTr.appendChild(positionTd);
     newTr.appendChild(departmentTd);
     newTr.appendChild(administrationTd);
+    newTr.appendChild(ownerTd);
 
     var attachedEmployees = document.getElementById("attached-employees-tbody");
     attachedEmployees.appendChild(newTr);

@@ -67,17 +67,22 @@ namespace Inventory.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="EquipmentTypeId,InventNumber,QRCode,Price,Supplier")] EquipmentVM equipmentVM, string[] employeeId)
+        public ActionResult Create([Bind(Include="EquipmentTypeId,InventNumber,QRCode,Price,Supplier")] EquipmentVM equipmentVM)
         {
             if (ModelState.IsValid)
             {
                 EquipmentDTO equipmentDTO = WebEquipmentMapper.VmToDto(equipmentVM);
                 Guid equipmentId = EquipmentService.AddAndGetId(equipmentDTO);
 
-                if (!(employeeId.Length <= 0))
+                string[] employeeIds = Request.Form.GetValues("employeeId");
+
+                if (!(employeeIds.Length <= 0))
                 {
-                    try { EquipmentEmployeeRelationService.Create(equipmentId, employeeId); }
+                    try { EquipmentEmployeeRelationService.Create(equipmentId, employeeIds); }
                     catch { EquipmentEmployeeRelationService.DeleteEquipmentRelations(equipmentId); }
+
+                    int ownerId = int.Parse(Request.Form["ownerId"]);
+                    EquipmentEmployeeRelationService.SetOwner(equipmentId, ownerId);
                 }
 
                 return RedirectToAction("Index");

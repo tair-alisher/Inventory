@@ -69,7 +69,10 @@ namespace Inventory.BLL.Services
 
         public void Update(EquipmentEmployeeRelationDTO item)
         {
-            throw new NotImplementedException();
+            EquipmentEmployeeRelation relation = BLLEquipmentEmployeeMapper.DtoToEntity(item);
+
+            _unitOfWork.EquipmentEmployeeRelations.Update(relation);
+            _unitOfWork.Save();
         }
 
         public void DeleteEquipmentRelations(Guid id)
@@ -91,6 +94,17 @@ namespace Inventory.BLL.Services
 
             _unitOfWork.EquipmentEmployeeRelations.Delete(id);
             _unitOfWork.Save();
+        }
+
+        public void SetOwner(Guid equipmentId, int employeeId)
+        {
+            EquipmentEmployeeRelation relation = _unitOfWork
+                .EquipmentEmployeeRelations
+                .Find(r => r.EquipmentId == equipmentId && r.EmployeeId == employeeId)
+                .First();
+
+            relation.IsOwner = true;
+            this.Update(BLLEquipmentEmployeeMapper.EntityToDto(relation));
         }
 
         public void Dispose()

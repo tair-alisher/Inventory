@@ -8,5 +8,6 @@ namespace Inventory.BLL.Interfaces
         void Create(Guid equipmentId, int employeeId);
         void Create(Guid equipmentId, string[] employeeIds);
         void DeleteEquipmentRelations(Guid id);
+        void SetOwner(Guid equipmentId, int employeeId);
     }
 }
