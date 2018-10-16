@@ -69,20 +69,18 @@ namespace Inventory.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include="EquipmentTypeId,InventNumber,QRCode,Price,Supplier")] EquipmentVM equipmentVM)
         {
-            if (ModelState.IsValid)
-            {
+            if (ModelState.IsValid) {
                 EquipmentDTO equipmentDTO = WebEquipmentMapper.VmToDto(equipmentVM);
                 Guid equipmentId = EquipmentService.AddAndGetId(equipmentDTO);
 
-                string[] employeeIds = Request.Form.GetValues("employeeId");
+                string[] employeeIds = Request.Form.GetValues("employeeId[]");
 
-                if (!(employeeIds.Length <= 0))
-                {
-                    try { EquipmentEmployeeRelationService.Create(equipmentId, employeeIds); }
+                if (!(employeeIds.Length <= 0)) {
+                    try {
+                        EquipmentEmployeeRelationService.Create(equipmentId, employeeIds);
+                        EquipmentEmployeeRelationService.SetOwner(equipmentId, int.Parse(Request.Form["ownerId"]));
+                    }
                     catch { EquipmentEmployeeRelationService.DeleteEquipmentRelations(equipmentId); }
-
-                    int ownerId = int.Parse(Request.Form["ownerId"]);
-                    EquipmentEmployeeRelationService.SetOwner(equipmentId, ownerId);
                 }
 
                 return RedirectToAction("Index");
@@ -97,15 +95,37 @@ namespace Inventory.Web.Controllers
             return View(equipmentVM);
         }
 
-        public ActionResult Edit(Guid id)
+        public ActionResult Edit(Guid? id)
         {
-            return View();
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            EquipmentDTO equipmentDTO = EquipmentService.Get((Guid)id);
+            if (equipmentDTO == null)
+                return HttpNotFound();
+
+            EquipmentVM equipmentVM = WebEquipmentMapper.DtoToVm(equipmentDTO);
+
+            ViewBag.EquipmentTypeId = new SelectList(
+                EquipmentTypeService.GetAll(),
+                "Id",
+                "Name",
+                equipmentVM.EquipmentTypeId);
+            ViewBag.OwnerHistory = EquipmentService.GetOwnerHistory((Guid)id);
+            
+
+            return View(equipmentVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit()
+        public ActionResult Edit([Bind(Include = "Id,EquipmentTypeId,InventNumber,QRCode,Price,Supplier")] EquipmentVM equipmentVM)
         {
+            if (ModelState.IsValid)
+            {
+
+            }
+
             return View();
         }
 

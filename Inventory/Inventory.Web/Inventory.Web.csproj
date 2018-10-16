@@ -250,6 +250,7 @@
     <Content Include="Views\Component\Index.cshtml" />
     <Content Include="Views\Component\Details.cshtml" />
     <Content Include="Views\Equipment\FindEmployees.cshtml" />
+    <Content Include="Views\Equipment\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

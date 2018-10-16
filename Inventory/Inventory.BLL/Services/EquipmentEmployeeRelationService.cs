@@ -102,9 +102,10 @@ namespace Inventory.BLL.Services
                 .EquipmentEmployeeRelations
                 .Find(r => r.EquipmentId == equipmentId && r.EmployeeId == employeeId)
                 .First();
-
             relation.IsOwner = true;
-            this.Update(BLLEquipmentEmployeeMapper.EntityToDto(relation));
+
+            _unitOfWork.EquipmentEmployeeRelations.Update(relation);
+            _unitOfWork.Save();
         }
 
         public void Dispose()

@@ -131,7 +131,7 @@ namespace Inventory.BLL.Services
                     StartDate = relation.CreatedAt,
                     EndDate = relation.UpdatedAt,
                     IsActual = relation.IsOwner
-                });
+                }).OrderBy(o => o.StartDate);
 
             return ownerHistory;
         }

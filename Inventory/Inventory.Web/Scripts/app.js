@@ -26,6 +26,11 @@ function clearSearch() {
 }
 
 function attachEmployee(employeeId) {
+    if (document.body.contains(document.getElementById("pinned-" + employeeId))) {
+        alert("Сотрудник уже прикриплен");
+        return false;
+    }
+
     var employeeRow = $("#" + employeeId);
     var name = employeeRow.find("td.name")[0].innerText;
     var room = employeeRow.find("td.room")[0].innerText;
@@ -45,7 +50,6 @@ function attachEmployee(employeeId) {
     button.classList.add("btn", "btn-danger");
     button.type = "button";
     button.innerText = "Убрать";
-    button.dataset.id = employeeId;
     button.setAttribute("onclick", "detachEmployee(" + employeeId + ")");
 
     var buttonTd = document.createElement("td");
