@@ -5,8 +5,10 @@ namespace Inventory.BLL.Interfaces
 {
     public interface IEquipmentEmployeeRelationService : IService<EquipmentEmployeeRelationDTO>
     {
+        EquipmentEmployeeRelationDTO GetByEquipmentAndEmployee(Guid equipmentId, int employeeId);
         void Create(Guid equipmentId, int employeeId);
         void Create(Guid equipmentId, string[] employeeIds);
+        void UpdateDates(EquipmentEmployeeRelationDTO relation);
         void DeleteEquipmentRelations(Guid id);
         void SetOwner(Guid equipmentId, int employeeId);
     }

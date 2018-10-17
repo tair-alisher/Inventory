@@ -195,6 +195,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\WebComponentMapper.cs" />
     <Compile Include="Util\WebComponentTypeMapper.cs" />
+    <Compile Include="Util\WebEquipmentEmployeeMapper.cs" />
     <Compile Include="Util\WebEquipmentMapper.cs" />
     <Compile Include="Util\WebEquipmentTypeMapper.cs" />
     <Compile Include="Util\WebModule.cs" />
@@ -252,6 +253,7 @@
     <Content Include="Views\Component\Details.cshtml" />
     <Content Include="Views\Equipment\FindEmployees.cshtml" />
     <Content Include="Views\Equipment\Edit.cshtml" />
+    <Content Include="Views\Equipment\EditRelation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

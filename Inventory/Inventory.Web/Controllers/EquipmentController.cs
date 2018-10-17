@@ -131,14 +131,42 @@ namespace Inventory.Web.Controllers
 
         public ActionResult EditRelation()
         {
+            Guid equipmentId;
+            int employeeId;
+            try {
+                equipmentId = Guid.Parse(Request.QueryString["equipmentId"]);
+                employeeId = int.Parse(Request.QueryString["employeeId"]);
+            }
+            catch (ArgumentNullException) {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
-            return View();
+            EquipmentEmployeeRelationDTO relationDTO;
+            try {
+                relationDTO = EquipmentEmployeeRelationService
+                    .GetByEquipmentAndEmployee(equipmentId, employeeId);
+            }
+            catch (NotFoundException) { return HttpNotFound(); }
+
+            EquipmentEmployeeRelationVM relationVM = WebEquipmentEmployeeMapper
+                    .DtoToVm(relationDTO);
+
+            return View(relationVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditRelation([Bind(Include = "Id,")] EquipmentEmployeeRelationVM relation)
+        public ActionResult EditRelation([Bind(Include = "Id,CreatedAt,UpdatedAt")] EquipmentEmployeeRelationVM relationVM)
         {
+            if (ModelState.IsValid)
+            {
+                EquipmentEmployeeRelationDTO relationDTO = WebEquipmentEmployeeMapper
+                    .VmToDto(relationVM);
+                EquipmentEmployeeRelationService.UpdateDates(relationDTO);
+
+                return RedirectToAction("Index");
+            }
+
             return View();
         }
 

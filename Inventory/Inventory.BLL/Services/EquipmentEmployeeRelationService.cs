@@ -24,6 +24,20 @@ namespace Inventory.BLL.Services
             return BLLEquipmentEmployeeMapper.EntityToDto(relation);
         }
 
+        public EquipmentEmployeeRelationDTO GetByEquipmentAndEmployee(Guid equipmentId, int employeeId)
+        {
+            EquipmentEmployeeRelation relation = _unitOfWork
+                .EquipmentEmployeeRelations
+                .Find(r => r.EquipmentId == equipmentId &&
+                    r.EmployeeId == employeeId)
+                .FirstOrDefault();
+
+            if (relation == null)
+                throw new NotFoundException();
+
+            return BLLEquipmentEmployeeMapper.EntityToDto(relation);
+        }
+
         public IEnumerable<EquipmentEmployeeRelationDTO> GetAll()
         {
             List<EquipmentEmployeeRelation> relations = _unitOfWork
@@ -73,6 +87,11 @@ namespace Inventory.BLL.Services
 
             _unitOfWork.EquipmentEmployeeRelations.Update(relation);
             _unitOfWork.Save();
+        }
+
+        public void UpdateDates(EquipmentEmployeeRelationDTO relation)
+        {
+            this.Update(relation);
         }
 
         public void DeleteEquipmentRelations(Guid id)

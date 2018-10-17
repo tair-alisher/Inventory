@@ -96,7 +96,7 @@
                         <td class="input-group-btn">
                             <input type="hidden" name="employeeId[]" value="@owner.EmployeeId" />
                             <button class="btn btn-danger" type="button" data-id="@owner.EmployeeId" onclick="detachEmployee(@owner.EmployeeId)">Убрать</button>
-                            <a href="@Url.Action("EditRelation", "Equipment", new { equipmentId = Model.Id, employeeId = owner.EmployeeId })" class="btn btn-primary">Редактировать</a>
+                            <a href="@Url.Action("EditRelation", "Equipment", new { equipmentId = Model.Id, employeeId = owner.EmployeeId })" target="_blank" class="btn btn-primary">Редактировать</a>
                         </td>
                         <td class="name">@owner.FullName</td>
                         <td class="room">@owner.Room</td>
