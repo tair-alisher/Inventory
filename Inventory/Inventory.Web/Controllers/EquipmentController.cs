@@ -129,6 +129,19 @@ namespace Inventory.Web.Controllers
             return View();
         }
 
+        public ActionResult EditRelation()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditRelation([Bind(Include = "Id,")] EquipmentEmployeeRelationVM relation)
+        {
+            return View();
+        }
+
         [ActionName("Delete")]
         public ActionResult DeleteConfirmed(Guid id)
         {
