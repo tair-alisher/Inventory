@@ -49,7 +49,10 @@ namespace Inventory.BLL.Services
 
         public void Update(ComponentDTO item)
         {
-            throw new NotImplementedException();
+            Component component = BLLComponentMapper.DtoToEntity(item);
+
+            _unitOfWork.Components.Update(component);
+            _unitOfWork.Save();
         }
 
         public void Delete(Guid id)

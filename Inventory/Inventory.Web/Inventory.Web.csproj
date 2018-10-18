@@ -254,6 +254,8 @@
     <Content Include="Views\Equipment\FindEmployees.cshtml" />
     <Content Include="Views\Equipment\Edit.cshtml" />
     <Content Include="Views\Equipment\EditRelation.cshtml" />
+    <Content Include="Views\Component\Create.cshtml" />
+    <Content Include="Views\Component\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
