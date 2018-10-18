@@ -100,6 +100,38 @@ namespace Inventory.BLL.Services
             _unitOfWork.Save();
         }
 
+        public void UpdateEquipmentRelations(Guid equipmentId, string[] employeeIds)
+        {
+            List<int> equipmentEmployeeIds = _unitOfWork
+                .EquipmentEmployeeRelations
+                .Find(r => r.EquipmentId == equipmentId)
+                .Select(r => r.EmployeeId)
+                .ToList();
+
+            List<int> intEmployeeIds = employeeIds
+                .Select(id => int.Parse(id))
+                .ToList();
+
+            foreach (int employeeId in intEmployeeIds)
+                if (!equipmentEmployeeIds.Contains(employeeId))
+                    this.Create(equipmentId, employeeId);
+
+            foreach (int equipmentEmployeeId in equipmentEmployeeIds)
+                if (!intEmployeeIds.Contains(equipmentEmployeeId))
+                    this.DeleteEquipmentRelation(equipmentId, equipmentEmployeeId);
+        }
+
+        public void DeleteEquipmentRelation(Guid equipmentId, int employeeId)
+        {
+            EquipmentEmployeeRelation relation = _unitOfWork
+                .EquipmentEmployeeRelations
+                .Find(r => r.EquipmentId == equipmentId && r.EmployeeId == employeeId)
+                .FirstOrDefault();
+
+            if (relation != null)
+                this.Delete(relation.Id);
+        }
+
         public void DeleteEquipmentRelations(Guid id)
         {
             IEnumerable<Guid> relationIds = _unitOfWork
@@ -108,7 +140,7 @@ namespace Inventory.BLL.Services
                 .Select(r => r.Id);
 
             foreach (Guid relationId in relationIds)
-                this.Delete(relationId);
+                Delete(relationId);
         }
 
         public void Delete(Guid id)
@@ -121,16 +153,49 @@ namespace Inventory.BLL.Services
             _unitOfWork.Save();
         }
 
+        public void UnsetOwner(Guid equipmentId)
+        {
+            EquipmentEmployeeRelation relation = _unitOfWork
+                .EquipmentEmployeeRelations
+                .Find(r => r.EquipmentId == equipmentId && r.IsOwner == true)
+                .FirstOrDefault();
+
+            if (relation != null)
+                UpdateIsOwnerField(relation.Id, false);
+        }
+
+        public void ResetOwner(Guid equipmentId, int employeeId)
+        {
+            EquipmentEmployeeRelation relation = _unitOfWork
+                .EquipmentEmployeeRelations
+                .Find(r => r.EquipmentId == equipmentId && r.IsOwner == true)
+                .FirstOrDefault();
+
+            if (relation != null)
+                UpdateIsOwnerField(relation.Id, false);
+
+            SetOwner(equipmentId, employeeId);
+        }
+
+        public void UpdateIsOwnerField(Guid relationId, bool value)
+        {
+            EquipmentEmployeeRelation relation = _unitOfWork
+                .EquipmentEmployeeRelations
+                .Get(relationId);
+
+            relation.IsOwner = value;
+            _unitOfWork.EquipmentEmployeeRelations.Update(relation);
+            _unitOfWork.Save();
+        }
+
         public void SetOwner(Guid equipmentId, int employeeId)
         {
             EquipmentEmployeeRelation relation = _unitOfWork
                 .EquipmentEmployeeRelations
                 .Find(r => r.EquipmentId == equipmentId && r.EmployeeId == employeeId)
                 .First();
-            relation.IsOwner = true;
 
-            _unitOfWork.EquipmentEmployeeRelations.Update(relation);
-            _unitOfWork.Save();
+            UpdateIsOwnerField(relation.Id, true);
         }
 
         public void Dispose()

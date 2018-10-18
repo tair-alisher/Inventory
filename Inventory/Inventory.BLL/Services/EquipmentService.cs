@@ -49,7 +49,16 @@ namespace Inventory.BLL.Services
 
         public void Update(EquipmentDTO item)
         {
-            throw new NotImplementedException();
+            Equipment equipment = _unitOfWork.Equipments.Get(item.Id);
+            equipment.EquipmentTypeId = item.EquipmentTypeId;
+            equipment.EquipmentType = _unitOfWork.EquipmentTypes.Get(item.EquipmentTypeId);
+            equipment.InventNumber = item.InventNumber;
+            equipment.QRCode = item.QRCode;
+            equipment.Price = item.Price;
+            equipment.Supplier = item.Supplier;
+
+            _unitOfWork.Equipments.Update(equipment);
+            _unitOfWork.Save();
         }
 
         public void Delete(Guid id)

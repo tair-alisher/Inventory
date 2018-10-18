@@ -78,7 +78,9 @@ namespace Inventory.Web.Controllers
                 if (!(employeeIds.Length <= 0)) {
                     try {
                         EquipmentEmployeeRelationService.Create(equipmentId, employeeIds);
-                        EquipmentEmployeeRelationService.SetOwner(equipmentId, int.Parse(Request.Form["ownerId"]));
+                        if (Request.Form["OwnerId"] != null)
+                            EquipmentEmployeeRelationService
+                                .SetOwner(equipmentId, int.Parse(Request.Form["ownerId"]));
                     }
                     catch { EquipmentEmployeeRelationService.DeleteEquipmentRelations(equipmentId); }
                 }
@@ -137,19 +139,31 @@ namespace Inventory.Web.Controllers
                     try {
                         EquipmentEmployeeRelationService
                             .UpdateEquipmentRelations(equipmentVM.Id, employeeIds);
-                        EquipmentEmployeeRelationService
-                            .ReSetOwner(equipmentVM.Id, int.Parse(Request.Form["ownerId"]));
+                        if (Request.Form["ownerId"] != null)
+                            EquipmentEmployeeRelationService
+                                .ResetOwner(equipmentVM.Id, int.Parse(Request.Form["ownerId"]));
+                        else
+                            EquipmentEmployeeRelationService
+                                .UnsetOwner(equipmentVM.Id);
                     }
                     catch {
                         EquipmentEmployeeRelationService
-                        .DeleteEquipmentRelations(equipmentVM.Id);
+                            .DeleteEquipmentRelations(equipmentVM.Id);
                     }
                 }
-
-                return RedirectToAction("Index");
             }
 
-            return View();
+            EquipmentDTO dto = EquipmentService.Get(equipmentVM.Id);
+            equipmentVM = WebEquipmentMapper.DtoToVm(dto);
+
+            ViewBag.EquipmentTypeId = new SelectList(
+                EquipmentTypeService.GetAll(),
+                "Id",
+                "Name",
+                equipmentVM.EquipmentTypeId);
+            ViewBag.OwnerHistory = EquipmentService.GetOwnerHistory((Guid)equipmentVM.Id);
+
+            return View(equipmentVM);
         }
 
         public ActionResult EditRelation()
