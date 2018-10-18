@@ -85,6 +85,7 @@
                         <th>Отдел</th>
                         <th>Орган управления</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody id="attached-employees-tbody">
@@ -105,6 +106,9 @@
                         <td class="administration">@owner.Administration</td>
                         <td>
                             <label><input type="radio" name="ownerId" value="@owner.EmployeeId"@Html.Raw(owner.IsActual ? " checked" : "") /> Текущий владелец</label>
+                        </td>
+                        <td>
+                            @owner.StartDate.ToShortDateString() @Html.Raw(owner.IsActual ? "" : $"- {owner.EndDate.ToShortDateString()}")
                         </td>
                     </tr>
                         }

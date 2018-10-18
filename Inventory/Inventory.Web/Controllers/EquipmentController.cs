@@ -123,7 +123,30 @@ namespace Inventory.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                EquipmentDTO equipmentDTO = WebEquipmentMapper
+                    .VmToDto(equipmentVM);
+                EquipmentService.Update(equipmentDTO);
 
+                string[] employeeIds = Request.Form.GetValues("employeeId[]");
+
+                if (employeeIds.Length <= 0) {
+                    EquipmentEmployeeRelationService
+                        .DeleteEquipmentRelations(equipmentVM.Id);
+                }
+                else {
+                    try {
+                        EquipmentEmployeeRelationService
+                            .UpdateEquipmentRelations(equipmentVM.Id, employeeIds);
+                        EquipmentEmployeeRelationService
+                            .ReSetOwner(equipmentVM.Id, int.Parse(Request.Form["ownerId"]));
+                    }
+                    catch {
+                        EquipmentEmployeeRelationService
+                        .DeleteEquipmentRelations(equipmentVM.Id);
+                    }
+                }
+
+                return RedirectToAction("Index");
             }
 
             return View();

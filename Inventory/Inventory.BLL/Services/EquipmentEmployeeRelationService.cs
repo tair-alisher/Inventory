@@ -89,9 +89,15 @@ namespace Inventory.BLL.Services
             _unitOfWork.Save();
         }
 
-        public void UpdateDates(EquipmentEmployeeRelationDTO relation)
+        public void UpdateDates(EquipmentEmployeeRelationDTO relationDTO)
         {
-            this.Update(relation);
+            EquipmentEmployeeRelation relation = _unitOfWork.EquipmentEmployeeRelations.Get(relationDTO.Id);
+
+            relation.CreatedAt = relationDTO.CreatedAt;
+            relation.UpdatedAt = relationDTO.UpdatedAt;
+
+            _unitOfWork.EquipmentEmployeeRelations.Update(relation);
+            _unitOfWork.Save();
         }
 
         public void DeleteEquipmentRelations(Guid id)
