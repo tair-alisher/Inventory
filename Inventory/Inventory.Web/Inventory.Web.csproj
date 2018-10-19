@@ -256,6 +256,7 @@
     <Content Include="Views\Equipment\EditRelation.cshtml" />
     <Content Include="Views\Component\Create.cshtml" />
     <Content Include="Views\Component\Edit.cshtml" />
+    <Content Include="Views\Equipment\OwnerHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

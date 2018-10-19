@@ -85,7 +85,7 @@ namespace Inventory.Web.Controllers
                     catch { EquipmentEmployeeRelationService.DeleteEquipmentRelations(equipmentId); }
                 }
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Edit", new { id = equipmentId });
             }
 
             ViewBag.EquipmentTypeId = new SelectList(
@@ -164,6 +164,35 @@ namespace Inventory.Web.Controllers
             ViewBag.OwnerHistory = EquipmentService.GetOwnerHistory((Guid)equipmentVM.Id);
 
             return View(equipmentVM);
+        }
+
+        public ActionResult OwnerHistory(Guid? equipmentId)
+        {
+            if (equipmentId == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            ViewBag.OwnerHistory = EquipmentService.GetOwnerHistory((Guid)equipmentId);
+            ViewBag.EquipmentId = equipmentId;
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult OwnerHistory()
+        {
+            try
+            {
+                Guid equipmentId = Guid.Parse(Request.Form["equipmentId"]);
+                string[] employeeIds = Request.Form.GetValues("employeeIds[]");
+                int ownerId = int.Parse(Request.Form["ownerId"]);
+            }
+            catch (ArgumentNullException)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            return View();
         }
 
         public ActionResult EditRelation()
