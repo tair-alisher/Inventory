@@ -181,6 +181,7 @@
     <Compile Include="Controllers\EquipmentController.cs" />
     <Compile Include="Controllers\EquipmentTypeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\StatusTypeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -199,6 +200,7 @@
     <Compile Include="Util\WebEquipmentMapper.cs" />
     <Compile Include="Util\WebEquipmentTypeMapper.cs" />
     <Compile Include="Util\WebModule.cs" />
+    <Compile Include="Util\WebStatusTypeMapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -254,6 +256,10 @@
     <Content Include="Views\Equipment\FindEmployees.cshtml" />
     <Content Include="Views\Equipment\Edit.cshtml" />
     <Content Include="Views\Equipment\EditRelation.cshtml" />
+    <Content Include="Views\StatusType\Index.cshtml" />
+    <Content Include="Views\StatusType\Details.cshtml" />
+    <Content Include="Views\StatusType\Create.cshtml" />
+    <Content Include="Views\StatusType\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
