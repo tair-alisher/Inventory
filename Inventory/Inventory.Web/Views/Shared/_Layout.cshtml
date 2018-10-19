@@ -1,12 +1,13 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title – Инвентаризация</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
@@ -39,6 +40,18 @@
                             <a class="dropdown-item" href="@Url.Action("Index", "Component")">Комплектующие</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="@Url.Action("Index", "ComponentType")">Тип комплектующего</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="componentDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Отслеживание
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="componentDropdown">
+                            <a class="dropdown-item" href="@Url.Action("Index", "Home")">История</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="@Url.Action("Index", "StatusType")">Тип статуса</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="@Url.Action("Index", "RepairPlace")">Место ремонта</a>
                         </div>
                     </li>
                 </ul>
