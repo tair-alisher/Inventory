@@ -10,8 +10,8 @@
             "name": employeeName
         },
         success: function (html) {
-            $("#found-employees-area").empty();
-            $("#found-employees-area").append(html);
+            $("#found-items-area").empty();
+            $("#found-items-area").append(html);
         },
         error: function (XMLHttpRequest) {
             console.log(XMLHttpRequest);
@@ -21,7 +21,7 @@
 }
 
 function clearSearch() {
-    $("#found-employees-area").empty();
+    $("#found-items-area").empty();
     $("#search-input-value").val('');
 }
 
@@ -53,6 +53,7 @@ function attachEmployee(employeeId) {
     button.setAttribute("onclick", "detachEmployee(" + employeeId + ")");
 
     var buttonTd = document.createElement("td");
+    buttonTd.className = "input-group-btn";
     buttonTd.appendChild(inputId);
     buttonTd.appendChild(button);
 
@@ -75,6 +76,8 @@ function attachEmployee(employeeId) {
     var ownerTd = document.createElement("td");
     ownerTd.appendChild(label);
 
+    var emptyTd = document.createElement("td");
+
     newTr.appendChild(buttonTd);
     newTr.appendChild(nameTd);
     newTr.appendChild(roomTd);
@@ -82,9 +85,10 @@ function attachEmployee(employeeId) {
     newTr.appendChild(departmentTd);
     newTr.appendChild(administrationTd);
     newTr.appendChild(ownerTd);
+    newTr.appendChild(emptyTd);
 
-    var attachedEmployees = document.getElementById("attached-employees-tbody");
-    attachedEmployees.appendChild(newTr);
+    var attachedItems = document.getElementById("attached-items-tbody");
+    attachedItems.appendChild(newTr);
 }
 
 function detachEmployee(employeeId) {

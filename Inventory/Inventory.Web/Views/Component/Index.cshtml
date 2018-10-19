@@ -7,7 +7,7 @@
 <h2>Комплектующие</h2>
 
 <p>
-    @Html.ActionLink("Добавить", "Create")
+    <a href="@Url.Action("Create", "Component")" class="btn btn-primary" type="button">Добавить комплектующее</a>
 </p>
 <table class="table">
     <tr>
@@ -23,7 +23,7 @@
 
 @foreach (var item in Model) {
     <tr>
-        <td>@Html.DisplayFor(modelItem => item.ComponentType)</td>
+        <td>@Html.DisplayFor(modelItem => item.ComponentType.Name)</td>
         <td>@Html.DisplayFor(modelItem => item.ModelName)</td>
         <td>@Html.DisplayFor(modelItem => item.Name)</td>
         <td>@Html.DisplayFor(modelItem => item.Description)</td>

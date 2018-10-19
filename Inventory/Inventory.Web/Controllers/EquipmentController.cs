@@ -49,7 +49,8 @@ namespace Inventory.Web.Controllers
             if (equipmentDTO == null)
                 return HttpNotFound();
 
-            ViewBag.OwnerHistory = EquipmentService.GetOwnerHistory((Guid)id);
+            IEnumerable<OwnerInfoDTO> ownerHistory = EquipmentService.GetOwnerHistory((Guid)id);
+            ViewBag.OwnerHistory = ownerHistory.ToList();
             EquipmentVM equipmentVM = WebEquipmentMapper.DtoToVm(equipmentDTO);
 
             return View(equipmentVM);
@@ -73,19 +74,7 @@ namespace Inventory.Web.Controllers
                 EquipmentDTO equipmentDTO = WebEquipmentMapper.VmToDto(equipmentVM);
                 Guid equipmentId = EquipmentService.AddAndGetId(equipmentDTO);
 
-                string[] employeeIds = Request.Form.GetValues("employeeId[]");
-
-                if (!(employeeIds.Length <= 0)) {
-                    try {
-                        EquipmentEmployeeRelationService.Create(equipmentId, employeeIds);
-                        if (Request.Form["OwnerId"] != null)
-                            EquipmentEmployeeRelationService
-                                .SetOwner(equipmentId, int.Parse(Request.Form["ownerId"]));
-                    }
-                    catch { EquipmentEmployeeRelationService.DeleteEquipmentRelations(equipmentId); }
-                }
-
-                return RedirectToAction("Index");
+                return RedirectToAction("Edit", new { id = equipmentId });
             }
 
             ViewBag.EquipmentTypeId = new SelectList(
@@ -113,8 +102,6 @@ namespace Inventory.Web.Controllers
                 "Id",
                 "Name",
                 equipmentVM.EquipmentTypeId);
-            ViewBag.OwnerHistory = EquipmentService.GetOwnerHistory((Guid)id);
-            
 
             return View(equipmentVM);
         }
@@ -128,29 +115,6 @@ namespace Inventory.Web.Controllers
                 EquipmentDTO equipmentDTO = WebEquipmentMapper
                     .VmToDto(equipmentVM);
                 EquipmentService.Update(equipmentDTO);
-
-                string[] employeeIds = Request.Form.GetValues("employeeId[]");
-
-                if (employeeIds.Length <= 0) {
-                    EquipmentEmployeeRelationService
-                        .DeleteEquipmentRelations(equipmentVM.Id);
-                }
-                else {
-                    try {
-                        EquipmentEmployeeRelationService
-                            .UpdateEquipmentRelations(equipmentVM.Id, employeeIds);
-                        if (Request.Form["ownerId"] != null)
-                            EquipmentEmployeeRelationService
-                                .ResetOwner(equipmentVM.Id, int.Parse(Request.Form["ownerId"]));
-                        else
-                            EquipmentEmployeeRelationService
-                                .UnsetOwner(equipmentVM.Id);
-                    }
-                    catch {
-                        EquipmentEmployeeRelationService
-                            .DeleteEquipmentRelations(equipmentVM.Id);
-                    }
-                }
             }
 
             EquipmentDTO dto = EquipmentService.Get(equipmentVM.Id);
@@ -161,9 +125,53 @@ namespace Inventory.Web.Controllers
                 "Id",
                 "Name",
                 equipmentVM.EquipmentTypeId);
-            ViewBag.OwnerHistory = EquipmentService.GetOwnerHistory((Guid)equipmentVM.Id);
 
             return View(equipmentVM);
+        }
+
+        public ActionResult OwnerHistory(Guid? equipmentId)
+        {
+            if (equipmentId == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            IEnumerable<OwnerInfoDTO> ownerHistory = EquipmentService.GetOwnerHistory((Guid)equipmentId);
+            ViewBag.OwnerHistory = ownerHistory.ToList();
+            ViewBag.EquipmentId = equipmentId;
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateOwnerHistory(Guid? equipmentId)
+        {
+            if (equipmentId == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            string[] employeeIds = Request.Form.GetValues("employeeId[]") ?? new string[0];
+            if (employeeIds.Length <= 0)
+                EquipmentEmployeeRelationService.DeleteEquipmentRelations((Guid)equipmentId);
+            else
+            {
+                try
+                {
+                    EquipmentEmployeeRelationService.UpdateEquipmentRelations((Guid)equipmentId, employeeIds);
+                    if (Request.Form["ownerId"] != null)
+                        EquipmentEmployeeRelationService.ResetOwner((Guid)equipmentId, int.Parse(Request.Form["ownerId"]));
+                    else
+                        EquipmentEmployeeRelationService.UnsetOwner((Guid)equipmentId);
+                }
+                catch
+                {
+                    EquipmentEmployeeRelationService.DeleteEquipmentRelations((Guid)equipmentId);
+                }
+            }
+
+            IEnumerable<OwnerInfoDTO> ownerHistory = EquipmentService.GetOwnerHistory((Guid)equipmentId);
+            ViewBag.OwnerHistory = ownerHistory.ToList();
+            ViewBag.EquipmentId = equipmentId;
+
+            return View("OwnerHistory");
         }
 
         public ActionResult EditRelation()
@@ -205,6 +213,30 @@ namespace Inventory.Web.Controllers
             }
 
             return View();
+        }
+
+        public ActionResult Components(Guid? equipmentId)
+        {
+            if (equipmentId == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            ViewBag.EquipmentId = equipmentId;
+
+            IEnumerable<ComponentDTO> components = EquipmentService
+                .GetComponents((Guid)equipmentId)
+                .ToList();
+            IEnumerable<ComponentVM> componentVMs = WebComponentMapper
+                .DtoToVm(components);
+
+            return View(componentVMs);
+        }
+
+        public ActionResult UpdateComponents(Guid? equipmentId)
+        {
+            if (equipmentId == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            return View("Components");
         }
 
         [ActionName("Delete")]
