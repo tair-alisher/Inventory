@@ -14,12 +14,13 @@
     <div class="form-group" id="responsible-employees">
         <div calss="col-md-12" id="search-input">
             <div class="input-group">
-                <input type="text" class="form-control" id="search-input-value" placeholder="Поиск по имени и/или фамилии" />
-                <span class="input-group-btn">
-                    <button class="btn btn-primary" type="button" onclick="searchEmployees()">Искать</button>
-                    <button class="btn btn-danger" type="button" onclick="clearSearch()">Сбросить</button>
-                </span>
+                <input type="text" class="form-control" id="search-input-value" placeholder="Поиск по имени и/или фамилии" aria-describedby="search-cancel-buttons" />
+                <div class="input-group-append" id="search-cancel-buttons">
+                    <button class="btn btn-outline-primary" type="button" onclick="searchEmployees()">Искать</button>
+                    <button class="btn btn-outline-secondary" type="button" onclick="clearSearch()">Сбросить</button>
+                </div>
             </div>
+            <small id="information" class="form-text text-muted">Для редактирования добавленных сотрудников, сохраните изменения.</small>
         </div>
     </div>
 
@@ -46,9 +47,9 @@
                     foreach (Inventory.BLL.DTO.OwnerInfoDTO owner in ViewBag.OwnerHistory)
                     {
                         <tr id="pinned-@owner.EmployeeId">
-                            <td class="input-group-btn">
-                                <input type="hidden" name="employeeId[]" value="@owner.EmployeeId" />
+                            <td class="btn-group">
                                 <button class="btn btn-danger" type="button" data-id="@owner.EmployeeId" onclick="detachEmployee(@owner.EmployeeId)">Убрать</button>
+                                <input type="hidden" name="employeeId[]" value="@owner.EmployeeId" />
                                 <a href="@Url.Action("EditRelation", "Equipment", new { equipmentId = ViewBag.EquipmentId, employeeId = owner.EmployeeId })" class="btn btn-primary" target="_blank">Редактировать</a>
                             </td>
                             <td class="name">@owner.FullName</td>
@@ -71,13 +72,9 @@
         </table>
     </div>
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Сохранить" class="btn btn-default" />
-        </div>
-    </div>
+    <input type="submit" value="Сохранить" class="btn btn-primary" />
 }
-
+<br />
 @section scripts {
     <script src="~/Scripts/app.js"></script>
 }

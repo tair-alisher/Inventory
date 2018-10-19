@@ -18,58 +18,44 @@
         @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.EquipmentTypeId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("EquipmentTypeId", null, "Тип оборудования", htmlAttributes: new { @class = "form-control", @required = "required" })
-                @Html.ValidationMessageFor(model => model.EquipmentTypeId, "", new { @class = "text-danger" })
-            </div>
+            @Html.LabelFor(model => model.EquipmentTypeId)
+            @Html.DropDownList("EquipmentTypeId", null, "Тип оборудования", htmlAttributes: new { @class = "form-control", @required = "required" })
+            @Html.ValidationMessageFor(model => model.EquipmentTypeId, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.InventNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.InventNumber, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.InventNumber, "", new { @class = "text-danger" })
-            </div>
+            @Html.LabelFor(model => model.InventNumber)
+            @Html.EditorFor(model => model.InventNumber, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.InventNumber, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.QRCode, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.QRCode, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.QRCode, "", new { @class = "text-danger" })
-            </div>
+            @Html.LabelFor(model => model.QRCode)
+            @Html.EditorFor(model => model.QRCode, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.QRCode, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
-            </div>
+            @Html.LabelFor(model => model.Price)
+            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Supplier, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Supplier, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Supplier, "", new { @class = "text-danger" })
-            </div>
+            @Html.LabelFor(model => model.Supplier)
+            @Html.EditorFor(model => model.Supplier, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Supplier, "", new { @class = "text-danger" })
         </div>
 
-        <div class="btn-group pull-right">
+        <div class="btn-group float-right">
             <a class="btn btn-primary" href="@Url.Action("OwnerHistory", "Equipment", new { equipmentId = Model.Id})" target="_blank">История владельцев</a>
             <a class="btn btn-info" href="@Url.Action("EditRelation", "Equipment", new { equipmentId = Model.Id })" target="_blank">Комплектующие</a>
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Сохранить" class="btn btn-default" />
-            </div>
-        </div>
+        <input type="submit" value="Сохранить" class="btn btn-primary" />
     </div>
 }
-
+<br />
 <div>
     @Html.ActionLink("Назад", "Index")
 </div>

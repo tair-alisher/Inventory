@@ -12,57 +12,43 @@
     @Html.AntiForgeryToken()
     
 <div class="form-horizontal">
-    <h4>Оборудование</h4>
+    <h4>Заполните поля</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
-        @Html.LabelFor(model => model.EquipmentTypeId, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownList("EquipmentTypeId", null, "Тип оборудования", htmlAttributes: new { @class = "form-control", @required = "required" })
-            @Html.ValidationMessageFor(model => model.EquipmentTypeId, "", new { @class = "text-danger" })
-        </div>
+        @Html.LabelFor(model => model.EquipmentTypeId)
+        @Html.DropDownList("EquipmentTypeId", null, "Тип оборудования", htmlAttributes: new { @class = "form-control", @required = "required" })
+        @Html.ValidationMessageFor(model => model.EquipmentTypeId, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.InventNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.InventNumber, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.InventNumber, "", new { @class = "text-danger" })
-        </div>
+        @Html.LabelFor(model => model.InventNumber)
+        @Html.EditorFor(model => model.InventNumber, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.InventNumber, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.QRCode, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.QRCode, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.QRCode, "", new { @class = "text-danger" })
-        </div>
+        @Html.LabelFor(model => model.QRCode)
+        @Html.EditorFor(model => model.QRCode, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.QRCode, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
-        </div>
+        @Html.LabelFor(model => model.Price)
+        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Supplier, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Supplier, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Supplier, "", new { @class = "text-danger" })
-        </div>
+        @Html.LabelFor(model => model.Supplier)
+        @Html.EditorFor(model => model.Supplier, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Supplier, "", new { @class = "text-danger" })
     </div>
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Добавить" class="btn btn-default" />
-        </div>
-    </div>
+    <input type="submit" value="Добавить" class="btn btn-primary" />
 </div>
 }
-
+<br />
 <div>
     @Html.ActionLink("Назад", "Index")
 </div>
