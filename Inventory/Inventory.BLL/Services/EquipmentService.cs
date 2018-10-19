@@ -103,10 +103,11 @@ namespace Inventory.BLL.Services
             IEnumerable<int> equipmentEmployeeIds = _unitOfWork
                 .EquipmentEmployeeRelations
                 .Find(e => e.EquipmentId == id)
-                .Select(emp => emp.EmployeeId);
+                .Select(emp => emp.EmployeeId)
+                .ToList();
 
             if (equipmentEmployeeIds.Count() <= 0)
-                return null;
+                return Enumerable.Empty<OwnerInfoDTO>();
 
             IEnumerable<OwnerInfoDTO> ownerHistory = (
                 from
@@ -143,6 +144,50 @@ namespace Inventory.BLL.Services
                 }).OrderBy(o => o.StartDate);
 
             return ownerHistory;
+        }
+
+        public IEnumerable<ComponentDTO> GetComponents(Guid id)
+        {
+
+            IEnumerable<Guid> equipmentComponentIds = _unitOfWork
+                .EquipmentComponentRelations
+                .Find(e => e.EquipmentId == id)
+                .Select(com => com.ComponentId);
+
+            if (equipmentComponentIds.Count() <= 0)
+                return Enumerable.Empty<ComponentDTO>();
+
+            IEnumerable<ComponentDTO> components = (
+                from
+                    relation in _unitOfWork.EquipmentComponentRelations.GetAll()
+                join
+                    component in _unitOfWork.Components.GetAll()
+                on
+                    relation.ComponentId equals component.Id
+                join
+                    comtype in _unitOfWork.ComponentTypes.GetAll()
+                on
+                    component.ComponentTypeId equals comtype.Id
+                where
+                    relation.EquipmentId == id
+                select new ComponentDTO
+                {
+                    Id = component.Id,
+                    ComponentTypeId = component.ComponentTypeId,
+                    ModelName = component.ModelName,
+                    Name = component.Name,
+                    Description = component.Description,
+                    Price = component.Price,
+                    InventNumber = component.InventNumber,
+                    Supplier = component.Supplier,
+                    ComponentType = new ComponentTypeDTO
+                    {
+                        Id = comtype.Id,
+                        Name = comtype.Name
+                    }
+                });
+
+            return components;
         }
 
         public void Dispose()

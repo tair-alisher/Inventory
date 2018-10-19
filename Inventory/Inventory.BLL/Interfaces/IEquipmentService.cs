@@ -6,7 +6,8 @@ namespace Inventory.BLL.Interfaces
 {
     public interface IEquipmentService : IService<EquipmentDTO>
     {
-        IEnumerable<OwnerInfoDTO> GetOwnerHistory(Guid id);
         Guid AddAndGetId(EquipmentDTO equipment);
+        IEnumerable<OwnerInfoDTO> GetOwnerHistory(Guid id);
+        IEnumerable<ComponentDTO> GetComponents(Guid id);
     }
 }

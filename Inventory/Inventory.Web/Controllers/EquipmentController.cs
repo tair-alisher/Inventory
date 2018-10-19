@@ -49,7 +49,7 @@ namespace Inventory.Web.Controllers
             if (equipmentDTO == null)
                 return HttpNotFound();
 
-            IEnumerable<OwnerInfoDTO> ownerHistory = EquipmentService.GetOwnerHistory((Guid)id) ?? Enumerable.Empty<OwnerInfoDTO>();
+            IEnumerable<OwnerInfoDTO> ownerHistory = EquipmentService.GetOwnerHistory((Guid)id);
             ViewBag.OwnerHistory = ownerHistory.ToList();
             EquipmentVM equipmentVM = WebEquipmentMapper.DtoToVm(equipmentDTO);
 
@@ -134,7 +134,7 @@ namespace Inventory.Web.Controllers
             if (equipmentId == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            IEnumerable<OwnerInfoDTO> ownerHistory = EquipmentService.GetOwnerHistory((Guid)equipmentId) ?? Enumerable.Empty<OwnerInfoDTO>();
+            IEnumerable<OwnerInfoDTO> ownerHistory = EquipmentService.GetOwnerHistory((Guid)equipmentId);
             ViewBag.OwnerHistory = ownerHistory.ToList();
             ViewBag.EquipmentId = equipmentId;
 
@@ -167,7 +167,7 @@ namespace Inventory.Web.Controllers
                 }
             }
 
-            IEnumerable<OwnerInfoDTO> ownerHistory = EquipmentService.GetOwnerHistory((Guid)equipmentId) ?? Enumerable.Empty<OwnerInfoDTO>();
+            IEnumerable<OwnerInfoDTO> ownerHistory = EquipmentService.GetOwnerHistory((Guid)equipmentId);
             ViewBag.OwnerHistory = ownerHistory.ToList();
             ViewBag.EquipmentId = equipmentId;
 
@@ -215,9 +215,28 @@ namespace Inventory.Web.Controllers
             return View();
         }
 
-        public ActionResult Components(Guid equipmentId)
+        public ActionResult Components(Guid? equipmentId)
         {
-            return View();
+            if (equipmentId == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            ViewBag.EquipmentId = equipmentId;
+
+            IEnumerable<ComponentDTO> components = EquipmentService
+                .GetComponents((Guid)equipmentId)
+                .ToList();
+            IEnumerable<ComponentVM> componentVMs = WebComponentMapper
+                .DtoToVm(components);
+
+            return View(componentVMs);
+        }
+
+        public ActionResult UpdateComponents(Guid? equipmentId)
+        {
+            if (equipmentId == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            return View("Components");
         }
 
         [ActionName("Delete")]
