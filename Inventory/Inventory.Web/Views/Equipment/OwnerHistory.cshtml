@@ -63,7 +63,7 @@
                                 </label>
                             </td>
                             <td>
-                                @owner.StartDate.ToShortDateString() @Html.Raw(owner.IsActual ? "" : $"- {owner.EndDate.ToShortDateString()}")
+                                @owner.StartDate.ToString("dd.MM.yyyy") @Html.Raw(owner.IsActual ? "" : $"- {owner.EndDate.ToString("dd.MM.yyyy")}")
                             </td>
                         </tr>
                     }

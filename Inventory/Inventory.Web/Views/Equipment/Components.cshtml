@@ -15,9 +15,24 @@
     <div class="form-group" id="components">
         <div id="search-input" class="col-md-12">
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="Поиск по инвент. номеру" />
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default">Искать</span>
+                </div>
+                <input type="text" class="form-control" placeholder="введите тип, модель или инвентаризационный номер" />
+                <div id="search-buttons" class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button">по типу</button>
+                    <button class="btn btn-outline-secondary" type="button">по модели</button>
+                    <button class="btn btn-outline-secondary" type="button">по номеру</button>
+                </div>
             </div>
+            <small id="information" class="form-text text-muted">Поиск по типу, модели или инвентаризационному номеру.</small>
         </div>
+    </div>
+
+    <div id="found-items-area"></div>
+
+    <div id="attached-items">
+
     </div>
 }
 

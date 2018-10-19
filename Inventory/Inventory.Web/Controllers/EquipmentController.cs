@@ -14,17 +14,20 @@ namespace Inventory.Web.Controllers
     public class EquipmentController : Controller
     {
         private IEquipmentService EquipmentService;
+        private IComponentService ComponentService;
         private IEquipmentTypeService EquipmentTypeService;
         private IEmployeeService EmployeeService;
         private IEquipmentEmployeeRelationService EquipmentEmployeeRelationService;
 
         public EquipmentController
             (IEquipmentService equipmentService,
+            IComponentService componentService,
             IEmployeeService employeeService,
             IEquipmentTypeService equipmentTypeService,
             IEquipmentEmployeeRelationService equipmentEmployeeRelationService)
         {
             EquipmentService = equipmentService;
+            ComponentService = componentService;
             EmployeeService = employeeService;
             EquipmentEmployeeRelationService = equipmentEmployeeRelationService;
             EquipmentTypeService = equipmentTypeService;
@@ -274,7 +277,23 @@ namespace Inventory.Web.Controllers
             else if (wordsAmount == 3)
                 employees = EmployeeService.GetEmployeesByName(nameParts[0], nameParts[1], nameParts[2]);
 
-            return PartialView(employees);
+            return PartialView(employees.ToList());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult FindComponents(string value, string type)
+        {
+            value = value.Trim();
+
+            List<ComponentDTO> componentDTOs = ComponentService
+                .GetComponentsBy(type, value).ToList();
+
+            List<ComponentVM> componentVMs = WebComponentMapper
+                .DtoToVm(componentDTOs)
+                .ToList();
+
+            return PartialView(componentVMs);
         }
 
         protected override void Dispose(bool disposing)
