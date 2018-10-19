@@ -55,40 +55,6 @@
         </div>
     </div>
 
-    <div class="form-group" id="responsible-employees">
-        <label for="search-input-value" class="col-md-2">Ответственные сотрудники</label>
-        <div class="col-md-10" id="search-input">
-            <div class="input-group">
-                <input type="text" class="form-control" id="search-input-value" placeholder="Поиск по имени и/или фамилии">
-                <span class="input-group-btn">
-                    <button class="btn btn-primary" type="button" onclick="searchEmployees()">Искать</button>
-                    <button class="btn btn-danger" type="button" onclick="clearSearch()">Сбросить</button>
-                </span>
-            </div>
-        </div>
-    </div>
-    <div id="found-employees-area"></div>
-    <div class="row" id="attached-employees">
-        <table class="table table-hover table-responsive table-striped" id="attached-employees-table">
-            <caption>Список закрепленных сотрудников</caption>
-            <thead>
-                <tr>
-                    <th>Действие</th>
-                    <th>ФИО</th>
-                    <th>Кабинет</th>
-                    <th>Должность</th>
-                    <th>Отдел</th>
-                    <th>Орган управления</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody id="attached-employees-tbody">
-
-            </tbody>
-        </table>
-    </div>
-    
-
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="Добавить" class="btn btn-default" />
@@ -100,7 +66,3 @@
 <div>
     @Html.ActionLink("Назад", "Index")
 </div>
-
-@section scripts {
-<script src="~/Scripts/app.js"></script>
-}

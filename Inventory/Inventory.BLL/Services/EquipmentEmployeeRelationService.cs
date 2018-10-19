@@ -137,7 +137,8 @@ namespace Inventory.BLL.Services
             IEnumerable<Guid> relationIds = _unitOfWork
                 .EquipmentEmployeeRelations
                 .Find(r => r.EquipmentId == id)
-                .Select(r => r.Id);
+                .Select(r => r.Id)
+                .ToList();
 
             foreach (Guid relationId in relationIds)
                 Delete(relationId);
