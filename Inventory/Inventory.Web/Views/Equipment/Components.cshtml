@@ -16,13 +16,14 @@
         <div id="search-input" class="col-md-12">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-default">Искать</span>
+                    <span class="input-group-text" id="inputGroup-sizing-default">Поиск</span>
                 </div>
                 <input type="text" class="form-control" placeholder="введите тип, модель или инвентаризационный номер" id="search-input-value" />
                 <div id="search-buttons" class="input-group-append">
                     <button class="btn btn-outline-secondary" type="button" onclick="searchComponents('type')">по типу</button>
                     <button class="btn btn-outline-secondary" type="button" onclick="searchComponents('model')">по модели</button>
                     <button class="btn btn-outline-secondary" type="button" onclick="searchComponents('number')">по номеру</button>
+                    <button class="btn btn-outline-danger" type="button" onclick="clearSearch()">сбросить</button>
                 </div>
             </div>
             <small id="information" class="form-text text-muted">Поиск по типу, модели или инвентаризационному номеру.</small>
@@ -31,13 +32,14 @@
 
     <div id="found-items-area"></div>
 
-    <div id="attached-items">
+    <div id="attached-items" class="justify-content-center">
         @if (!(Model.Count() <= 0))
         {
             foreach (Inventory.Web.Models.ComponentVM component in Model)
             {
-                <div class="row justify-content-center">
-                    <div class="col-md-8" id="pinned-@component.Id">
+                <div class="row" id="pinned-@component.Id">
+                    <div class="col-md-8">
+                        <input type="hidden" name="componentId[]" value="@component.Id" />
                         <div class="type">
                             <div class="col-md-6">
                                 <p>Тип</p>
@@ -70,8 +72,9 @@
                                 <p>@component.Name</p>
                             </div>
                         </div>
-                        <div class="details float-right">
-                            <a href="" class="btn btn-primary" target="_blank">Подробнее</a>
+                        <div class="btn-group">
+                            <button class="btn btn-danger" type="button" onclick="detachEmployee('@component.Id')">Убрать</button>
+                            <a href="@Url.Action("Component", "Details", new { id = component.Id })" class="btn btn-primary">Подробности</a>
                         </div>
                     </div>
                 </div>

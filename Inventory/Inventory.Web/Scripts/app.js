@@ -1,4 +1,9 @@
-﻿function searchEmployees() {
+﻿const TYPE = "Тип";
+const NUMBER = "Инвентаризационный номер";
+const MODEL = "Модель";
+const NAME = "Название"
+
+function searchEmployees() {
     var employeeName = $("#search-input-value").val();
     var token = $('input[name="__RequestVerificationToken"]').val();
 
@@ -20,29 +25,6 @@
     return false;
 }
 
-function searchComponents(type) {
-    var searchValue = $("#search-input-value").val();
-    var token = $('input[name="__RequestVerificationToken"]').val();
-
-    $.ajax({
-        url: "/Equipment/FindComponents",
-        type: "Post",
-        data: {
-            __RequestVerificationToken: token,
-            "value": searchValue,
-            "type": type
-        },
-        success: function (html) {
-            $("#found-items-area").empty();
-            $("#found-items-area").append(html);
-        },
-        error: function (XMLHttpRequest) {
-            console.log(XMLHttpReqeust);
-        }
-    });
-    return false;
-}
-
 function clearSearch() {
     $("#found-items-area").empty();
     $("#search-input-value").val('');
@@ -50,7 +32,7 @@ function clearSearch() {
 
 function attachEmployee(employeeId) {
     if (document.body.contains(document.getElementById("pinned-" + employeeId))) {
-        alert("Сотрудник уже прикриплен");
+        alert("Сотрудник уже прикриплен.");
         return false;
     }
 
@@ -126,4 +108,84 @@ function createTd(tdClass, value) {
     td.innerText = value;
 
     return td;
+}
+
+function searchComponents(type) {
+    var searchValue = $("#search-input-value").val();
+    var token = $('input[name="__RequestVerificationToken"]').val();
+
+    $.ajax({
+        url: "/Equipment/FindComponents",
+        type: "Post",
+        data: {
+            __RequestVerificationToken: token,
+            "value": searchValue,
+            "type": type
+        },
+        success: function (html) {
+            $("#found-items-area").empty();
+            $("#found-items-area").append(html);
+        },
+        error: function (XMLHttpRequest) {
+            console.log(XMLHttpReqeust);
+        }
+    });
+    return false;
+}
+
+function attachComponent(componentId) {
+    if (document.body.contains(document.getElementById("pinned-" + componentId))) {
+        alert("Комплектующие уже в списке.");
+        return false;
+    }
+
+    var componentInfo = $("#" + componentId);
+    var type = componentInfo.find("td.type")[0].innerText;
+    var model = componentInfo.find("td.model")[0].innerText;
+    var name = componentInfo.find("td.name")[0].innerText;
+    var number = componentInfo.find("td.number")[0].innerText;
+
+    var inputId = document.createElement("input");
+    inputId.type = "hidden";
+    inputId.name = "componentId[]";
+    inputId.value = componentId;
+
+    var typeDiv = createDiv("type", TYPE, type);
+    var modelDiv = createDiv("model", MODEL, model);
+    var nameDiv = createDiv("name", NAME, name);
+    var numberDiv = createDiv("number", NUMBER, number);
+
+    var wrapDiv = document.createElement("div");
+    wrapDiv.className = "col-md-8";
+
+    var newComponent = document.createElement("div");
+    newComponent.className = "row";
+    newComponent.id = "pinned-" + componentId;
+
+    wrapDiv.appendChild(inputId);
+    wrapDiv.appendChild(typeDiv);
+    wrapDiv.appendChild(modelDiv);
+    wrapDiv.appendChild(numberDiv);
+    newComponent.appendChild(wrapDiv);
+
+    var attachedItems = document.getElementById("attached-items");
+    attachedItems.appendChild(newComponent);
+}
+
+function createDiv(divClass, title, value) {
+    var wrapDiv = document.createElement("div");
+    wrapDiv.classList.add(divClass, "row");
+
+    var firstDiv = document.createElement("div");
+    firstDiv.className = "col-md-6";
+    firstDiv.innerText = title;
+
+    var secondDiv = document.createElement("div");
+    secondDiv.className = "col-md-6";
+    secondDiv.innerText = value;
+
+    wrapDiv.appendChild(firstDiv);
+    wrapDiv.appendChild(secondDiv);
+
+    return wrapDiv;
 }

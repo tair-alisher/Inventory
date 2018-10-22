@@ -23,7 +23,7 @@
                 @foreach (Inventory.BLL.DTO.OwnerInfoDTO employee in Model)
                 {
                 <tr id="@employee.EmployeeId">
-                    <td><button type="button" class="btn btn-primary" onclick="attachEmployee(@employee.EmployeeId)">Добавить</button></td>
+                    <td><button type="button" class="btn btn-primary" onclick="attachEmployee('@employee.EmployeeId')">Добавить</button></td>
                     <td class="name">@Html.DisplayFor(model => employee.FullName)</td>
                     <td class="room">@Html.DisplayFor(model => employee.Room)</td>
                     <td class="position">@Html.DisplayFor(model => employee.Position)</td>
