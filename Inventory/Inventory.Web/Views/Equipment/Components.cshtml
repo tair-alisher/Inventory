@@ -18,11 +18,11 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-default">Искать</span>
                 </div>
-                <input type="text" class="form-control" placeholder="введите тип, модель или инвентаризационный номер" />
+                <input type="text" class="form-control" placeholder="введите тип, модель или инвентаризационный номер" id="search-input-value" />
                 <div id="search-buttons" class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button">по типу</button>
-                    <button class="btn btn-outline-secondary" type="button">по модели</button>
-                    <button class="btn btn-outline-secondary" type="button">по номеру</button>
+                    <button class="btn btn-outline-secondary" type="button" onclick="searchComponents('type')">по типу</button>
+                    <button class="btn btn-outline-secondary" type="button" onclick="searchComponents('model')">по модели</button>
+                    <button class="btn btn-outline-secondary" type="button" onclick="searchComponents('number')">по номеру</button>
                 </div>
             </div>
             <small id="information" class="form-text text-muted">Поиск по типу, модели или инвентаризационному номеру.</small>
@@ -32,68 +32,53 @@
     <div id="found-items-area"></div>
 
     <div id="attached-items">
-
+        @if (!(Model.Count() <= 0))
+        {
+            foreach (Inventory.Web.Models.ComponentVM component in Model)
+            {
+                <div class="row justify-content-center">
+                    <div class="col-md-8" id="pinned-@component.Id">
+                        <div class="type">
+                            <div class="col-md-6">
+                                <p>Тип</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>@component.ComponentType.Name</p>
+                            </div>
+                        </div>
+                        <div class="number">
+                            <div class="col-md-6">
+                                <p>Инвентаризационный номер</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>@component.InventNumber</p>
+                            </div>
+                        </div>
+                        <div class="model">
+                            <div class="col-md-6">
+                                <p>Модель</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>@component.ModelName</p>
+                            </div>
+                        </div>
+                        <div class="name">
+                            <div class="col-md-6">
+                                <p>Название</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>@component.Name</p>
+                            </div>
+                        </div>
+                        <div class="details float-right">
+                            <a href="" class="btn btn-primary" target="_blank">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
     </div>
 }
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ComponentTypeId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ModelName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Price)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.InventNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Supplier)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ComponentTypeId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ModelName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Price)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.InventNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Supplier)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
+@section scripts {
+    <script src="~/Scripts/app.js"></script>
 }
-
-</table>

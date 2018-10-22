@@ -20,6 +20,29 @@
     return false;
 }
 
+function searchComponents(type) {
+    var searchValue = $("#search-input-value").val();
+    var token = $('input[name="__RequestVerificationToken"]').val();
+
+    $.ajax({
+        url: "/Equipment/FindComponents",
+        type: "Post",
+        data: {
+            __RequestVerificationToken: token,
+            "value": searchValue,
+            "type": type
+        },
+        success: function (html) {
+            $("#found-items-area").empty();
+            $("#found-items-area").append(html);
+        },
+        error: function (XMLHttpRequest) {
+            console.log(XMLHttpReqeust);
+        }
+    });
+    return false;
+}
+
 function clearSearch() {
     $("#found-items-area").empty();
     $("#search-input-value").val('');

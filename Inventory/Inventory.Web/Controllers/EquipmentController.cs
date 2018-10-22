@@ -287,7 +287,8 @@ namespace Inventory.Web.Controllers
             value = value.Trim();
 
             List<ComponentDTO> componentDTOs = ComponentService
-                .GetComponentsBy(type, value).ToList();
+                .GetComponentsBy(type, value)
+                .ToList();
 
             List<ComponentVM> componentVMs = WebComponentMapper
                 .DtoToVm(componentDTOs)
