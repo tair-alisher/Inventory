@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "История владельцев";
+}
+
+<h2>История владельцев</h2>
+
+@using (Html.BeginForm("UpdateOwnerHistory", "Relation", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" name="equipmentId" value="@ViewBag.EquipmentId" />
+
+    <div class="form-group" id="responsible-employees">
+        <div calss="col-md-12" id="search-input">
+            <div class="input-group">
+                <input type="text" class="form-control" id="search-input-value" placeholder="Поиск по имени и/или фамилии" aria-describedby="search-cancel-buttons" />
+                <div class="input-group-append" id="search-cancel-buttons">
+                    <button class="btn btn-outline-primary" type="button" onclick="searchEmployees()">Искать</button>
+                    <button class="btn btn-outline-secondary" type="button" onclick="clearSearch()">Сбросить</button>
+                </div>
+            </div>
+            <small id="information" class="form-text text-muted">Для редактирования добавленных сотрудников, сохраните изменения.</small>
+        </div>
+    </div>
+
+    <div id="found-items-area"></div>
+
+    <div class="row" id="attached-items">
+        <table class="table table-hover table-responsive table-striped" id="attached-items-table">
+            <caption>Список закрепленных сотрудников</caption>
+            <thead>
+                <tr>
+                    <th>Действие</th>
+                    <th>ФИО</th>
+                    <th>Кабинет</th>
+                    <th>Должность</th>
+                    <th>Отдел</th>
+                    <th>Орган управления</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="attached-items-tbody">
+                @if (ViewBag.OwnerHistory != null)
+                {
+                    foreach (Inventory.BLL.DTO.OwnerInfoDTO owner in ViewBag.OwnerHistory)
+                    {
+                        <tr id="pinned-@owner.EmployeeId">
+                            <td class="btn-group">
+                                <button class="btn btn-danger" type="button" data-id="@owner.EmployeeId" onclick="detachItem('@owner.EmployeeId')">Убрать</button>
+                                <input type="hidden" name="employeeId[]" value="@owner.EmployeeId" />
+                                <a href="@Url.Action("EditEquipmentEmployeeRelation", "Relation", new { equipmentId = ViewBag.EquipmentId, employeeId = owner.EmployeeId })" class="btn btn-primary" target="_blank">Редактировать</a>
+                            </td>
+                            <td class="name">@owner.FullName</td>
+                            <td class="room">@owner.Room</td>
+                            <td class="position">@owner.Position</td>
+                            <td class="department">@owner.Department</td>
+                            <td class="administration">@owner.Administration</td>
+                            <td>
+                                <label>
+                                    <input type="radio" name="ownerId" value="@owner.EmployeeId" @Html.Raw(owner.IsActual ? " checked" : "") /> Текущий владелец
+                                </label>
+                            </td>
+                            <td>
+                                @owner.StartDate.ToString("dd.MM.yyyy") @Html.Raw(owner.IsActual ? "" : $"- {owner.EndDate.ToString("dd.MM.yyyy")}")
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <input type="submit" value="Сохранить" class="btn btn-primary" />
+}
+@section scripts {
+    <script src="~/Scripts/app.js"></script>
+}
