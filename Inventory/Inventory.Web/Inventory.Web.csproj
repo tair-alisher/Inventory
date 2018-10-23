@@ -183,6 +183,7 @@
     <Compile Include="Controllers\EquipmentController.cs" />
     <Compile Include="Controllers\EquipmentTypeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RepairPlaceController.cs" />
     <Compile Include="Controllers\RelationController.cs" />
     <Compile Include="Controllers\StatusTypeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -203,6 +204,7 @@
     <Compile Include="Util\WebEquipmentMapper.cs" />
     <Compile Include="Util\WebEquipmentTypeMapper.cs" />
     <Compile Include="Util\WebModule.cs" />
+    <Compile Include="Util\WebRepairPlaceMapper.cs" />
     <Compile Include="Util\WebStatusTypeMapper.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -287,6 +289,10 @@
     <Content Include="Views\Component\Details.cshtml" />
     <Content Include="Views\Equipment\FindEmployees.cshtml" />
     <Content Include="Views\Equipment\Edit.cshtml" />
+    <Content Include="Views\StatusType\Index.cshtml" />
+    <Content Include="Views\StatusType\Details.cshtml" />
+    <Content Include="Views\StatusType\Create.cshtml" />
+    <Content Include="Views\StatusType\Edit.cshtml" />
     <Content Include="Views\Relation\EditEquipmentEmployeeRelation.cshtml" />
     <Content Include="Views\Component\Create.cshtml" />
     <Content Include="Views\Component\Edit.cshtml" />
@@ -305,6 +311,10 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\RepairPlace\Index.cshtml" />
+    <Content Include="Views\RepairPlace\Details.cshtml" />
+    <Content Include="Views\RepairPlace\Create.cshtml" />
+    <Content Include="Views\RepairPlace\Edit.cshtml" />
     <Content Include="Views\Component\FindComponents.cshtml" />
   </ItemGroup>
   <ItemGroup>
