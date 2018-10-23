@@ -109,7 +109,7 @@ function searchComponents(type) {
     var token = $('input[name="__RequestVerificationToken"]').val();
 
     $.ajax({
-        url: "/Equipment/FindComponents",
+        url: "/Component/FindComponents",
         type: "Post",
         data: {
             __RequestVerificationToken: token,

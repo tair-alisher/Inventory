@@ -6,7 +6,7 @@
 
 <h2>Комплектующие оборудования</h2>
 
-@using (Html.BeginForm("UpdateComponents", "Equipment", FormMethod.Post))
+@using (Html.BeginForm("UpdateComponents", "Relation", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
@@ -42,36 +42,37 @@
                         <input type="hidden" name="componentId[]" value="@component.Id" />
                         <div class="type row item-info-row">
                             <div class="col-md-6 item-info">
-                                <p>Тип</p>
+                                <b>Тип</b>
                             </div>
                             <div class="col-md-6 item-info">
-                                <p>@component.ComponentType.Name</p>
+                                @component.ComponentType.Name
                             </div>
                         </div>
                         <div class="number row item-info-row">
                             <div class="col-md-6 item-info">
-                                <p>Инвентаризационный номер</p>
+                                <b>Инвентаризационный номер</b>
                             </div>
                             <div class="col-md-6 item-info">
-                                <p>@component.InventNumber</p>
+                                @component.InventNumber
                             </div>
                         </div>
                         <div class="model row item-info-row">
                             <div class="col-md-6 item-info">
-                                <p>Модель</p>
+                                <b>Модель</b>
                             </div>
                             <div class="col-md-6 item-info">
-                                <p>@component.ModelName</p>
+                                @component.ModelName
                             </div>
                         </div>
                         <div class="name row item-info-row">
                             <div class="col-md-6 item-info">
-                                <p>Название</p>
+                                <b>Название</b>
                             </div>
                             <div class="col-md-6 item-info">
-                                <p>@component.Name</p>
+                                @component.Name
                             </div>
                         </div>
+                        <br />
                         <div class="btn-group float-right">
                             <button class="btn btn-danger" type="button" onclick="detachItem('@component.Id')">Убрать</button>
                             <a href="@Url.Action("Component", "Details", new { id = component.Id })" target="_blank" class="btn btn-primary">Подробности</a>

@@ -34,7 +34,7 @@ namespace Inventory.BLL.Services
             return BLLEquipmentComponentMapper.EntityToDto(relations);
         }
 
-        public void Create(Guid componentId, Guid equipmentId)
+        public void Create(Guid equipmentId, Guid componentId)
         {
             EquipmentComponentRelationDTO relation = new EquipmentComponentRelationDTO
             {
@@ -60,6 +60,50 @@ namespace Inventory.BLL.Services
         public void Update(EquipmentComponentRelationDTO item)
         {
             throw new NotImplementedException();
+        }
+
+        public void UpdateEquipmentRelations(Guid equipmentId, string[] componentIds)
+        {
+            List<Guid> equipmentComponentIds = _unitOfWork
+                .EquipmentComponentRelations
+                .Find(r => r.EquipmentId == equipmentId)
+                .Select(r => r.ComponentId)
+                .ToList();
+
+            List<Guid> guidComponentIds = componentIds
+                .Select(id => Guid.Parse(id))
+                .ToList();
+
+            foreach (Guid componentId in guidComponentIds)
+                if (!equipmentComponentIds.Contains(componentId))
+                    Create(equipmentId, componentId);
+
+            foreach (Guid equipmentComponentId in equipmentComponentIds)
+                if (!guidComponentIds.Contains(equipmentComponentId))
+                    DeleteEquipmentRelation(equipmentId, equipmentComponentId);
+        }
+
+        private void DeleteEquipmentRelation(Guid equipmentId, Guid componentId)
+        {
+            EquipmentComponentRelation relation = _unitOfWork
+                .EquipmentComponentRelations
+                .Find(r => r.EquipmentId == equipmentId && r.ComponentId == componentId)
+                .FirstOrDefault();
+
+            if (relation != null)
+                Delete(relation.Id);
+        }
+
+        public void DeleteRelationsByEquipmentId(Guid id)
+        {
+            IEnumerable<Guid> relationIds = _unitOfWork
+                .EquipmentComponentRelations
+                .Find(r => r.EquipmentId == id)
+                .Select(r => r.Id)
+                .ToList();
+
+            foreach (Guid relationId in relationIds)
+                Delete(relationId);
         }
 
         public void Delete(Guid id)

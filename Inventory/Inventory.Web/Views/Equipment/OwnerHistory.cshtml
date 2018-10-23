@@ -4,7 +4,7 @@
 
 <h2>История владельцев</h2>
 
-@using (Html.BeginForm("UpdateOwnerHistory", "Equipment", FormMethod.Post))
+@using (Html.BeginForm("UpdateOwnerHistory", "Relation", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
@@ -49,7 +49,7 @@
                             <td class="btn-group">
                                 <button class="btn btn-danger" type="button" data-id="@owner.EmployeeId" onclick="detachItem('@owner.EmployeeId')">Убрать</button>
                                 <input type="hidden" name="employeeId[]" value="@owner.EmployeeId" />
-                                <a href="@Url.Action("EditRelation", "Equipment", new { equipmentId = ViewBag.EquipmentId, employeeId = owner.EmployeeId })" class="btn btn-primary" target="_blank">Редактировать</a>
+                                <a href="@Url.Action("EditEquipmentEmployeeRelation", "Relation", new { equipmentId = ViewBag.EquipmentId, employeeId = owner.EmployeeId })" class="btn btn-primary" target="_blank">Редактировать</a>
                             </td>
                             <td class="name">@owner.FullName</td>
                             <td class="room">@owner.Room</td>

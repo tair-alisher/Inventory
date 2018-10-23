@@ -10,7 +10,7 @@ namespace Inventory.BLL.Interfaces
         void Create(Guid equipmentId, string[] employeeIds);
         void UpdateDates(EquipmentEmployeeRelationDTO relation);
         void UpdateEquipmentRelations(Guid equipmentId, string[] employeeIds);
-        void DeleteEquipmentRelations(Guid id);
+        void DeleteRelationsByEquipmentId(Guid id);
         void SetOwner(Guid equipmentId, int employeeId);
         void UnsetOwner(Guid equipmentId);
         void ResetOwner(Guid equipmentId, int employeeId);
