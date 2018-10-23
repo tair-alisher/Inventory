@@ -289,10 +289,6 @@
     <Content Include="Views\Component\Details.cshtml" />
     <Content Include="Views\Equipment\FindEmployees.cshtml" />
     <Content Include="Views\Equipment\Edit.cshtml" />
-    <Content Include="Views\StatusType\Index.cshtml" />
-    <Content Include="Views\StatusType\Details.cshtml" />
-    <Content Include="Views\StatusType\Create.cshtml" />
-    <Content Include="Views\StatusType\Edit.cshtml" />
     <Content Include="Views\Relation\EditEquipmentEmployeeRelation.cshtml" />
     <Content Include="Views\Component\Create.cshtml" />
     <Content Include="Views\Component\Edit.cshtml" />
