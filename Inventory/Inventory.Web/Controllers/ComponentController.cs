@@ -56,10 +56,6 @@ namespace Inventory.Web.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.EquipmentId = new SelectList(
-                EquipmentService.GetAll(),
-                "Id",
-                "InventNumber");
             ViewBag.ComponentTypeId = new SelectList(
                 ComponentTypeService.GetAll(),
                 "Id",
@@ -70,27 +66,60 @@ namespace Inventory.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ComponentTypeId,ModelName,Name,Description,Price,InventNumber,Supplier")] ComponentVM componentVM, Guid? EquipmentId)
+        public ActionResult Create([Bind(Include = "ComponentTypeId,ModelName,Name,Description,Price,InventNumber,Supplier")] ComponentVM componentVM)
         {
             if (ModelState.IsValid)
             {
                 ComponentDTO componentDTO = WebComponentMapper.VmToDto(componentVM);
-                Guid componentId = ComponentService.AddAndGetId(componentDTO);
-
-                if (EquipmentId != null)
-                    EquipmentComponentRelationService.Create(componentId, (Guid)EquipmentId);
+                ComponentService.Add(componentDTO);
 
                 return RedirectToAction("Index");
             }
 
-            ViewBag.EquipmentId = new SelectList(
-                EquipmentService.GetAll(),
-                "Id",
-                "InventNumber");
             ViewBag.ComponentTypeId = new SelectList(
                 ComponentTypeService.GetAll(),
                 "Id",
                 "Name");
+
+            return View(componentVM);
+        }
+
+        public ActionResult Edit(Guid? id)
+        {
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            ComponentDTO componentDTO = ComponentService.Get((Guid)id);
+            if (componentDTO == null)
+                return HttpNotFound();
+
+            ComponentVM componentVM = WebComponentMapper.DtoToVm(componentDTO);
+            ViewBag.ComponentTypeId = new SelectList(
+                ComponentTypeService.GetAll(),
+                "Id",
+                "Name",
+                componentVM.ComponentTypeId);
+
+            return View(componentVM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "Id,ComponentTypeId,ModelName,Name,Description,Price,InventNumber,Supplier")] ComponentVM componentVM)
+        {
+            if (ModelState.IsValid)
+            {
+                ComponentDTO componentDTO = WebComponentMapper.VmToDto(componentVM);
+                ComponentService.Update(componentDTO);
+
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.ComponentTypeId = new SelectList(
+                ComponentTypeService.GetAll(),
+                "Id",
+                "Name",
+                componentVM.ComponentTypeId);
 
             return View(componentVM);
         }
@@ -103,6 +132,23 @@ namespace Inventory.Web.Controllers
             catch (HasRelationsException) { return Content("Удаление невозможно."); }
 
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult FindComponents(string value, string type)
+        {
+            value = value.Trim().ToLower();
+
+            List<ComponentDTO> componentDTOs = ComponentService
+                .GetComponentsBy(type, value)
+                .ToList();
+
+            List<ComponentVM> componentVMs = WebComponentMapper
+                .DtoToVm(componentDTOs)
+                .ToList();
+
+            return PartialView(componentVMs);
         }
 
         protected override void Dispose(bool disposing)

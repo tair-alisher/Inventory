@@ -1,0 +1,90 @@
+﻿@model IEnumerable<Inventory.Web.Models.ComponentVM>
+
+@{
+    ViewBag.Title = "Комплектующие оборудования";
+}
+
+<h2>Комплектующие оборудования</h2>
+
+@using (Html.BeginForm("UpdateComponents", "Relation", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" name="equipmentId" value="@ViewBag.EquipmentId" />
+
+    <div class="form-group" id="components">
+        <div id="search-input" class="col-md-12">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default">Поиск</span>
+                </div>
+                <input type="text" class="form-control" placeholder="введите тип, модель или инвентаризационный номер" id="search-input-value" />
+                <div id="search-buttons" class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" onclick="searchComponents('type')">по типу</button>
+                    <button class="btn btn-outline-secondary" type="button" onclick="searchComponents('model')">по модели</button>
+                    <button class="btn btn-outline-secondary" type="button" onclick="searchComponents('number')">по номеру</button>
+                    <button class="btn btn-outline-danger" type="button" onclick="clearSearch()">сбросить</button>
+                </div>
+            </div>
+            <small id="information" class="form-text text-muted">Поиск по типу, модели или инвентаризационному номеру.</small>
+        </div>
+    </div>
+
+    <div id="found-items-area"></div>
+
+    <div id="attached-items" class="justify-content-center">
+        @if (!(Model.Count() <= 0))
+        {
+            foreach (Inventory.Web.Models.ComponentVM component in Model)
+            {
+                <div class="row" id="pinned-@component.Id">
+                    <div class="col-md-8">
+                        <input type="hidden" name="componentId[]" value="@component.Id" />
+                        <div class="type row item-info-row">
+                            <div class="col-md-6 item-info">
+                                <b>Тип</b>
+                            </div>
+                            <div class="col-md-6 item-info">
+                                @component.ComponentType.Name
+                            </div>
+                        </div>
+                        <div class="number row item-info-row">
+                            <div class="col-md-6 item-info">
+                                <b>Инвентаризационный номер</b>
+                            </div>
+                            <div class="col-md-6 item-info">
+                                @component.InventNumber
+                            </div>
+                        </div>
+                        <div class="model row item-info-row">
+                            <div class="col-md-6 item-info">
+                                <b>Модель</b>
+                            </div>
+                            <div class="col-md-6 item-info">
+                                @component.ModelName
+                            </div>
+                        </div>
+                        <div class="name row item-info-row">
+                            <div class="col-md-6 item-info">
+                                <b>Название</b>
+                            </div>
+                            <div class="col-md-6 item-info">
+                                @component.Name
+                            </div>
+                        </div>
+                        <br />
+                        <div class="btn-group float-right">
+                            <button class="btn btn-danger" type="button" onclick="detachItem('@component.Id')">Убрать</button>
+                            <a href="@Url.Action("Component", "Details", new { id = component.Id })" target="_blank" class="btn btn-primary">Подробности</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <input type="submit" value="Сохранить" class="btn btn-primary" />
+}
+@section scripts {
+    <script src="~/Scripts/app.js"></script>
+}

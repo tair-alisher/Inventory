@@ -11,16 +11,22 @@ namespace Inventory.Web.Models
 
         [Display(Name = "Тип комплектующего")]
         public Guid ComponentTypeId { get; set; }
+
         [Display(Name = "Наименование модели")]
         public string ModelName { get; set; }
+
         [Display(Name = "Наименование")]
         public string Name { get; set; }
+
         [Display(Name = "Описание")]
         public string Description { get; set; }
+
         [Display(Name = "Цена")]
         public decimal Price { get; set; }
+
         [Display(Name = "Инвентаризационный номер")]
         public string InventNumber { get; set; }
+
         [Display(Name = "Поставщик")]
         public string Supplier { get; set; }
 

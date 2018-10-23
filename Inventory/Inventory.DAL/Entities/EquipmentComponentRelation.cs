@@ -10,7 +10,7 @@ namespace Inventory.DAL.Entities
         public Guid EquipmentId { get; set; }
         public Guid ComponentId { get; set; }
         public DateTime CreatedAt { get; set; }
-        public Nullable<DateTime> UpdatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
         public bool IsActual { get; set; }
 
         public virtual Equipment Equipment { get; set; }
