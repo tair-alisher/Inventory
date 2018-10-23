@@ -96,8 +96,9 @@ namespace Inventory.Web.Controllers
             return View();
         }
 
-        [ActionName("Delete")]
-        public ActionResult DeleteConfirmed(Guid id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(Guid id)
         {
             try { ComponentTypeService.Delete(id); }
             catch (NotFoundException) { return HttpNotFound(); }

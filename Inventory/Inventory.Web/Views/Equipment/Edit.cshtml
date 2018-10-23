@@ -11,51 +11,53 @@
 {
     @Html.AntiForgeryToken()
     
-    <div class="form-horizontal">
-        <h4>@Model.EquipmentType.Name (@Model.InventNumber)</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
+<div class="form-horizontal">
+    <h4>@Model.EquipmentType.Name (@Model.InventNumber)</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.EquipmentTypeId)
-            @Html.DropDownList("EquipmentTypeId", null, "Тип оборудования", htmlAttributes: new { @class = "form-control", @required = "required" })
-            @Html.ValidationMessageFor(model => model.EquipmentTypeId, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.InventNumber)
-            @Html.EditorFor(model => model.InventNumber, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.InventNumber, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.QRCode)
-            @Html.EditorFor(model => model.QRCode, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.QRCode, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Price)
-            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Supplier)
-            @Html.EditorFor(model => model.Supplier, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Supplier, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="btn-group float-right">
-            <a class="btn btn-primary" href="@Url.Action("OwnerHistory", "Equipment", new { equipmentId = Model.Id})" target="_blank">История владельцев</a>
-            <a class="btn btn-info" href="@Url.Action("Components", "Equipment", new { equipmentId = Model.Id })" target="_blank">Комплектующие</a>
-        </div>
-
-        <input type="submit" value="Сохранить" class="btn btn-primary" />
+    <div class="form-group">
+        @Html.LabelFor(model => model.EquipmentTypeId)
+        @Html.DropDownList("EquipmentTypeId", null, "Тип оборудования", htmlAttributes: new { @class = "form-control", @required = "required" })
+        @Html.ValidationMessageFor(model => model.EquipmentTypeId, "", new { @class = "text-danger" })
     </div>
-}
-<br />
-<div>
-    @Html.ActionLink("Назад", "Index")
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.InventNumber)
+        @Html.EditorFor(model => model.InventNumber, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.InventNumber, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.QRCode)
+        @Html.EditorFor(model => model.QRCode, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.QRCode, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Price)
+        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Supplier)
+        @Html.EditorFor(model => model.Supplier, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Supplier, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="btn-group float-right">
+        <a class="btn btn-primary" href="@Url.Action("OwnerHistory", "Equipment", new { equipmentId = Model.Id})" target="_blank">История владельцев</a>
+        <a class="btn btn-info" href="@Url.Action("Components", "Equipment", new { equipmentId = Model.Id })" target="_blank">Комплектующие</a>
+    </div>
+
+
+    <div class="form-group">
+        <div class="btn-group" role="group">
+            <button type="submit" class="btn btn-success"><i class="fa fa-save" aria-hidden="true" title="Сохранить" data-toggle="tooltip" data-placement="top"><span style="padding: 5px;">Сохранить</span></i></button>
+            <a href="@Url.Action("Index", "Equipment")" class="btn btn-info"><i class="fa fa-arrow-left" aria-hidden="true" title="Назад" data-toggle="tooltip" data-placement="top"><span style="padding: 5px;">Назад</span></i></a>
+        </div>
+    </div>
 </div>
+}

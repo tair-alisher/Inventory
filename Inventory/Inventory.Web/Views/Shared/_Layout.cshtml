@@ -27,9 +27,9 @@
                             Оборудование
                         </a>
                         <div class="dropdown-menu" aria-labelledby="equipmentDropdown">
-                            <a class="dropdown-item" href="@Url.Action("Index", "Equipment")">Оборудование</a>
-                            <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="@Url.Action("Index", "EquipmentType")">Тип оборудования</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="@Url.Action("Index", "Equipment")">Оборудование</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -37,9 +37,9 @@
                             Комплектующие
                         </a>
                         <div class="dropdown-menu" aria-labelledby="componentDropdown">
-                            <a class="dropdown-item" href="@Url.Action("Index", "Component")">Комплектующие</a>
-                            <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="@Url.Action("Index", "ComponentType")">Тип комплектующего</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="@Url.Action("Index", "Component")">Комплектующие</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -71,6 +71,7 @@
         </footer>
     </div>
 
+    <script src="~/Scripts/app.js"></script>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
