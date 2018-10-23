@@ -40,47 +40,49 @@
                 <div class="row" id="pinned-@component.Id">
                     <div class="col-md-8">
                         <input type="hidden" name="componentId[]" value="@component.Id" />
-                        <div class="type">
-                            <div class="col-md-6">
+                        <div class="type row item-info-row">
+                            <div class="col-md-6 item-info">
                                 <p>Тип</p>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 item-info">
                                 <p>@component.ComponentType.Name</p>
                             </div>
                         </div>
-                        <div class="number">
-                            <div class="col-md-6">
+                        <div class="number row item-info-row">
+                            <div class="col-md-6 item-info">
                                 <p>Инвентаризационный номер</p>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 item-info">
                                 <p>@component.InventNumber</p>
                             </div>
                         </div>
-                        <div class="model">
-                            <div class="col-md-6">
+                        <div class="model row item-info-row">
+                            <div class="col-md-6 item-info">
                                 <p>Модель</p>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 item-info">
                                 <p>@component.ModelName</p>
                             </div>
                         </div>
-                        <div class="name">
-                            <div class="col-md-6">
+                        <div class="name row item-info-row">
+                            <div class="col-md-6 item-info">
                                 <p>Название</p>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 item-info">
                                 <p>@component.Name</p>
                             </div>
                         </div>
-                        <div class="btn-group">
-                            <button class="btn btn-danger" type="button" onclick="detachEmployee('@component.Id')">Убрать</button>
-                            <a href="@Url.Action("Component", "Details", new { id = component.Id })" class="btn btn-primary">Подробности</a>
+                        <div class="btn-group float-right">
+                            <button class="btn btn-danger" type="button" onclick="detachItem('@component.Id')">Убрать</button>
+                            <a href="@Url.Action("Component", "Details", new { id = component.Id })" target="_blank" class="btn btn-primary">Подробности</a>
                         </div>
                     </div>
                 </div>
             }
         }
     </div>
+
+    <input type="submit" value="Сохранить" class="btn btn-primary" />
 }
 @section scripts {
     <script src="~/Scripts/app.js"></script>

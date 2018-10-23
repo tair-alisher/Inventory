@@ -104,7 +104,7 @@ namespace Inventory.BLL.Services
                 on
                     com.ComponentTypeId equals type.Id
                 where
-                    type.Name == value
+                    type.Name.ToLower() == value
                 select com);
 
             if (components.Count() <= 0)
@@ -117,7 +117,7 @@ namespace Inventory.BLL.Services
         {
             IEnumerable<Component> components = _unitOfWork
                 .Components
-                .Find(c => c.ModelName == value);
+                .Find(c => c.ModelName.ToLower() == value);
 
             if (components.Count() <= 0)
                 return Enumerable.Empty<ComponentDTO>();
@@ -129,7 +129,7 @@ namespace Inventory.BLL.Services
         {
             IEnumerable<Component> components = _unitOfWork
                 .Components
-                .Find(c => c.InventNumber == value);
+                .Find(c => c.InventNumber.ToLower() == value);
 
             if (components.Count() <= 0)
                 return Enumerable.Empty<ComponentDTO>();

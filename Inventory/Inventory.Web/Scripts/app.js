@@ -55,7 +55,7 @@ function attachEmployee(employeeId) {
     button.classList.add("btn", "btn-danger");
     button.type = "button";
     button.innerText = "Убрать";
-    button.setAttribute("onclick", "detachEmployee(" + employeeId + ")");
+    button.setAttribute("onclick", "detachItem('" + employeeId + "')");
 
     var buttonTd = document.createElement("td");
     buttonTd.className = "input-group-btn";
@@ -95,12 +95,6 @@ function attachEmployee(employeeId) {
     var attachedItems = document.getElementById("attached-items-tbody");
     attachedItems.appendChild(newTr);
 }
-
-function detachEmployee(employeeId) {
-    var rowToRemove = $("#pinned-" + employeeId);
-    rowToRemove.remove();
-}
-
 
 function createTd(tdClass, value) {
     var td = document.createElement("td");
@@ -155,8 +149,10 @@ function attachComponent(componentId) {
     var nameDiv = createDiv("name", NAME, name);
     var numberDiv = createDiv("number", NUMBER, number);
 
+    var buttonDiv = createButtonDiv(componentId);
+
     var wrapDiv = document.createElement("div");
-    wrapDiv.className = "col-md-8";
+    wrapDiv.classList.add("col-md-8", "item");
 
     var newComponent = document.createElement("div");
     newComponent.className = "row";
@@ -165,27 +161,77 @@ function attachComponent(componentId) {
     wrapDiv.appendChild(inputId);
     wrapDiv.appendChild(typeDiv);
     wrapDiv.appendChild(modelDiv);
+    wrapDiv.appendChild(nameDiv);
     wrapDiv.appendChild(numberDiv);
+    wrapDiv.appendChild(createElement("br"));
+    wrapDiv.appendChild(buttonDiv);
     newComponent.appendChild(wrapDiv);
 
     var attachedItems = document.getElementById("attached-items");
     attachedItems.appendChild(newComponent);
 }
 
+function createElement(element) {
+    return document.createElement(element);
+}
+
 function createDiv(divClass, title, value) {
     var wrapDiv = document.createElement("div");
-    wrapDiv.classList.add(divClass, "row");
+    wrapDiv.classList.add(divClass, "row", "item-info-row");
 
     var firstDiv = document.createElement("div");
-    firstDiv.className = "col-md-6";
-    firstDiv.innerText = title;
+    firstDiv.classList.add("col-md-6", "item-info");
+
+    var bold = document.createElement("b");
+    bold.innerText = title;
+
+    firstDiv.appendChild(bold);
 
     var secondDiv = document.createElement("div");
-    secondDiv.className = "col-md-6";
+    secondDiv.classList.add("col-md-6", "item-info");
     secondDiv.innerText = value;
 
     wrapDiv.appendChild(firstDiv);
     wrapDiv.appendChild(secondDiv);
 
     return wrapDiv;
+}
+
+function createButtonDiv(componentId) {
+    var removeBtn = createRemoveButton(componentId);
+    var detailsBtn = createDetailsButton(componentId);
+
+    var buttonDiv = document.createElement("div");
+    buttonDiv.className = "btn-group";
+    buttonDiv.classList.add("btn-group", "float-right");
+
+    buttonDiv.appendChild(removeBtn);
+    buttonDiv.appendChild(detailsBtn);
+
+    return buttonDiv;
+}
+
+function createRemoveButton(componentId) {
+    var button = document.createElement("button");
+    button.classList.add("btn", "btn-danger");
+    button.type = "button";
+    button.setAttribute("onclick", "detachItem('" + componentId + "')");
+    button.innerText = "Убрать";
+
+    return button;
+}
+
+function createDetailsButton(componentId) {
+    var button = document.createElement("a");
+    button.setAttribute("href", "/Component/Details?id=" + componentId);
+    button.classList.add("btn", "btn-primary");
+    button.setAttribute("target", "_blank");
+    button.innerText = "Подробности";
+
+    return button;
+}
+
+function detachItem(id) {
+    var toRemove = $("#pinned-" + id);
+    toRemove.remove();
 }

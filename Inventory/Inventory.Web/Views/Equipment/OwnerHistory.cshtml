@@ -47,7 +47,7 @@
                     {
                         <tr id="pinned-@owner.EmployeeId">
                             <td class="btn-group">
-                                <button class="btn btn-danger" type="button" data-id="@owner.EmployeeId" onclick="detachEmployee(@owner.EmployeeId)">Убрать</button>
+                                <button class="btn btn-danger" type="button" data-id="@owner.EmployeeId" onclick="detachItem('@owner.EmployeeId')">Убрать</button>
                                 <input type="hidden" name="employeeId[]" value="@owner.EmployeeId" />
                                 <a href="@Url.Action("EditRelation", "Equipment", new { equipmentId = ViewBag.EquipmentId, employeeId = owner.EmployeeId })" class="btn btn-primary" target="_blank">Редактировать</a>
                             </td>

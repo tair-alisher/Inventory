@@ -284,7 +284,7 @@ namespace Inventory.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult FindComponents(string value, string type)
         {
-            value = value.Trim();
+            value = value.Trim().ToLower();
 
             List<ComponentDTO> componentDTOs = ComponentService
                 .GetComponentsBy(type, value)
