@@ -49,7 +49,7 @@
 
         <div class="btn-group float-right">
             <a class="btn btn-primary" href="@Url.Action("OwnerHistory", "Equipment", new { equipmentId = Model.Id})" target="_blank">История владельцев</a>
-            <a class="btn btn-info" href="@Url.Action("EditRelation", "Equipment", new { equipmentId = Model.Id })" target="_blank">Комплектующие</a>
+            <a class="btn btn-info" href="@Url.Action("Components", "Equipment", new { equipmentId = Model.Id })" target="_blank">Комплектующие</a>
         </div>
 
         <input type="submit" value="Сохранить" class="btn btn-primary" />

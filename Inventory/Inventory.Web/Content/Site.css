@@ -8,3 +8,8 @@
     padding-left: 15px;
     padding-right: 15px;
 }
+
+.item-info-row {
+    margin-left: 10px;
+    border-bottom: 1px dashed #808080;
+}

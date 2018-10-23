@@ -121,7 +121,7 @@ namespace Inventory.BLL.Services
                     this.DeleteEquipmentRelation(equipmentId, equipmentEmployeeId);
         }
 
-        public void DeleteEquipmentRelation(Guid equipmentId, int employeeId)
+        private void DeleteEquipmentRelation(Guid equipmentId, int employeeId)
         {
             EquipmentEmployeeRelation relation = _unitOfWork
                 .EquipmentEmployeeRelations
@@ -132,7 +132,7 @@ namespace Inventory.BLL.Services
                 this.Delete(relation.Id);
         }
 
-        public void DeleteEquipmentRelations(Guid id)
+        public void DeleteRelationsByEquipmentId(Guid id)
         {
             IEnumerable<Guid> relationIds = _unitOfWork
                 .EquipmentEmployeeRelations

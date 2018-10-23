@@ -134,6 +134,23 @@ namespace Inventory.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult FindComponents(string value, string type)
+        {
+            value = value.Trim().ToLower();
+
+            List<ComponentDTO> componentDTOs = ComponentService
+                .GetComponentsBy(type, value)
+                .ToList();
+
+            List<ComponentVM> componentVMs = WebComponentMapper
+                .DtoToVm(componentDTOs)
+                .ToList();
+
+            return PartialView(componentVMs);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

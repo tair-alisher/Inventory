@@ -1,11 +1,10 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "История владельцев";
 }
 
 <h2>История владельцев</h2>
 
-@using (Html.BeginForm("UpdateOwnerHistory", "Equipment", FormMethod.Post))
+@using (Html.BeginForm("UpdateOwnerHistory", "Relation", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
@@ -48,9 +47,9 @@
                     {
                         <tr id="pinned-@owner.EmployeeId">
                             <td class="btn-group">
-                                <button class="btn btn-danger" type="button" data-id="@owner.EmployeeId" onclick="detachEmployee(@owner.EmployeeId)">Убрать</button>
+                                <button class="btn btn-danger" type="button" data-id="@owner.EmployeeId" onclick="detachItem('@owner.EmployeeId')">Убрать</button>
                                 <input type="hidden" name="employeeId[]" value="@owner.EmployeeId" />
-                                <a href="@Url.Action("EditRelation", "Equipment", new { equipmentId = ViewBag.EquipmentId, employeeId = owner.EmployeeId })" class="btn btn-primary" target="_blank">Редактировать</a>
+                                <a href="@Url.Action("EditEquipmentEmployeeRelation", "Relation", new { equipmentId = ViewBag.EquipmentId, employeeId = owner.EmployeeId })" class="btn btn-primary" target="_blank">Редактировать</a>
                             </td>
                             <td class="name">@owner.FullName</td>
                             <td class="room">@owner.Room</td>
@@ -63,7 +62,7 @@
                                 </label>
                             </td>
                             <td>
-                                @owner.StartDate.ToShortDateString() @Html.Raw(owner.IsActual ? "" : $"- {owner.EndDate.ToShortDateString()}")
+                                @owner.StartDate.ToString("dd.MM.yyyy") @Html.Raw(owner.IsActual ? "" : $"- {owner.EndDate.ToString("dd.MM.yyyy")}")
                             </td>
                         </tr>
                     }
@@ -74,7 +73,6 @@
 
     <input type="submit" value="Сохранить" class="btn btn-primary" />
 }
-<br />
 @section scripts {
     <script src="~/Scripts/app.js"></script>
 }
