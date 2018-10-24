@@ -77,7 +77,7 @@ function attachEmployee(employeeId) {
 
     label.appendChild(inputOwner);
     label.appendChild(document.createTextNode("Текущий владелец"));
-    
+
     var ownerTd = document.createElement("td");
     ownerTd.appendChild(label);
 
@@ -234,4 +234,53 @@ function createDetailsButton(componentId) {
 function detachItem(id) {
     var toRemove = $("#pinned-" + id);
     toRemove.remove();
+}
+
+function modalRemovalWindow(url) {
+    $(document).ready(function () {
+        var elementId;
+        $('.delete-prompt').click(function () {
+            elementId = $(this).attr('id');
+            $('#myModal').modal('show');
+        });
+
+        $('.delete-confirm').click(function () {
+            var token = $('input[name="__RequestVerificationToken"]').val();
+            if (elementId != '') {
+                $.ajax({
+                    url: url,
+                    type: 'Post',
+                    data: {
+                        __RequestVerificationToken: token,
+                        'id': elementId
+                    },
+                    success: function (data) {
+                        if (data == 'Удаление невозможно.') {
+                            $('.delete-confirm').css('display', 'none');
+                            $('.delete-cancel').html('Закрыть');
+                            $('.success-message').html('Удаление невозможно, у записи есть связи!');
+                        }
+                        else if (data) {
+
+                            location.reload();
+
+                        }
+
+                    }, error: function (err) {
+                        if (!$('.modal-header').hasClass('alert-danger')) {
+                            $('.modal-header').removeClass('alert-success').addClass('alert-danger');
+                            $('.delete-confirm').css('display', 'none');
+                        }
+                        $('.success-message').html(err.statusText);
+                    }
+                });
+            }
+        });
+        //function to reset bootstrap modal popups
+        $("#myModal").on("hidden.bs.modal", function () {
+            $('.delete-confirm').css('display', 'inline-block');      
+            $('.delete-cancel').html('Нет');
+            $('.success-message').html('').html('Вы действительно хотите удалить запись?');
+        });
+    });
 }

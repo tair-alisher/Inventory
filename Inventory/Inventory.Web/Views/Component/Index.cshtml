@@ -6,8 +6,10 @@
 
 <h2>Комплектующие</h2>
 
+@Html.AntiForgeryToken()
+
 <p>
-    <a href="@Url.Action("Create", "Component")" class="btn btn-primary" type="button">Добавить комплектующее</a>
+    <a type="button" class="btn btn-primary" href="@Url.Action("Create", "Component")"><i class="fa fa-plus"></i> Добавить новую запись</a>
 </p>
 <table class="table">
     <tr>
@@ -21,21 +23,51 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>@Html.DisplayFor(modelItem => item.ComponentType.Name)</td>
-        <td>@Html.DisplayFor(modelItem => item.ModelName)</td>
-        <td>@Html.DisplayFor(modelItem => item.Name)</td>
-        <td>@Html.DisplayFor(modelItem => item.Description)</td>
-        <td>@Html.DisplayFor(modelItem => item.Price)</td>
-        <td>@Html.DisplayFor(modelItem => item.InventNumber)</td>
-        <td>@Html.DisplayFor(modelItem => item.Supplier)</td>
-        <td>
-            @Html.ActionLink("Подробнее", "Details", new { id = item.Id }) |
-            @Html.ActionLink("Редактировать", "Edit", new { id = item.Id }) |
-            @Html.ActionLink("Удалить", "Delete", new { id = item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.ComponentType.Name)</td>
+            <td>@Html.DisplayFor(modelItem => item.ModelName)</td>
+            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+            <td>@Html.DisplayFor(modelItem => item.Description)</td>
+            <td>@Html.DisplayFor(modelItem => item.Price)</td>
+            <td>@Html.DisplayFor(modelItem => item.InventNumber)</td>
+            <td>@Html.DisplayFor(modelItem => item.Supplier)</td>
 
+            <td>
+                <div class="btn-group float-right" role="group">
+                    <a class="btn btn-info" name="editButton" id="editButton" href="@Url.Action("Edit", "Component", new { id = item.Id })"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"> Редактировать</i></a>
+                    <a class="btn btn-warning" name="detailsButton" id="detailsButton" href="@Url.Action("Details", "Component", new { id = item.Id })"><i class="fa fa-eye" aria-hidden="true" title="Просмотреть" data-toggle="tooltip" data-placement="top"> Просмотреть</i></a>
+                    <a class="btn btn-danger delete-prompt" name="deleteButton" id="@item.Id"><i class="fa fa-trash" aria-hidden="true" title="Удалить" data-toggle="tooltip" data-placement="top"> Удалить</i></a>
+                </div>
+            </td>
+        </tr>
+    }
 </table>
+
+<!-- Bootstrap modal popup -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Удаление</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="success-message"> Вы действительно хотите удалить запись? </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger delete-confirm">Да</button>
+                <button class="btn btn-default delete-cancel" data-dismiss="modal">Нет</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        modalRemovalWindow('/Component/Delete');
+    </script>
+}
