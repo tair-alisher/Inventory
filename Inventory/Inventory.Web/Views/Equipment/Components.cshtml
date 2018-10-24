@@ -75,7 +75,7 @@
                         <br />
                         <div class="btn-group float-right">
                             <button class="btn btn-danger" type="button" onclick="detachItem('@component.Id')">Убрать</button>
-                            <a href="@Url.Action("Component", "Details", new { id = component.Id })" target="_blank" class="btn btn-primary">Подробности</a>
+                            <a href="@Url.Action("Details", "Component", new { id = component.Id })" target="_blank" class="btn btn-primary">Подробности</a>
                         </div>
                     </div>
                 </div>
