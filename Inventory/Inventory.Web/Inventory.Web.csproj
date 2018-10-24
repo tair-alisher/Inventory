@@ -182,6 +182,7 @@
     <Compile Include="Controllers\ComponentTypeController.cs" />
     <Compile Include="Controllers\EquipmentController.cs" />
     <Compile Include="Controllers\EquipmentTypeController.cs" />
+    <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RepairPlaceController.cs" />
     <Compile Include="Controllers\RelationController.cs" />
@@ -203,6 +204,7 @@
     <Compile Include="Util\WebEquipmentEmployeeMapper.cs" />
     <Compile Include="Util\WebEquipmentMapper.cs" />
     <Compile Include="Util\WebEquipmentTypeMapper.cs" />
+    <Compile Include="Util\WebHistoryMapper.cs" />
     <Compile Include="Util\WebModule.cs" />
     <Compile Include="Util\WebRepairPlaceMapper.cs" />
     <Compile Include="Util\WebStatusTypeMapper.cs" />
@@ -312,6 +314,10 @@
     <Content Include="Views\RepairPlace\Create.cshtml" />
     <Content Include="Views\RepairPlace\Edit.cshtml" />
     <Content Include="Views\Component\FindComponents.cshtml" />
+    <Content Include="Views\History\Index.cshtml" />
+    <Content Include="Views\History\Details.cshtml" />
+    <Content Include="Views\History\Create.cshtml" />
+    <Content Include="Views\History\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
