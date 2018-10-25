@@ -1,0 +1,62 @@
+﻿@model Inventory.Web.Models.HistoryVM
+
+@{
+    ViewBag.Title = "Редактирование истории";
+}
+
+<h2>Редактирование истории</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>История</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EquipmentId)
+            @Html.DropDownList("EquipmentId", null, "Тип комплектующего", htmlAttributes: new { @class = "form-control", @required = "required" })
+            @Html.ValidationMessageFor(model => model.EquipmentId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EmployeeId)
+            @Html.DropDownList("EmployeeId", null, "Сотрудник", htmlAttributes: new { @class = "form-control", @required = "required" })
+            @Html.ValidationMessageFor(model => model.EquipmentId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.RepairPlaceId)
+            @Html.DropDownList("RepairPlaceId", null, "Место ремонта", htmlAttributes: new { @class = "form-control", @required = "required" })
+            @Html.ValidationMessageFor(model => model.RepairPlaceId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.StatusTypeId)
+            @Html.DropDownList("StatusTypeId", null, "Статус", htmlAttributes: new { @class = "form-control", @required = "required" })
+            @Html.ValidationMessageFor(model => model.StatusTypeId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ChangeDate)
+            @Html.EditorFor(model => model.ChangeDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ChangeDate, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Comments)
+            @Html.EditorFor(model => model.Comments, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <div class="btn-group" role="group">
+                <button type="submit" class="btn btn-success"><i class="fa fa-save" aria-hidden="true" title="Сохранить" data-toggle="tooltip" data-placement="top"><span style="padding: 5px;">Сохранить</span></i></button>
+                <a href="@Url.Action("Index", "History")" class="btn btn-info"><i class="fa fa-arrow-left" aria-hidden="true" title="Назад" data-toggle="tooltip" data-placement="top"><span style="padding: 5px;">Назад</span></i></a>
+            </div>
+        </div>
+    </div>
+}
