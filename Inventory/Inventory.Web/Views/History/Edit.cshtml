@@ -18,7 +18,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.EquipmentId)
-            @Html.DropDownList("EquipmentId", null, "Тип комплектующего", htmlAttributes: new { @class = "form-control", @required = "required" })
+            @Html.DropDownList("EquipmentId", null, "Тип комплектующего", htmlAttributes: new { @class = "form-control", @required = "required", @id = "equipmentDropDown" })
             @Html.ValidationMessageFor(model => model.EquipmentId, "", new { @class = "text-danger" })
         </div>
 
@@ -63,6 +63,7 @@
 @section Scripts {
     <script>
         $(function () {
+            $("#equipmentDropDown").chosen({ width: "100%" });
             $("#employeeDropDown").chosen({ width: "100%" });
             $("#repairPlaceDropDown").chosen({ width: "100%" });
             $("#statusTypeDropDowm").chosen({ width: "100%" });
