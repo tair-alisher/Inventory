@@ -16,18 +16,15 @@ namespace Inventory.Web.Controllers
         private IComponentService ComponentService;
         private IComponentTypeService ComponentTypeService;
         private IEquipmentService EquipmentService;
-        private IEquipmentComponentRelationService EquipmentComponentRelationService;
         public ComponentController(
             IComponentService componentService,
             IComponentTypeService componentTypeService,
-            IEquipmentService equipmentService,
-            IEquipmentComponentRelationService equipmentComponentRelationService
+            IEquipmentService equipmentService
             )
         {
             ComponentService = componentService;
             ComponentTypeService = componentTypeService;
             EquipmentService = equipmentService;
-            EquipmentComponentRelationService = equipmentComponentRelationService;
         }
 
         public ActionResult Index()

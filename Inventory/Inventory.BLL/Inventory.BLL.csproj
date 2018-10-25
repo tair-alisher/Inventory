@@ -75,6 +75,7 @@
     <Compile Include="Infrastructure\BLLEquipmentEmployeeMapper.cs" />
     <Compile Include="Infrastructure\BLLEquipmentMapper.cs" />
     <Compile Include="Infrastructure\BLLEquipmentTypeMapper.cs" />
+    <Compile Include="Infrastructure\BLLHistoryMapper.cs" />
     <Compile Include="Infrastructure\BLLRepairPlaceMapper.cs" />
     <Compile Include="Infrastructure\BLLStatusTypeMapper.cs" />
     <Compile Include="Infrastructure\HasRelationsException.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="Services\EquipmentEmployeeRelationService.cs" />
     <Compile Include="Services\EquipmentService.cs" />
     <Compile Include="Services\EquipmentTypeService.cs" />
+    <Compile Include="Services\HistoryService.cs" />
     <Compile Include="Services\RepairPlaceService.cs" />
     <Compile Include="Services\StatusTypeService.cs" />
   </ItemGroup>

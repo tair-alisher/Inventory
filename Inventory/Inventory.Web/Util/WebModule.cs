@@ -20,6 +20,7 @@ namespace Inventory.Web.Util
 
             Bind<IStatusTypeService>().To<StatusTypeService>();
             Bind<IRepairPlaceService>().To<RepairPlaceService>();
+            Bind<IHistoryService>().To<HistoryService>();
         }
     }
 }
