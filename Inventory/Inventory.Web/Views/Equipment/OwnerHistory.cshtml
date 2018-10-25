@@ -49,7 +49,7 @@
                             <td class="btn-group">
                                 <button class="btn btn-danger" type="button" data-id="@owner.EmployeeId" onclick="detachItem('@owner.EmployeeId')">Убрать</button>
                                 <input type="hidden" name="employeeId[]" value="@owner.EmployeeId" />
-                                <a href="@Url.Action("EditEquipmentEmployeeRelation", "Relation", new { equipmentId = ViewBag.EquipmentId, employeeId = owner.EmployeeId })" class="btn btn-primary" target="_blank">Редактировать</a>
+                                <a href="@Url.Action("EditEquipmentEmployeeRelation", "Relation", new { equipmentId = ViewBag.EquipmentId, employeeId = owner.EmployeeId })" class="btn btn-primary">Редактировать</a>
                             </td>
                             <td class="name">@owner.FullName</td>
                             <td class="room">@owner.Room</td>
@@ -71,7 +71,12 @@
         </table>
     </div>
 
-    <input type="submit" value="Сохранить" class="btn btn-primary" />
+    <div class="form-group">
+        <div class="btn-group" role="group">
+            <button type="submit" class="btn btn-success"><i class="fa fa-save" aria-hidden="true" title="Сохранить" data-toggle="tooltip" data-placement="top"><span style="padding: 5px;">Сохранить</span></i></button>
+            <a href="@Url.Action("Edit", "Equipment", new { id = ViewBag.EquipmentId })" class="btn btn-info"><i class="fa fa-arrow-left" aria-hidden="true" title="Назад" data-toggle="tooltip" data-placement="top"><span style="padding: 5px;">Назад</span></i></a>
+        </div>
+    </div>
 }
 @section scripts {
     <script src="~/Scripts/app.js"></script>

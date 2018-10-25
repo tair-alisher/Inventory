@@ -113,6 +113,8 @@ namespace Inventory.Web.Controllers
                     .VmToDto(equipmentVM);
                 EquipmentService.Update(equipmentDTO);
             }
+            else
+                ModelState.AddModelError(null, "Что-то пошло не так. Не удалось сохранить изменения.");
 
             EquipmentDTO dto = EquipmentService.Get(equipmentVM.Id);
             equipmentVM = WebEquipmentMapper.DtoToVm(dto);

@@ -129,6 +129,8 @@ namespace Inventory.Web.Controllers
                     action = "Index"
                 });
             }
+            else
+                ModelState.AddModelError(null, "Что-то пошло не так. Не удалось сохранить изменения");
 
             return View();
         }
