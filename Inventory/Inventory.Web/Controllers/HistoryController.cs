@@ -54,6 +54,20 @@ namespace Inventory.Web.Controllers
 
         public ActionResult Create()
         {
+            List<EquipmentSelectModel> equipmentSelectModel = new List<EquipmentSelectModel>();
+            var eqipmentWithInventNumber = EquipmentService.GetAll();
+
+            foreach (var item in eqipmentWithInventNumber)
+            {
+                equipmentSelectModel.Add(
+                    new EquipmentSelectModel
+                    {
+                        Id = item.Id,
+                        TypeAndInventNumber = item.EquipmentType.Name + " (Номер: " + item.InventNumber + ")"
+                    }
+                );
+            }
+
             ViewBag.StatusTypeId = new SelectList(
                 StatusTypeService.GetAll(),
                 "Id",
@@ -65,9 +79,9 @@ namespace Inventory.Web.Controllers
                 "Name");
 
             ViewBag.EquipmentId = new SelectList(
-                EquipmentService.GetAll(),
+                equipmentSelectModel,
                 "Id",
-                "EquipmentType.Name");
+                "TypeAndInventNumber");
 
             ViewBag.EmployeeId = new SelectList(
                 EmployeeService.GetAll(),
@@ -81,6 +95,20 @@ namespace Inventory.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "EquipmentId,ChangeDate,EmployeeId,RepairPlaceId,StatusTypeId,Comments")] HistoryVM historyVM)
         {
+            List<EquipmentSelectModel> equipmentSelectModel = new List<EquipmentSelectModel>();
+            var eqipmentWithInventNumber = EquipmentService.GetAll();
+
+            foreach (var item in eqipmentWithInventNumber)
+            {
+                equipmentSelectModel.Add(
+                    new EquipmentSelectModel
+                    {
+                        Id = item.Id,
+                        TypeAndInventNumber = item.EquipmentType.Name + " (Номер: " + item.InventNumber + ")"
+                    }
+                );
+            }
+
             if (ModelState.IsValid)
             {
                 HistoryDTO historyDTO = WebHistoryMapper.VmToDto(historyVM);
@@ -100,9 +128,9 @@ namespace Inventory.Web.Controllers
                 "Name");
 
             ViewBag.EquipmentId = new SelectList(
-                EquipmentService.GetAll(),
+               equipmentSelectModel,
                 "Id",
-                "EquipmentType.Name");
+                "TypeAndInventNumber");
 
             ViewBag.EmployeeId = new SelectList(
                 EmployeeService.GetAll(),
@@ -123,6 +151,20 @@ namespace Inventory.Web.Controllers
 
             HistoryVM historyVM = WebHistoryMapper.DtoToVm(historyDTO);
 
+            List<EquipmentSelectModel> equipmentSelectModel = new List<EquipmentSelectModel>();
+            var eqipmentWithInventNumber = EquipmentService.GetAll();
+
+            foreach (var item in eqipmentWithInventNumber)
+            {
+                equipmentSelectModel.Add(
+                    new EquipmentSelectModel
+                    {
+                        Id = item.Id,
+                        TypeAndInventNumber = item.EquipmentType.Name + " (Номер: " + item.InventNumber + ")"
+                    }
+                );
+            }
+
             ViewBag.StatusTypeId = new SelectList(
                 StatusTypeService.GetAll(),
                 "Id",
@@ -136,9 +178,9 @@ namespace Inventory.Web.Controllers
                 historyVM.RepairPlaceId);
 
             ViewBag.EquipmentId = new SelectList(
-                EquipmentService.GetAll(),
+                equipmentSelectModel,
                 "Id",
-                "EquipmentType.Name",
+                "TypeAndInventNumber",
                 historyVM.EquipmentId);
 
             ViewBag.EmployeeId = new SelectList(
@@ -162,6 +204,20 @@ namespace Inventory.Web.Controllers
                 return RedirectToAction("Index");
             }
 
+            List<EquipmentSelectModel> equipmentSelectModel = new List<EquipmentSelectModel>();
+            var eqipmentWithInventNumber = EquipmentService.GetAll();
+
+            foreach (var item in eqipmentWithInventNumber)
+            {
+                equipmentSelectModel.Add(
+                    new EquipmentSelectModel
+                    {
+                        Id = item.Id,
+                        TypeAndInventNumber = item.EquipmentType.Name + " (Номер: " + item.InventNumber + ")"
+                    }
+                );
+            }
+
             ViewBag.StatusTypeId = new SelectList(
                 StatusTypeService.GetAll(),
                 "Id",
@@ -175,9 +231,9 @@ namespace Inventory.Web.Controllers
                 historyVM.RepairPlaceId);
 
             ViewBag.EquipmentId = new SelectList(
-                EquipmentService.GetAll(),
+                equipmentSelectModel,
                 "Id",
-                "EquipmentType.Name",
+                "TypeAndInventNumber",
                 historyVM.EquipmentId);
 
             ViewBag.EmployeeId = new SelectList(

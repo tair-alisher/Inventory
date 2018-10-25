@@ -146,6 +146,50 @@ namespace Inventory.BLL.Services
             return ownerHistory;
         }
 
+        public OwnerInfoDTO GetOwnerInfo(Guid equipmentId, int EmployeeId)
+        {
+            OwnerInfoDTO ownerInfoDTO = (
+                from
+                    relation in _unitOfWork.EquipmentEmployeeRelations.GetAll()
+                join
+                    emp in _unitOfWork.Employees.GetAll()
+                on
+                    relation.EmployeeId equals emp.EmployeeId
+                join
+                    pos in _unitOfWork.Positions.GetAll()
+                on
+                    emp.PositionId equals pos.PositionId
+                join
+                    dep in _unitOfWork.Departments.GetAll()
+                on
+                    emp.DepartmentId equals dep.DepartmentId
+                join
+                    adm in _unitOfWork.Administrations.GetAll()
+                on
+                    dep.AdministrationId equals adm.AdministrationId
+                join
+                    div in _unitOfWork.Divisions.GetAll()
+                on
+                    adm.DivisionId equals div.DivisionId
+                where relation.EquipmentId == equipmentId &&
+                    relation.EmployeeId == EmployeeId
+                select new OwnerInfoDTO
+                {
+                    EmployeeId = emp.EmployeeId,
+                    FullName = emp.EmployeeFullName,
+                    Room = emp.EmployeeRoom,
+                    Position = pos.PositionName,
+                    Department = dep.DepartmentName,
+                    Administration = adm.AdministrationName,
+                    Division = div.DivisionName,
+                    StartDate = relation.CreatedAt,
+                    EndDate = relation.UpdatedAt,
+                    IsActual = relation.IsOwner
+                }).First();
+
+            return ownerInfoDTO;
+        }
+
         public IEnumerable<ComponentDTO> GetComponents(Guid id)
         {
 

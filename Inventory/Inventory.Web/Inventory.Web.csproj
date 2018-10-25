@@ -193,9 +193,11 @@
     <Compile Include="Models\ComponentTypeVM.cs" />
     <Compile Include="Models\ComponentVM.cs" />
     <Compile Include="Models\EquipmentEmployeeRelationVM.cs" />
+    <Compile Include="Models\EquipmentSelectModel.cs" />
     <Compile Include="Models\EquipmentTypeVM.cs" />
     <Compile Include="Models\EquipmentVM.cs" />
     <Compile Include="Models\HistoryVM.cs" />
+    <Compile Include="Models\OwnerInfoVM.cs" />
     <Compile Include="Models\RepairPlaceVM.cs" />
     <Compile Include="Models\StatusTypeVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -206,6 +208,7 @@
     <Compile Include="Util\WebEquipmentTypeMapper.cs" />
     <Compile Include="Util\WebHistoryMapper.cs" />
     <Compile Include="Util\WebModule.cs" />
+    <Compile Include="Util\WebOwnerInfoMapper.cs" />
     <Compile Include="Util\WebRepairPlaceMapper.cs" />
     <Compile Include="Util\WebStatusTypeMapper.cs" />
   </ItemGroup>
@@ -216,6 +219,8 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Chosen\chosen-sprite.png" />
+    <Content Include="Content\Chosen\chosen.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -227,6 +232,7 @@
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\chosen.jquery.min.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -318,6 +324,7 @@
     <Content Include="Views\History\Details.cshtml" />
     <Content Include="Views\History\Create.cshtml" />
     <Content Include="Views\History\Edit.cshtml" />
+    <Content Include="Views\Equipment\OwnerInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
