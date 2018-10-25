@@ -196,6 +196,7 @@
     <Compile Include="Models\EquipmentTypeVM.cs" />
     <Compile Include="Models\EquipmentVM.cs" />
     <Compile Include="Models\HistoryVM.cs" />
+    <Compile Include="Models\OwnerInfoVM.cs" />
     <Compile Include="Models\RepairPlaceVM.cs" />
     <Compile Include="Models\StatusTypeVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -206,6 +207,7 @@
     <Compile Include="Util\WebEquipmentTypeMapper.cs" />
     <Compile Include="Util\WebHistoryMapper.cs" />
     <Compile Include="Util\WebModule.cs" />
+    <Compile Include="Util\WebOwnerInfoMapper.cs" />
     <Compile Include="Util\WebRepairPlaceMapper.cs" />
     <Compile Include="Util\WebStatusTypeMapper.cs" />
   </ItemGroup>
@@ -321,6 +323,7 @@
     <Content Include="Views\History\Details.cshtml" />
     <Content Include="Views\History\Create.cshtml" />
     <Content Include="Views\History\Edit.cshtml" />
+    <Content Include="Views\Equipment\OwnerInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

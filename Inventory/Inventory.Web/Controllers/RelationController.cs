@@ -115,24 +115,18 @@ namespace Inventory.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditEquipmentEmployeeRelation([Bind(Include = "Id,CreatedAt,UpdatedAt")] EquipmentEmployeeRelationVM relationVM)
+        public ActionResult EditEquipmentEmployeeRelation([Bind(Include = "Id,EquipmentId,CreatedAt,UpdatedAt")] EquipmentEmployeeRelationVM relationVM)
         {
             if (ModelState.IsValid)
             {
                 EquipmentEmployeeRelationDTO relationDTO = WebEquipmentEmployeeMapper
                     .VmToDto(relationVM);
                 EqEmpService.UpdateDates(relationDTO);
-
-                return RedirectToRoute(new
-                {
-                    controller = "Equipment",
-                    action = "Index"
-                });
             }
             else
                 ModelState.AddModelError(null, "Что-то пошло не так. Не удалось сохранить изменения");
 
-            return View();
+            return View(relationVM);
         }
     }
 }

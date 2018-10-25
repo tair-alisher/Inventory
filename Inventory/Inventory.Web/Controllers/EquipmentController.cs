@@ -133,11 +133,29 @@ namespace Inventory.Web.Controllers
             if (equipmentId == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            IEnumerable<OwnerInfoDTO> ownerHistory = EquipmentService.GetOwnerHistory((Guid)equipmentId);
-            ViewBag.OwnerHistory = ownerHistory.ToList();
+            ViewBag.EquipmentId = equipmentId;
+            IEnumerable<OwnerInfoDTO> ownerHistoryDTO = EquipmentService
+                .GetOwnerHistory((Guid)equipmentId)
+                .ToList();
+            List<OwnerInfoVM> ownerHistoryVM = WebOwnerInfoMapper
+                .DtoToVm(ownerHistoryDTO)
+                .ToList();
+
+            return View(ownerHistoryVM);
+        }
+
+        public ActionResult OwnerInfo(Guid? equipmentId, int employeeId)
+        {
+            if (equipmentId == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
             ViewBag.EquipmentId = equipmentId;
 
-            return View();
+            OwnerInfoDTO ownerInfoDTO = EquipmentService
+                .GetOwnerInfo((Guid)equipmentId, employeeId);
+            OwnerInfoVM ownerInfoVM = WebOwnerInfoMapper.DtoToVm(ownerInfoDTO);
+
+            return View(ownerInfoVM);
         }
 
         public ActionResult Components(Guid? equipmentId)

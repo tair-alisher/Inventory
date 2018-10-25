@@ -173,9 +173,21 @@ namespace Inventory.BLL.Services
                 .FirstOrDefault();
 
             if (relation != null)
+            {
+                UpdateRelationUpdatedAtField(relation.Id);
                 UpdateIsOwnerField(relation.Id, false);
+            }
 
             SetOwner(equipmentId, employeeId);
+        }
+
+        private void UpdateRelationUpdatedAtField(Guid relationId)
+        {
+            EquipmentEmployeeRelation relation = _unitOfWork
+                .EquipmentEmployeeRelations
+                .Get(relationId);
+
+            relation.UpdatedAt = DateTime.Now;
         }
 
         public void UpdateIsOwnerField(Guid relationId, bool value)
