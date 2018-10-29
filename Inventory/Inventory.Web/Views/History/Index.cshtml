@@ -12,34 +12,38 @@
     <a type="button" class="btn btn-primary" href="@Url.Action("Create", "History")"><i class="fa fa-plus"></i> Добавить новую запись</a>
 </p>
 <table class="table">
-    <tr>
-        <th> @Html.DisplayNameFor(model => model.EquipmentId)</th>
-        <th> @Html.DisplayNameFor(model => model.EmployeeId)</th>
-        <th>@Html.DisplayNameFor(model => model.RepairPlaceId) </th>
-        <th> @Html.DisplayNameFor(model => model.StatusTypeId) </th>
-        <th>@Html.DisplayNameFor(model => model.ChangeDate) </th>
-        <th> @Html.DisplayNameFor(model => model.Comments)</th>
-        <th></th>
-    </tr>
+    <thead>
+        <tr>
+            <th> @Html.DisplayNameFor(model => model.EquipmentId)</th>
+            <th> @Html.DisplayNameFor(model => model.EmployeeId)</th>
+            <th>@Html.DisplayNameFor(model => model.RepairPlaceId) </th>
+            <th> @Html.DisplayNameFor(model => model.StatusTypeId) </th>
+            <th>@Html.DisplayNameFor(model => model.ChangeDate) </th>
+            <th> @Html.DisplayNameFor(model => model.Comments)</th>
+            <th></th>
+        </tr>
+    </thead>
 
-    @foreach (var item in Model)
-    {
-    <tr>
-        <td>@Html.DisplayFor(modelItem => item.Equipment.EquipmentType.Name)</td>
-        <td>@Html.DisplayFor(modelItem => item.Employee.EmployeeFullName)</td>
-        <td>@Html.DisplayFor(modelItem => item.RepairPlace.Name)</td>
-        <td>@Html.DisplayFor(modelItem => item.StatusType.Name)</td>
-        <td>@Html.DisplayFor(modelItem => item.ChangeDate)</td>
-        <td>@Html.DisplayFor(modelItem => item.Comments)</td>
-        <td>
-            <div class="btn-group float-right" role="group">
-                <a class="btn btn-info" name="editButton" id="editButton" href="@Url.Action("Edit", "History", new { id = item.Id })"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"> Редактировать</i></a>
-                <a class="btn btn-warning" name="detailsButton" id="detailsButton" href="@Url.Action("Details", "History", new { id = item.Id })"><i class="fa fa-eye" aria-hidden="true" title="Просмотреть" data-toggle="tooltip" data-placement="top"> Просмотреть</i></a>
-                <a class="btn btn-danger delete-prompt" name="deleteButton" id="@item.Id"><i class="fa fa-trash" aria-hidden="true" title="Удалить" data-toggle="tooltip" data-placement="top"> Удалить</i></a>
-            </div>
-        </td>
-    </tr>
-    }
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr id="@item.Id">
+                <td>@Html.DisplayFor(modelItem => item.Equipment.EquipmentType.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.Employee.EmployeeFullName)</td>
+                <td>@Html.DisplayFor(modelItem => item.RepairPlace.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.StatusType.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.ChangeDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.Comments)</td>
+                <td>
+                    <div class="btn-group float-right" role="group">
+                        <a class="btn btn-info" name="editButton" id="editButton" href="@Url.Action("Edit", "History", new { id = item.Id })"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"> Редактировать</i></a>
+                        <a class="btn btn-warning" name="detailsButton" id="detailsButton" href="@Url.Action("Details", "History", new { id = item.Id })"><i class="fa fa-eye" aria-hidden="true" title="Просмотреть" data-toggle="tooltip" data-placement="top"> Просмотреть</i></a>
+                        <a class="btn btn-danger delete-prompt" name="deleteButton" id="@item.Id"><i class="fa fa-trash" aria-hidden="true" title="Удалить" data-toggle="tooltip" data-placement="top"> Удалить</i></a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
 
 <!-- Bootstrap modal popup -->
