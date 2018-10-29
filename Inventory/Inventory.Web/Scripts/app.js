@@ -248,12 +248,11 @@ function modalRemovalWindow(url) {
                             $('.delete-cancel').html('Закрыть');
                             $('.success-message').html('Удаление невозможно, у записи есть связи!');
                         }
-                        else if (data) {
-
-                            location.reload();
-
-                        }
-
+                        else if (data) {                                                    
+                            $("#" + elementId).remove();
+                            $('#myModal').modal('hide');
+                            $.notify("Запись удалена успешно!", "success");
+                        }                       
                     }, error: function (err) {
                         if (!$('.modal-header').hasClass('alert-danger')) {
                             $('.modal-header').removeClass('alert-success').addClass('alert-danger');

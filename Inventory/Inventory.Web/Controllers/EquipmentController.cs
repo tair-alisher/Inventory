@@ -65,9 +65,10 @@ namespace Inventory.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="EquipmentTypeId,InventNumber,QRCode,Price,Supplier")] EquipmentVM equipmentVM)
+        public ActionResult Create([Bind(Include = "EquipmentTypeId,InventNumber,QRCode,Price,Supplier")] EquipmentVM equipmentVM)
         {
-            if (ModelState.IsValid) {
+            if (ModelState.IsValid)
+            {
                 EquipmentDTO equipmentDTO = WebEquipmentMapper.VmToDto(equipmentVM);
                 Guid equipmentId = EquipmentService.AddAndGetId(equipmentDTO);
 
@@ -178,7 +179,15 @@ namespace Inventory.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(Guid id)
         {
-            try { EquipmentService.Delete(id); }
+            try
+            {
+                string imagePath = Request.MapPath($"/Content/Images/{id}.jpg");
+                if (System.IO.File.Exists(imagePath))
+                {
+                    System.IO.File.Delete(imagePath);
+                }
+                EquipmentService.Delete(id);
+            }
             catch (NotFoundException) { return HttpNotFound(); }
             catch (HasRelationsException) { return Content("Удаление невозможно."); }
 

@@ -22,6 +22,16 @@
 .qrCodeField {
     width: 90%;
 }
+select:invalid {
+    height: 0px !important;
+    opacity: 0 !important;
+    position: absolute !important;
+    display: flex !important;
+}
+
+select:invalid[multiple] {
+    margin-top: 15px !important;
+}
 
 .sub-element {
     margin-left: 10px;
