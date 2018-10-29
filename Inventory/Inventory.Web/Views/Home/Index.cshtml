@@ -13,7 +13,7 @@
                 <div class="card-header" id="division-@division.Divisionid">
                     <h5 class="mb-0">
                         <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#administrations-@division.Divisionid" aria-expanded="true" aria-controls="administrations-@division.Divisionid">
-                            @division.DivisionName
+                            @division.DivisionName (@division.Administrations.Sum(a => a.Departments.Select(d => d.Equipments.Count()).Sum()))
                         </button>
                     </h5>
                 </div>
@@ -30,7 +30,7 @@
                                     <div class="card-header" id="administration-@administration.AdministrationId">
                                         <h5 class="mb-0">
                                             <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#departments-@administration.AdministrationId" aria-expanded="true" aria-controls="#department-@administration.AdministrationId">
-                                                @administration.AdministrationName
+                                                @administration.AdministrationName (@administration.Departments.Select(d => d.Equipments.Count()).Sum())
                                             </button>
                                         </h5>
                                     </div>
@@ -47,7 +47,7 @@
                                                         <div class="card-header" id="department-@department.DepartmentId">
                                                             <h5 class="mb-0">
                                                                 <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#equipments-@department.DepartmentId" aria-expanded="true" aria-controls="equipments-@department.DepartmentId">
-                                                                    @department.DepartmentName
+                                                                    @department.DepartmentName (@department.Equipments.Count())
                                                                 </button>
                                                             </h5>
                                                         </div>
