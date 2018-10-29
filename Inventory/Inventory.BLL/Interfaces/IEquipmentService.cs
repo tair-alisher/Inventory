@@ -10,5 +10,6 @@ namespace Inventory.BLL.Interfaces
         IEnumerable<OwnerInfoDTO> GetOwnerHistory(Guid id);
         OwnerInfoDTO GetOwnerInfo(Guid equipmentId, int employeeId);
         IEnumerable<ComponentDTO> GetComponents(Guid id);
+        IEnumerable<DivisionEquipmentDTO> GetEquipmentByStructure();
     }
 }

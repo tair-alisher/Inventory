@@ -32,3 +32,7 @@ select:invalid {
 select:invalid[multiple] {
     margin-top: 15px !important;
 }
+
+.sub-element {
+    margin-left: 10px;
+}

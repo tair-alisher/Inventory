@@ -272,6 +272,78 @@ namespace Inventory.BLL.Services
             return components;
         }
 
+        public IEnumerable<DivisionEquipmentDTO> GetEquipmentByStructure()
+        {
+            IEnumerable<DivisionEquipmentDTO> equipments = (
+                from
+                    div in _unitOfWork.Divisions.GetAll()
+                select new DivisionEquipmentDTO
+                {
+                    Divisionid = div.DivisionId,
+                    DivisionName = div.DivisionName,
+                    Administrations = GetDivisionAdministrations(div.DivisionId)
+                });
+
+            return equipments;
+        }
+
+        private List<AdministrationEquipmentDTO> GetDivisionAdministrations(int divisionId)
+        {
+            return (
+                from
+                    adm in _unitOfWork.Administrations.GetAll()
+                where
+                    adm.DivisionId == divisionId
+                select new AdministrationEquipmentDTO
+                {
+                    AdministrationId = adm.AdministrationId,
+                    AdministrationName = adm.AdministrationName,
+                    Departments = GetAdministrationDepartments(adm.AdministrationId)
+                }).ToList();
+        }
+
+        private List<DepartmentEquipmentDTO> GetAdministrationDepartments(int administrationId)
+        {
+            return (
+                from
+                    dep in _unitOfWork.Departments.GetAll()
+                where
+                    dep.AdministrationId == administrationId
+                select new DepartmentEquipmentDTO
+                {
+                    DepartmentId = dep.DepartmentId,
+                    DepartmentName = dep.DepartmentName,
+                    Equipments = GetDepartmentEquipment(dep.DepartmentId)
+                }).ToList();
+        }
+
+        private List<StructuredEquipmentDTO> GetDepartmentEquipment(int departmentId)
+        {
+            return (
+                from
+                    relation in _unitOfWork.EquipmentEmployeeRelations.GetAll()
+                join
+                    equip in _unitOfWork.Equipments.GetAll()
+                on
+                    relation.EquipmentId equals equip.Id
+                join
+                    eq_type in _unitOfWork.EquipmentTypes.GetAll()
+                on
+                    equip.EquipmentTypeId equals eq_type.Id
+                join
+                    emp in _unitOfWork.Employees.GetAll()
+                on
+                    relation.EmployeeId equals emp.EmployeeId
+                where
+                    emp.DepartmentId == departmentId
+                select new StructuredEquipmentDTO
+                {
+                    Id = equip.Id,
+                    EquipmentType = eq_type.Name,
+                    InventNumber = equip.InventNumber
+                }).ToList();
+        }
+
         public void Dispose()
         {
             _unitOfWork.Dispose();

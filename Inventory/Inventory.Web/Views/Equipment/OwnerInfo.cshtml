@@ -64,6 +64,8 @@
                 @Model.StartDate.ToString("dd.MM.yyyy")
             </div>
         </div>
+    @if (!Model.IsActual)
+    {
         <div class="end-date row item-info-row">
             <div class="col-md-6 item-info">
                 <b>@Html.DisplayNameFor(model => model.EndDate)</b>
@@ -72,6 +74,7 @@
                 @Model.EndDate.ToString("dd.MM.yyyy")
             </div>
         </div>
+    }
         <div class="is-actual row item-info-row">
             <div class="col-md-6 item-info">
                 <b>@Html.DisplayNameFor(model => model.IsActual)</b>
