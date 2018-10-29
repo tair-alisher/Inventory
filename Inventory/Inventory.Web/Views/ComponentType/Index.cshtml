@@ -12,27 +12,31 @@
     <a type="button" class="btn btn-primary" href="@Url.Action("Create", "ComponentType")"><i class="fa fa-plus"></i> Добавить новую запись</a>
 </p>
 <table class="table">
-    <tr>
-        <th>@Html.DisplayNameFor(model => model.Name)</th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+    <thead>
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-
-            <td>
-                <div class="btn-group float-right" role="group">
-                    <a class="btn btn-info" name="editButton" id="editButton" href="@Url.Action("Edit", "ComponentType", new { id = item.Id })"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"> Редактировать</i></a>
-                    <a class="btn btn-warning" name="detailsButton" id="detailsButton" href="@Url.Action("Details", "ComponentType", new { id = item.Id })"><i class="fa fa-eye" aria-hidden="true" title="Просмотреть" data-toggle="tooltip" data-placement="top"> Просмотреть</i></a>
-                    <a class="btn btn-danger delete-prompt" name="deleteButton" id="@item.Id"><i class="fa fa-trash" aria-hidden="true" title="Удалить" data-toggle="tooltip" data-placement="top"> Удалить</i></a>
-                </div>
-            </td>
+            <th>@Html.DisplayNameFor(model => model.Name)</th>
+            <th></th>
         </tr>
-    }
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr id="@item.Id">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+
+                <td>
+                    <div class="btn-group float-right" role="group">
+                        <a class="btn btn-info" name="editButton" id="editButton" href="@Url.Action("Edit", "ComponentType", new { id = item.Id })"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"> Редактировать</i></a>
+                        <a class="btn btn-warning" name="detailsButton" id="detailsButton" href="@Url.Action("Details", "ComponentType", new { id = item.Id })"><i class="fa fa-eye" aria-hidden="true" title="Просмотреть" data-toggle="tooltip" data-placement="top"> Просмотреть</i></a>
+                        <a class="btn btn-danger delete-prompt" name="deleteButton" id="@item.Id"><i class="fa fa-trash" aria-hidden="true" title="Удалить" data-toggle="tooltip" data-placement="top"> Удалить</i></a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>   
 </table>
 
 <!-- Bootstrap modal popup -->

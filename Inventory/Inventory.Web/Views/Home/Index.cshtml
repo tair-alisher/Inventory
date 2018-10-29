@@ -1,31 +1,80 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@model IEnumerable<Inventory.BLL.DTO.DivisionEquipmentDTO>
+
+@{
+    ViewBag.Title = "Главная";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+<div class="accordion" id="division-accordion">
+    @foreach (var division in Model)
+    {
+        if (division.Administrations.Any(a => a.Departments.Any(d => d.Equipments.Count() > 0)))
+        {
+            <div class="card">
+                <div class="card-header" id="division-@division.Divisionid">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#administrations-@division.Divisionid" aria-expanded="true" aria-controls="administrations-@division.Divisionid">
+                            @division.DivisionName (@division.Administrations.Sum(a => a.Departments.Select(d => d.Equipments.Count()).Sum()))
+                        </button>
+                    </h5>
+                </div>
+            </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
+            <div id="administrations-@division.Divisionid" class="collapse" aria-labelledby="division-@division.Divisionid" data-parent="#division-accordion">
+                <div class="card-body">
+                    <div class="accordion" id="administrations-accordion-@division.Divisionid">
+                        @foreach (var administration in division.Administrations)
+                        {
+                            if (administration.Departments.Any(d => d.Equipments.Count() > 0))
+                            {
+                                <div class="card">
+                                    <div class="card-header" id="administration-@administration.AdministrationId">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#departments-@administration.AdministrationId" aria-expanded="true" aria-controls="#department-@administration.AdministrationId">
+                                                @administration.AdministrationName (@administration.Departments.Select(d => d.Equipments.Count()).Sum())
+                                            </button>
+                                        </h5>
+                                    </div>
+                                </div>
+
+                                <div id="departments-@administration.AdministrationId" class="collapse" aria-labelledby="administration-@administration.AdministrationId" data-parent="#administrations-accordion-@division.Divisionid">
+                                    <div class="card-body">
+                                        <div class="accordion" id="departments-accordion-@administration.AdministrationId">
+                                            @foreach (var department in administration.Departments)
+                                            {
+                                                if (department.Equipments.Count() > 0)
+                                                {
+                                                    <div class="card">
+                                                        <div class="card-header" id="department-@department.DepartmentId">
+                                                            <h5 class="mb-0">
+                                                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#equipments-@department.DepartmentId" aria-expanded="true" aria-controls="equipments-@department.DepartmentId">
+                                                                    @department.DepartmentName (@department.Equipments.Count())
+                                                                </button>
+                                                            </h5>
+                                                        </div>
+                                                    </div>
+
+                                                    <div id="equipments-@department.DepartmentId" class="collapse" aria-labelledby="department-@department.DepartmentId" data-parent="#departments-accordion-@administration.AdministrationId">
+                                                        <div class="card-body">
+                                                            <div class="list-group list-group-flush">
+                                                                @foreach (var equipment in department.Equipments)
+                                                                {
+                                                                    <a href="@Url.Action("Details", "Equipment", new { id = equipment.Id })" class="list-group-item list-group-item-action" target="_blank">
+                                                                        @equipment.EquipmentType (@equipment.InventNumber)
+                                                                    </a>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    }
 </div>
