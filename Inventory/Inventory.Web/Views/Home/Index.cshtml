@@ -3,78 +3,115 @@
 @{
     ViewBag.Title = "Главная";
 }
+<div class="treeview">
+    <ul class="list-group">
+        <li>
+            @foreach (var division in Model)
+            {
+                if (division.Administrations.Any(a => a.Departments.Any(d => d.Equipments.Count() > 0)))
+                {
+                    <button class="btn btn-link text-dark" type="button" data-toggle="collapse" data-target="#administrations-@division.Divisionid" aria-expanded="true" aria-controls="administrations-@division.Divisionid">
+                        @division.DivisionName
+                        <span class="badge badge-pill badge-secondary">@division.Administrations.Sum(a => a.Departments.Select(d => d.Equipments.Count()).Sum())</span>
+                    </button>
 
-<div class="accordion" id="division-accordion">
-    @foreach (var division in Model)
-    {
-        if (division.Administrations.Any(a => a.Departments.Any(d => d.Equipments.Count() > 0)))
-        {
-            <div class="card">
-                <div class="card-header" id="division-@division.Divisionid">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#administrations-@division.Divisionid" aria-expanded="true" aria-controls="administrations-@division.Divisionid">
-                            @division.DivisionName (@division.Administrations.Sum(a => a.Departments.Select(d => d.Equipments.Count()).Sum()))
-                        </button>
-                    </h5>
-                </div>
-            </div>
-
-            <div id="administrations-@division.Divisionid" class="collapse" aria-labelledby="division-@division.Divisionid" data-parent="#division-accordion">
-                <div class="card-body">
-                    <div class="accordion" id="administrations-accordion-@division.Divisionid">
-                        @foreach (var administration in division.Administrations)
+                    @foreach (var administration in division.Administrations)
+                    {
+                        if (administration.Departments.Any(d => d.Equipments.Count() > 0))
                         {
-                            if (administration.Departments.Any(d => d.Equipments.Count() > 0))
-                            {
-                                <div class="card">
-                                    <div class="card-header" id="administration-@administration.AdministrationId">
-                                        <h5 class="mb-0">
-                                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#departments-@administration.AdministrationId" aria-expanded="true" aria-controls="#department-@administration.AdministrationId">
-                                                @administration.AdministrationName (@administration.Departments.Select(d => d.Equipments.Count()).Sum())
-                                            </button>
-                                        </h5>
-                                    </div>
-                                </div>
-
-                                <div id="departments-@administration.AdministrationId" class="collapse" aria-labelledby="administration-@administration.AdministrationId" data-parent="#administrations-accordion-@division.Divisionid">
-                                    <div class="card-body">
-                                        <div class="accordion" id="departments-accordion-@administration.AdministrationId">
-                                            @foreach (var department in administration.Departments)
-                                            {
-                                                if (department.Equipments.Count() > 0)
-                                                {
-                                                    <div class="card">
-                                                        <div class="card-header" id="department-@department.DepartmentId">
-                                                            <h5 class="mb-0">
-                                                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#equipments-@department.DepartmentId" aria-expanded="true" aria-controls="equipments-@department.DepartmentId">
-                                                                    @department.DepartmentName (@department.Equipments.Count())
-                                                                </button>
-                                                            </h5>
-                                                        </div>
-                                                    </div>
-
-                                                    <div id="equipments-@department.DepartmentId" class="collapse" aria-labelledby="department-@department.DepartmentId" data-parent="#departments-accordion-@administration.AdministrationId">
-                                                        <div class="card-body">
-                                                            <div class="list-group list-group-flush">
-                                                                @foreach (var equipment in department.Equipments)
-                                                                {
-                                                                    <a href="@Url.Action("Details", "Equipment", new { id = equipment.Id })" class="list-group-item list-group-item-action" target="_blank">
-                                                                        @equipment.EquipmentType (@equipment.InventNumber)
-                                                                    </a>
-                                                                }
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                }
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-                            }
+                            <button class="btn btn-link text-dark" type="button" data-toggle="collapse" data-target="#departments-@administration.AdministrationId" aria-expanded="true" aria-controls="#department-@administration.AdministrationId">
+                                @administration.AdministrationName
+                                <span class="badge badge-pill badge-secondary">@administration.Departments.Select(d => d.Equipments.Count()).Sum()</span>
+                            </button>
                         }
+                    }
+                    @foreach (var department in administration.Departments)
+                    {
+                        if (department.Equipments.Count() > 0)
+                        {
+
+                        }
+                    }
+                }
+            }
+        </li>
+    </ul>
+</div>
+@*<div class="accordion" id="division-accordion">
+        @foreach (var division in Model)
+        {
+            if (division.Administrations.Any(a => a.Departments.Any(d => d.Equipments.Count() > 0)))
+            {
+                <div class="card">
+                    <div class="card-header" id="division-@division.Divisionid">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link text-dark" type="button" data-toggle="collapse" data-target="#administrations-@division.Divisionid" aria-expanded="true" aria-controls="administrations-@division.Divisionid">
+                                @division.DivisionName
+                                <span class="badge badge-pill badge-secondary">@division.Administrations.Sum(a => a.Departments.Select(d => d.Equipments.Count()).Sum())</span>
+                            </button>
+                        </h5>
                     </div>
                 </div>
-            </div>
+
+                <div id="administrations-@division.Divisionid" class="collapse" aria-labelledby="division-@division.Divisionid" data-parent="#division-accordion">
+                    <div class="card-body">
+                        <div class="accordion" id="administrations-accordion-@division.Divisionid">
+                            @foreach (var administration in division.Administrations)
+                            {
+                                if (administration.Departments.Any(d => d.Equipments.Count() > 0))
+                                {
+                                    <div class="card">
+                                        <div class="card-header" id="administration-@administration.AdministrationId">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link text-dark" type="button" data-toggle="collapse" data-target="#departments-@administration.AdministrationId" aria-expanded="true" aria-controls="#department-@administration.AdministrationId">
+                                                    @administration.AdministrationName
+                                                    <span class="badge badge-pill badge-secondary">@administration.Departments.Select(d => d.Equipments.Count()).Sum()</span>
+                                                </button>
+                                            </h5>
+                                        </div>
+                                    </div>
+
+                                    <div id="departments-@administration.AdministrationId" class="collapse" aria-labelledby="administration-@administration.AdministrationId" data-parent="#administrations-accordion-@division.Divisionid">
+                                        <div class="card-body">
+                                            <div class="accordion" id="departments-accordion-@administration.AdministrationId">
+                                                @foreach (var department in administration.Departments)
+                                                {
+                                                    if (department.Equipments.Count() > 0)
+                                                    {
+                                                        <div class="card">
+                                                            <div class="card-header" id="department-@department.DepartmentId">
+                                                                <h5 class="mb-0">
+                                                                    <button class="btn btn-link text-dark" type="button" data-toggle="collapse" data-target="#equipments-@department.DepartmentId" aria-expanded="true" aria-controls="equipments-@department.DepartmentId">
+                                                                        @department.DepartmentName
+                                                                        <span class="badge badge-pill badge-secondary">@department.Equipments.Count()</span>
+                                                                    </button>
+                                                                </h5>
+                                                            </div>
+                                                        </div>
+
+                                                        <div id="equipments-@department.DepartmentId" class="collapse" aria-labelledby="department-@department.DepartmentId" data-parent="#departments-accordion-@administration.AdministrationId">
+                                                            <div class="card-body">
+                                                                <div class="list-group list-group-flush">
+                                                                    @foreach (var equipment in department.Equipments)
+                                                                    {
+                                                                    <a href="@Url.Action("Details", "Equipment", new { id = equipment.Id })" class="list-group-item list-group-item-action" target="_blank">
+                                                                        @equipment.EquipmentType (@equipment.InventNumber)
+                                                                        <span class="badge badge-pill badge-info" style="float:right;">Просмотреть</span>
+                                                                    </a>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
         }
-    }
-</div>
+    </div>*@
