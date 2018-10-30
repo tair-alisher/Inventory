@@ -9,58 +9,56 @@
     {
         if (division.Administrations.Any(a => a.Departments.Any(d => d.Equipments.Count() > 0)))
         {
-            <div class="card">
-                <div class="card-header" id="division-@division.Divisionid">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#administrations-@division.Divisionid" aria-expanded="true" aria-controls="administrations-@division.Divisionid">
-                            @division.DivisionName (@division.Administrations.Sum(a => a.Departments.Select(d => d.Equipments.Count()).Sum()))
-                        </button>
-                    </h5>
+            <div class="card custom-card-style">
+                <div class="card-header"  id="division-@division.Divisionid">
+                    <a href="#administrations-@division.Divisionid" class="card-link text-dark" data-toggle="collapse">
+                        @division.DivisionName
+                        <span class="badge badge-pill badge-secondary">@division.Administrations.Sum(a => a.Departments.Select(d => d.Equipments.Count()).Sum())</span>
+                    </a>
                 </div>
             </div>
 
             <div id="administrations-@division.Divisionid" class="collapse" aria-labelledby="division-@division.Divisionid" data-parent="#division-accordion">
-                <div class="card-body">
+                <div>
                     <div class="accordion" id="administrations-accordion-@division.Divisionid">
                         @foreach (var administration in division.Administrations)
                         {
                             if (administration.Departments.Any(d => d.Equipments.Count() > 0))
                             {
-                                <div class="card">
+                                <div class="card custom-card-style">
                                     <div class="card-header" id="administration-@administration.AdministrationId">
-                                        <h5 class="mb-0">
-                                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#departments-@administration.AdministrationId" aria-expanded="true" aria-controls="#department-@administration.AdministrationId">
-                                                @administration.AdministrationName (@administration.Departments.Select(d => d.Equipments.Count()).Sum())
-                                            </button>
-                                        </h5>
+                                        <a href="#departments-@administration.AdministrationId" class="card-link text-dark ml-2" data-toggle="collapse">
+                                            <small class="text-muted">Орган управления:</small>  @administration.AdministrationName
+                                            <span class="badge badge-pill badge-secondary">@administration.Departments.Select(d => d.Equipments.Count()).Sum()</span>
+                                        </a>
                                     </div>
                                 </div>
 
                                 <div id="departments-@administration.AdministrationId" class="collapse" aria-labelledby="administration-@administration.AdministrationId" data-parent="#administrations-accordion-@division.Divisionid">
-                                    <div class="card-body">
+                                    <div>
                                         <div class="accordion" id="departments-accordion-@administration.AdministrationId">
                                             @foreach (var department in administration.Departments)
                                             {
                                                 if (department.Equipments.Count() > 0)
                                                 {
-                                                    <div class="card">
+                                                    <div class="card custom-card-style">
                                                         <div class="card-header" id="department-@department.DepartmentId">
-                                                            <h5 class="mb-0">
-                                                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#equipments-@department.DepartmentId" aria-expanded="true" aria-controls="equipments-@department.DepartmentId">
-                                                                    @department.DepartmentName (@department.Equipments.Count())
-                                                                </button>
-                                                            </h5>
+                                                            <a href="#equipments-@department.DepartmentId" class="card-link text-dark ml-3" data-toggle="collapse">
+                                                                <small class="text-muted">Отдел:</small>   @department.DepartmentName
+                                                                <span class="badge badge-pill badge-secondary">@department.Equipments.Count()</span>
+                                                            </a>
                                                         </div>
                                                     </div>
 
                                                     <div id="equipments-@department.DepartmentId" class="collapse" aria-labelledby="department-@department.DepartmentId" data-parent="#departments-accordion-@administration.AdministrationId">
-                                                        <div class="card-body">
+                                                        <div>
                                                             <div class="list-group list-group-flush">
                                                                 @foreach (var equipment in department.Equipments)
                                                                 {
-                                                                    <a href="@Url.Action("Details", "Equipment", new { id = equipment.Id })" class="list-group-item list-group-item-action" target="_blank">
-                                                                        @equipment.EquipmentType (@equipment.InventNumber)
-                                                                    </a>
+                                                                <a href="@Url.Action("Details", "Equipment", new { id = equipment.Id })" class="list-group-item ml-4"style="overflow: hidden;" target="_blank">
+                                                                    @equipment.EquipmentType (@equipment.InventNumber) 
+                                                                    <span class="badge badge-pill badge-info" style="float:right;">Просмотреть</span>
+                                                                </a>
                                                                 }
                                                             </div>
                                                         </div>

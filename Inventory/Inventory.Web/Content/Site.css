@@ -36,3 +36,7 @@ select:invalid[multiple] {
 .sub-element {
     margin-left: 10px;
 }
+
+.custom-card-style {
+    border-radius: 0px !important;
+}
