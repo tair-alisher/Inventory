@@ -16,18 +16,15 @@ namespace Inventory.Web.Controllers
         private IComponentService ComponentService;
         private IComponentTypeService ComponentTypeService;
         private IEquipmentService EquipmentService;
-        private IEquipmentComponentRelationService EquipmentComponentRelationService;
         public ComponentController(
             IComponentService componentService,
             IComponentTypeService componentTypeService,
-            IEquipmentService equipmentService,
-            IEquipmentComponentRelationService equipmentComponentRelationService
+            IEquipmentService equipmentService
             )
         {
             ComponentService = componentService;
             ComponentTypeService = componentTypeService;
             EquipmentService = equipmentService;
-            EquipmentComponentRelationService = equipmentComponentRelationService;
         }
 
         public ActionResult Index()
@@ -124,8 +121,9 @@ namespace Inventory.Web.Controllers
             return View(componentVM);
         }
 
-        [ActionName("Delete")]
-        public ActionResult DeleteConfirmed(Guid id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(Guid id)
         {
             try { ComponentService.Delete(id); }
             catch (NotFoundException) { return HttpNotFound(); }

@@ -65,9 +65,10 @@ namespace Inventory.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="EquipmentTypeId,InventNumber,QRCode,Price,Supplier")] EquipmentVM equipmentVM)
+        public ActionResult Create([Bind(Include = "EquipmentTypeId,InventNumber,QRCode,Price,Supplier")] EquipmentVM equipmentVM)
         {
-            if (ModelState.IsValid) {
+            if (ModelState.IsValid)
+            {
                 EquipmentDTO equipmentDTO = WebEquipmentMapper.VmToDto(equipmentVM);
                 Guid equipmentId = EquipmentService.AddAndGetId(equipmentDTO);
 
@@ -113,6 +114,8 @@ namespace Inventory.Web.Controllers
                     .VmToDto(equipmentVM);
                 EquipmentService.Update(equipmentDTO);
             }
+            else
+                ModelState.AddModelError(null, "Что-то пошло не так. Не удалось сохранить изменения.");
 
             EquipmentDTO dto = EquipmentService.Get(equipmentVM.Id);
             equipmentVM = WebEquipmentMapper.DtoToVm(dto);
@@ -131,11 +134,29 @@ namespace Inventory.Web.Controllers
             if (equipmentId == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            IEnumerable<OwnerInfoDTO> ownerHistory = EquipmentService.GetOwnerHistory((Guid)equipmentId);
-            ViewBag.OwnerHistory = ownerHistory.ToList();
+            ViewBag.EquipmentId = equipmentId;
+            IEnumerable<OwnerInfoDTO> ownerHistoryDTO = EquipmentService
+                .GetOwnerHistory((Guid)equipmentId)
+                .ToList();
+            List<OwnerInfoVM> ownerHistoryVM = WebOwnerInfoMapper
+                .DtoToVm(ownerHistoryDTO)
+                .ToList();
+
+            return View(ownerHistoryVM);
+        }
+
+        public ActionResult OwnerInfo(Guid? equipmentId, int employeeId)
+        {
+            if (equipmentId == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
             ViewBag.EquipmentId = equipmentId;
 
-            return View();
+            OwnerInfoDTO ownerInfoDTO = EquipmentService
+                .GetOwnerInfo((Guid)equipmentId, employeeId);
+            OwnerInfoVM ownerInfoVM = WebOwnerInfoMapper.DtoToVm(ownerInfoDTO);
+
+            return View(ownerInfoVM);
         }
 
         public ActionResult Components(Guid? equipmentId)
@@ -154,10 +175,19 @@ namespace Inventory.Web.Controllers
             return View(componentVMs);
         }
 
-        [ActionName("Delete")]
-        public ActionResult DeleteConfirmed(Guid id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(Guid id)
         {
-            try { EquipmentService.Delete(id); }
+            try
+            {
+                string imagePath = Request.MapPath($"/Content/Images/{id}.jpg");
+                if (System.IO.File.Exists(imagePath))
+                {
+                    System.IO.File.Delete(imagePath);
+                }
+                EquipmentService.Delete(id);
+            }
             catch (NotFoundException) { return HttpNotFound(); }
             catch (HasRelationsException) { return Content("Удаление невозможно."); }
 

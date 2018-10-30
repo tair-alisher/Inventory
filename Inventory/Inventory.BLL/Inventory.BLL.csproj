@@ -36,14 +36,25 @@
     <Reference Include="CatalogEntities">
       <HintPath>..\CatalogEntities.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.4\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -51,6 +62,12 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="zxing, Version=0.16.4.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.4\lib\net45\zxing.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing.presentation, Version=0.16.4.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.4\lib\net45\zxing.presentation.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTO\AdministrationDTO.cs" />
@@ -68,6 +85,7 @@
     <Compile Include="DTO\PositionDTO.cs" />
     <Compile Include="DTO\RepairPlaceDTO.cs" />
     <Compile Include="DTO\StatusTypeDTO.cs" />
+    <Compile Include="DTO\StructuredEquipmentDTO.cs" />
     <Compile Include="Infrastructure\BLLComponentMapper.cs" />
     <Compile Include="Infrastructure\BLLComponentTypeMapper.cs" />
     <Compile Include="Infrastructure\BLLEmployeeMapper.cs" />
@@ -75,6 +93,7 @@
     <Compile Include="Infrastructure\BLLEquipmentEmployeeMapper.cs" />
     <Compile Include="Infrastructure\BLLEquipmentMapper.cs" />
     <Compile Include="Infrastructure\BLLEquipmentTypeMapper.cs" />
+    <Compile Include="Infrastructure\BLLHistoryMapper.cs" />
     <Compile Include="Infrastructure\BLLRepairPlaceMapper.cs" />
     <Compile Include="Infrastructure\BLLStatusTypeMapper.cs" />
     <Compile Include="Infrastructure\HasRelationsException.cs" />
@@ -105,6 +124,7 @@
     <Compile Include="Services\EquipmentEmployeeRelationService.cs" />
     <Compile Include="Services\EquipmentService.cs" />
     <Compile Include="Services\EquipmentTypeService.cs" />
+    <Compile Include="Services\HistoryService.cs" />
     <Compile Include="Services\RepairPlaceService.cs" />
     <Compile Include="Services\StatusTypeService.cs" />
   </ItemGroup>
@@ -122,6 +142,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

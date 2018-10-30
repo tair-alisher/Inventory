@@ -329,5 +329,6 @@ ASALocalRun/
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
 
+Inventory/Inventory.Web/Content/Images/
 Inventory/Inventory.Web/App_Data/
 Inventory/Inventory.Web/Web.config

@@ -13,3 +13,26 @@
     margin-left: 10px;
     border-bottom: 1px dashed #808080;
 }
+
+.chosen-container-single .chosen-single {
+    border-radius: 0.25rem;
+    color: #495057 !important;
+}
+
+.qrCodeField {
+    width: 90%;
+}
+select:invalid {
+    height: 0px !important;
+    opacity: 0 !important;
+    position: absolute !important;
+    display: flex !important;
+}
+
+select:invalid[multiple] {
+    margin-top: 15px !important;
+}
+
+.sub-element {
+    margin-left: 10px;
+}

@@ -141,6 +141,12 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="zxing, Version=0.16.4.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.4\lib\net45\zxing.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing.presentation, Version=0.16.4.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.4\lib\net45\zxing.presentation.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Diagnostics.DiagnosticSource">
@@ -182,6 +188,7 @@
     <Compile Include="Controllers\ComponentTypeController.cs" />
     <Compile Include="Controllers\EquipmentController.cs" />
     <Compile Include="Controllers\EquipmentTypeController.cs" />
+    <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RepairPlaceController.cs" />
     <Compile Include="Controllers\RelationController.cs" />
@@ -192,9 +199,11 @@
     <Compile Include="Models\ComponentTypeVM.cs" />
     <Compile Include="Models\ComponentVM.cs" />
     <Compile Include="Models\EquipmentEmployeeRelationVM.cs" />
+    <Compile Include="Models\EquipmentSelectModel.cs" />
     <Compile Include="Models\EquipmentTypeVM.cs" />
     <Compile Include="Models\EquipmentVM.cs" />
     <Compile Include="Models\HistoryVM.cs" />
+    <Compile Include="Models\OwnerInfoVM.cs" />
     <Compile Include="Models\RepairPlaceVM.cs" />
     <Compile Include="Models\StatusTypeVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -203,7 +212,9 @@
     <Compile Include="Util\WebEquipmentEmployeeMapper.cs" />
     <Compile Include="Util\WebEquipmentMapper.cs" />
     <Compile Include="Util\WebEquipmentTypeMapper.cs" />
+    <Compile Include="Util\WebHistoryMapper.cs" />
     <Compile Include="Util\WebModule.cs" />
+    <Compile Include="Util\WebOwnerInfoMapper.cs" />
     <Compile Include="Util\WebRepairPlaceMapper.cs" />
     <Compile Include="Util\WebStatusTypeMapper.cs" />
   </ItemGroup>
@@ -214,6 +225,8 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Chosen\chosen-sprite.png" />
+    <Content Include="Content\Chosen\chosen.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -225,6 +238,7 @@
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\chosen.jquery.min.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -254,6 +268,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\notify.min.js" />
     <Content Include="Scripts\popper-utils.js" />
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
@@ -289,10 +304,6 @@
     <Content Include="Views\Component\Details.cshtml" />
     <Content Include="Views\Equipment\FindEmployees.cshtml" />
     <Content Include="Views\Equipment\Edit.cshtml" />
-    <Content Include="Views\StatusType\Index.cshtml" />
-    <Content Include="Views\StatusType\Details.cshtml" />
-    <Content Include="Views\StatusType\Create.cshtml" />
-    <Content Include="Views\StatusType\Edit.cshtml" />
     <Content Include="Views\Relation\EditEquipmentEmployeeRelation.cshtml" />
     <Content Include="Views\Component\Create.cshtml" />
     <Content Include="Views\Component\Edit.cshtml" />
@@ -316,6 +327,11 @@
     <Content Include="Views\RepairPlace\Create.cshtml" />
     <Content Include="Views\RepairPlace\Edit.cshtml" />
     <Content Include="Views\Component\FindComponents.cshtml" />
+    <Content Include="Views\History\Index.cshtml" />
+    <Content Include="Views\History\Details.cshtml" />
+    <Content Include="Views\History\Create.cshtml" />
+    <Content Include="Views\History\Edit.cshtml" />
+    <Content Include="Views\Equipment\OwnerInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

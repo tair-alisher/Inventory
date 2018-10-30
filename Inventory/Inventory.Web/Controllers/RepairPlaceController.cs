@@ -92,23 +92,9 @@ namespace Inventory.Web.Controllers
             return View();
         }
 
-        public ActionResult Delete(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            RepairPlaceDTO repairPlaceDTO = RepairPlaceService.Get((Guid)id);
-            if (repairPlaceDTO == null)
-                return HttpNotFound();
-
-            RepairPlaceVM repairPlaceVM = WebRepairPlaceMapper.DtoToVm(repairPlaceDTO);
-            return View(repairPlaceVM);
-        }
-
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(Guid id)
+        public ActionResult Delete(Guid id)
         {
             try
             {
