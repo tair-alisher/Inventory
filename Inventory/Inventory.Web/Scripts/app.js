@@ -248,11 +248,11 @@ function modalRemovalWindow(url) {
                             $('.delete-cancel').html('Закрыть');
                             $('.success-message').html('Удаление невозможно, у записи есть связи!');
                         }
-                        else if (data) {                                                    
+                        else if (data) {
                             $("#" + elementId).remove();
                             $('#myModal').modal('hide');
                             $.notify("Запись удалена успешно!", "success");
-                        }                       
+                        }
                     }, error: function (err) {
                         if (!$('.modal-header').hasClass('alert-danger')) {
                             $('.modal-header').removeClass('alert-success').addClass('alert-danger');
@@ -265,7 +265,7 @@ function modalRemovalWindow(url) {
         });
         //function to reset bootstrap modal popups
         $("#myModal").on("hidden.bs.modal", function () {
-            $('.delete-confirm').css('display', 'inline-block');      
+            $('.delete-confirm').css('display', 'inline-block');
             $('.delete-cancel').html('Нет');
             $('.success-message').html('').html('Вы действительно хотите удалить запись?');
         });
