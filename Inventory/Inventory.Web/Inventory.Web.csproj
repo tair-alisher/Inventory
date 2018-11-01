@@ -184,6 +184,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ComponentController.cs" />
     <Compile Include="Controllers\ComponentTypeController.cs" />
     <Compile Include="Controllers\EquipmentController.cs" />
@@ -196,6 +197,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Account\RegisterModel.cs" />
+    <Compile Include="Models\Account\UserVM.cs" />
     <Compile Include="Models\ComponentTypeVM.cs" />
     <Compile Include="Models\ComponentVM.cs" />
     <Compile Include="Models\EquipmentEmployeeRelationVM.cs" />
@@ -217,6 +220,7 @@
     <Compile Include="Util\WebOwnerInfoMapper.cs" />
     <Compile Include="Util\WebRepairPlaceMapper.cs" />
     <Compile Include="Util\WebStatusTypeMapper.cs" />
+    <Compile Include="Util\WebUserMapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
@@ -345,6 +349,8 @@
     <Content Include="Views\History\Create.cshtml" />
     <Content Include="Views\History\Edit.cshtml" />
     <Content Include="Views\Equipment\OwnerInfo.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

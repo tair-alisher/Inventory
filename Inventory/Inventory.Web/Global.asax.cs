@@ -20,7 +20,8 @@ namespace Inventory.Web
 
             NinjectModule webModule = new WebModule();
             NinjectModule serviceModule = new ServiceModule("DefaultConnection");
-            var kernel = new StandardKernel(webModule, serviceModule);
+            NinjectModule accountModule = new AccountModule("AccountConnection");
+            var kernel = new StandardKernel(webModule, serviceModule, accountModule);
             DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));
         }
     }
