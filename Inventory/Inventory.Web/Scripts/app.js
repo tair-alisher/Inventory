@@ -38,10 +38,6 @@ function attachEmployee(employeeId) {
 
     var employeeRow = $("#" + employeeId);
     var name = employeeRow.find("td.name")[0].innerText;
-    var room = employeeRow.find("td.room")[0].innerText;
-    var position = employeeRow.find("td.position")[0].innerText;
-    var department = employeeRow.find("td.department")[0].innerText;
-    var administration = employeeRow.find("td.administration")[0].innerText;
 
     var newTr = document.createElement("tr");
     newTr.id = "pinned-" + employeeId;
@@ -63,10 +59,6 @@ function attachEmployee(employeeId) {
     buttonTd.appendChild(button);
 
     var nameTd = createTd("name", name);
-    var roomTd = createTd("room", room);
-    var positionTd = createTd("position", position);
-    var departmentTd = createTd("department", department);
-    var administrationTd = createTd("administration", administration);
 
     var label = document.createElement("label");
 
@@ -85,10 +77,6 @@ function attachEmployee(employeeId) {
 
     newTr.appendChild(buttonTd);
     newTr.appendChild(nameTd);
-    newTr.appendChild(roomTd);
-    newTr.appendChild(positionTd);
-    newTr.appendChild(departmentTd);
-    newTr.appendChild(administrationTd);
     newTr.appendChild(ownerTd);
     newTr.appendChild(emptyTd);
 
@@ -121,7 +109,7 @@ function searchComponents(type) {
             $("#found-items-area").append(html);
         },
         error: function (XMLHttpRequest) {
-            console.log(XMLHttpReqeust);
+            console.log(XMLHttpRequest);
         }
     });
     return false;

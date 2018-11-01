@@ -335,7 +335,7 @@ namespace Inventory.BLL.Services
                 on
                     relation.EmployeeId equals emp.EmployeeId
                 where
-                    emp.DepartmentId == departmentId
+                    emp.DepartmentId == departmentId && relation.IsOwner == true
                 select new StructuredEquipmentDTO
                 {
                     Id = equip.Id,
