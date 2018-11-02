@@ -10,7 +10,7 @@ namespace Inventory.DAL.Repositories
     class PartialRepository<T> : IPartialRepository<T> where T : class
     {
         private InventoryContext InventContext;
-        private AccountContext AccountContext;
+        private IdentityContext AccountContext;
         private DbSet<T> DbSet;
 
         public PartialRepository(InventoryContext context)
@@ -19,7 +19,7 @@ namespace Inventory.DAL.Repositories
             DbSet = context.Set<T>();
         }
 
-        public PartialRepository(AccountContext context)
+        public PartialRepository(IdentityContext context)
         {
             AccountContext = context;
             DbSet = context.Set<T>();

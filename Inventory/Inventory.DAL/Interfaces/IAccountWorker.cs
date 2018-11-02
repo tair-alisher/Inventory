@@ -1,4 +1,4 @@
-﻿using Inventory.DAL.Repositories;
+﻿using Inventory.DAL.Identity;
 using System;
 using System.Threading.Tasks;
 
@@ -6,8 +6,8 @@ namespace Inventory.DAL.Interfaces
 {
     public interface IAccountWorker : IDisposable
     {
-        ApplicationUserManager ApplicationUserManager { get; }
-        ApplicationRoleManager ApplicationRoleManager { get; }
+        ApplicationUserManager UserManager { get; }
+        ApplicationRoleManager RoleManager { get; }
         Task SaveAsync();
         void Save();
     }

@@ -1,5 +1,6 @@
 ﻿using Inventory.DAL.EF;
 using Inventory.DAL.Entities;
+using Inventory.DAL.Identity;
 using Inventory.DAL.Interfaces;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
@@ -9,31 +10,26 @@ namespace Inventory.DAL.Repositories
 {
     public class AccountWorker : IAccountWorker
     {
-        private AccountContext context;
+        private IdentityContext context;
+
         private ApplicationUserManager userManager;
         private ApplicationRoleManager roleManager;
 
         public AccountWorker(string connectionString)
         {
-            context = new AccountContext(connectionString);
-            userManager = new ApplicationUserManager(new UserStore<IdentityUser>(context));
+            context = new IdentityContext(connectionString);
+            userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(context));
             roleManager = new ApplicationRoleManager(new RoleStore<ApplicationRole>(context));
         }
 
-        public ApplicationUserManager ApplicationUserManager
+        public ApplicationUserManager UserManager
         {
-            get
-            {
-                return userManager;
-            }
+            get { return userManager; }
         }
 
-        public ApplicationRoleManager ApplicationRoleManager
+        public ApplicationRoleManager RoleManager
         {
-            get
-            {
-                return roleManager;
-            }
+            get { return roleManager; }
         }
 
         public void Save()
@@ -52,7 +48,11 @@ namespace Inventory.DAL.Repositories
             if (!this.disposed)
             {
                 if (disposing)
+                {
+                    userManager.Dispose();
+                    roleManager.Dispose();
                     context.Dispose();
+                }
                 this.disposed = true;
             }
         }
