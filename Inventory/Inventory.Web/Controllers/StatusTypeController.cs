@@ -3,6 +3,7 @@ using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.Web.Models;
 using Inventory.Web.Util;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,15 +21,30 @@ namespace Inventory.Web.Controllers
             StatusTypeService = statusTypeService;
         }
 
+        public ActionResult AjaxStatusTypeList(int? page)
+        {
+            int pageSize = 1;
+            int pageNumber = (page ?? 1);
+            IEnumerable<StatusTypeDTO> statusTypeDTOs = StatusTypeService
+                .GetAll()
+                .ToList();
+            IEnumerable<StatusTypeVM> statusTypeVMs = WebStatusTypeMapper
+                .DtoToVm(statusTypeDTOs);
+            return PartialView(statusTypeVMs.OrderBy(s => s.Name).ToPagedList(pageNumber, pageSize));
+        }
+
         // GET: StatusType
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
             IEnumerable<StatusTypeDTO> statusTypeDTOs = StatusTypeService
                 .GetAll()
                 .ToList();
             IEnumerable<StatusTypeVM> statusTypeVMs = WebStatusTypeMapper
                 .DtoToVm(statusTypeDTOs);
-            return View(statusTypeVMs);
+
+            int pageSize = 1;
+            int pageNumber = (page ?? 1);
+            return View(statusTypeVMs.OrderBy(s => s.Name).ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult Details(Guid? id)

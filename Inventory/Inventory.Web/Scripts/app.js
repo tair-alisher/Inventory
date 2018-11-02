@@ -227,12 +227,12 @@ function detachItem(id) {
 function modalRemovalWindow(url) {
     $(document).ready(function () {
         var elementId;
-        $('.delete-prompt').click(function () {
+        $('.delete-prompt').on('click',function () {
             elementId = $(this).attr('id');
             $('#myModal').modal('show');
         });
 
-        $('.delete-confirm').click(function () {
+        $('.delete-confirm').on('click', function () {
             var token = $('input[name="__RequestVerificationToken"]').val();
             if (elementId != '') {
                 $.ajax({
@@ -252,6 +252,7 @@ function modalRemovalWindow(url) {
                             $("#" + elementId).remove();
                             $('#myModal').modal('hide');
                             $.notify("Запись удалена успешно!", "success");
+                            $('.pagination li:nth-child(2)>a').click();
                         }
                     }, error: function (err) {
                         if (!$('.modal-header').hasClass('alert-danger')) {
@@ -270,4 +271,30 @@ function modalRemovalWindow(url) {
             $('.success-message').html('').html('Вы действительно хотите удалить запись?');
         });
     });
+}
+
+function hideAccordion() {
+    $("#accordion").hide();
+}
+
+function removeListAndPagination() {
+    $("#listTable").remove();
+    $("#paginationToDelete").remove();
+}
+
+
+function toPrevMain(from = "") {
+    if (from == "list") {
+        $("#employee-list").empty();
+    } else if (from == "admin") {
+        $("#name").val("");
+        $("#position-select-list").val("");
+        $("#department-select-list").val("");
+        $("#administration-select-list").val("");
+        $("#division-select-list").val("");
+        $("#results").empty();
+    } else {
+        $("#results").empty();
+    }
+    $("#accordion").show();
 }

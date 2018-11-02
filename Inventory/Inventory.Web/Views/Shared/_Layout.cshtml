@@ -8,6 +8,7 @@
     <link href="~/Content/Chosen/chosen.min.css" rel="stylesheet" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
@@ -73,12 +74,15 @@
         </footer>
     </div>
 
-    <script src="~/Scripts/app.js"></script>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
 
+    <script src="~/Scripts/app.js"></script>
     <script src="~/Scripts/chosen.jquery.min.js"></script>
     <script src="~/Scripts/notify.min.js"></script>
+    <script src="~/Scripts/pagination.js"></script>
+
     @RenderSection("scripts", required: false)
 </body>
 </html>
