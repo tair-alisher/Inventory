@@ -20,7 +20,7 @@ namespace Inventory.BLL.Services
         public async Task<bool> CreateUser(UserDTO userDTO, string role = null)
         {
             ApplicationUser user = await worker.UserManager.FindByEmailAsync(userDTO.UserName);
-            var result;
+            IdentityResult result;
             if (user == null)
             {
                 user = new ApplicationUser { UserName = userDTO.UserName, Email = userDTO.Email };

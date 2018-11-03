@@ -24,12 +24,18 @@ namespace Inventory.DAL.Repositories
 
         public ApplicationUserManager UserManager
         {
-            get { return userManager; }
+            get
+            {
+                return userManager;
+            }
         }
 
         public ApplicationRoleManager RoleManager
         {
-            get { return roleManager; }
+            get
+            {
+                return roleManager;
+            }
         }
 
         public void Save()
@@ -49,8 +55,8 @@ namespace Inventory.DAL.Repositories
             {
                 if (disposing)
                 {
-                    userManager.Dispose();
-                    roleManager.Dispose();
+                    //userManager.Dispose();
+                    //roleManager.Dispose();
                     context.Dispose();
                 }
                 this.disposed = true;
