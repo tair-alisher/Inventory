@@ -1,7 +1,9 @@
 ﻿using Inventory.BLL.DTO;
 using Inventory.BLL.Interfaces;
+using Inventory.BLL.Infrastructure;
 using Inventory.Web.Models.Account;
 using Inventory.Web.Util;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -45,12 +47,19 @@ namespace Inventory.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                string role = Request.Form["Role"];
-                bool success = await AccountService.CreateUser(new UserDTO { UserName = model.UserName, Password = model.Password }, role);
-                if (success)
+                try
+                {
+                    bool success = await AccountService.CreateUser(new UserDTO { UserName = model.UserName, Email = model.Email, Password = model.Password, Role = model.Role });
                     return RedirectToAction("Index", "Home");
-                else
-                    ModelState.AddModelError("", "Что-то пошло не так. Попробуйте еще раз.");
+                }
+                catch (UserAlreadyExistsException)
+                {
+                    ModelState.AddModelError("UserName", $"Пользователь с логином {model.UserName} уже существует.");
+                }
+                catch (Exception)
+                {
+                    ModelState.AddModelError("", "Произошла ошибка. Попробуйте еще раз.");
+                }
             }
 
             return View(model);

@@ -11,25 +11,36 @@ namespace Inventory.BLL.Services
 {
     public class AccountService : IAccountService
     {
+        private const string DEFAULT_ROLE = "user";
+
         private IAccountWorker worker { get; set; }
         public AccountService(IAccountWorker worker)
         {
             this.worker = worker;
         }
 
-        public async Task<bool> CreateUser(UserDTO userDTO, string role = null)
+        public async Task<bool> CreateUser(UserDTO userDTO)
         {
             ApplicationUser user = await worker.UserManager.FindByEmailAsync(userDTO.UserName);
-            IdentityResult result;
             if (user == null)
             {
                 user = new ApplicationUser { UserName = userDTO.UserName, Email = userDTO.Email };
                 var result = await worker.UserManager.CreateAsync(user, userDTO.Password);
-                await worker.UserManager.addToRoleAsync(user.Id, userDTO.Role);
-                await worker.SaveAsync();
+                if (result.Succeeded)
+                {
+                    await worker.UserManager.AddToRoleAsync(user.Id, (userDTO.Role ?? DEFAULT_ROLE));
+                    await worker.SaveAsync();
+                }
+                else
+                {
+                    if (result.Errors.Contains($"Name {user.UserName} is already taken."))
+                        throw new UserAlreadyExistsException();
+                    else if (result.Errors.Count() > 0)
+                        throw new System.Exception("Something went wrong.");
+                }
             }
 
-            return result.Succeeded;
+            return true;
         }
 
         public IEnumerable<UserDTO> GetAllUsers()
