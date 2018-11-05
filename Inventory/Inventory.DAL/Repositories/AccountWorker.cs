@@ -17,7 +17,7 @@ namespace Inventory.DAL.Repositories
         private ApplicationRoleManager roleManager;
         PasswordValidator passwordValidator = new PasswordValidator
         {
-            RequiredLength = 6,
+            RequiredLength = 8,
             RequireNonLetterOrDigit = true,
             RequireDigit = true,
             RequireLowercase = true

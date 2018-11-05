@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTO\AdministrationDTO.cs" />
+    <Compile Include="DTO\ChangePasswordDTO.cs" />
     <Compile Include="DTO\ComponentDTO.cs" />
     <Compile Include="DTO\ComponentTypeDTO.cs" />
     <Compile Include="DTO\DepartmentDTO.cs" />
@@ -110,6 +111,8 @@
     <Compile Include="Infrastructure\BLLStatusTypeMapper.cs" />
     <Compile Include="Infrastructure\BLLUserMapper.cs" />
     <Compile Include="Infrastructure\HasRelationsException.cs" />
+    <Compile Include="Infrastructure\InsecurePasswordException.cs" />
+    <Compile Include="Infrastructure\OldPasswordIsWrongException.cs" />
     <Compile Include="Infrastructure\UserAlreadyExistsException.cs" />
     <Compile Include="Interfaces\IAccountService.cs" />
     <Compile Include="Infrastructure\NotFoundException.cs" />
