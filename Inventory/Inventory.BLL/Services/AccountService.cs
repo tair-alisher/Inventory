@@ -92,12 +92,14 @@ namespace Inventory.BLL.Services
             var oldPasswordConfirmation = await worker.UserManager.CheckPasswordAsync(user, changePasswordDTO.OldPassword);
             if (!oldPasswordConfirmation)
                 throw new OldPasswordIsWrongException();
-            await worker.UserManager.ChangePasswordAsync(
+
+            IdentityResult result = await worker.UserManager.ChangePasswordAsync(
                 changePasswordDTO.UserId,
                 changePasswordDTO.OldPassword,
                 changePasswordDTO.NewPassword);
 
-            IIdentityValidator<string> passwordIsValid = worker.UserManager.PasswordValidator;
+            if (result.Errors.Any(error => error.Contains("Password")))
+                throw new InsecurePasswordException();
 
             await worker.SaveAsync();
         }

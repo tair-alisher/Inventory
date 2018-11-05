@@ -78,7 +78,7 @@ namespace Inventory.Web.Controllers
                 }
                 catch (InsecurePasswordException)
                 {
-                    ModelState.AddModelError("Password", "пароль должен содержать 8 знаков, включая строчные буквы, цифры и специальный символ.");
+                    ModelState.AddModelError("Password", "Пароль должен содержать 8 знаков, включая строчные буквы, цифры и специальный символ.");
                 }
                 catch (Exception)
                 {
@@ -199,6 +199,10 @@ namespace Inventory.Web.Controllers
                 catch (OldPasswordIsWrongException)
                 {
                     ModelState.AddModelError("OldPassword", "Пароль неверн.");
+                }
+                catch (InsecurePasswordException)
+                {
+                    ModelState.AddModelError("NewPassword", "Пароль должен содержать 8 знаков, включая строчные буквы, цифры и специальный символ.");
                 }
                 catch (Exception)
                 {

@@ -15,7 +15,7 @@ namespace Inventory.Web.Models.Account
         public string NewPassword { get; set; }
 
         [Required]
-        [Compare("Password", ErrorMessage = "Пароли не совпадают")]
+        [Compare("NewPassword", ErrorMessage = "Пароли не совпадают")]
         [DataType(DataType.Password)]
         [Display(Name = "Подтвердите новый пароль")]
         public string NewPasswordConfirm { get; set; }
