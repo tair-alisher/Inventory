@@ -83,6 +83,7 @@
     <Compile Include="Entities\ApplicationUser.cs" />
     <Compile Include="Identity\ApplicationRoleManager.cs" />
     <Compile Include="Identity\ApplicationUserManager.cs" />
+    <Compile Include="Identity\AppUserValidator.cs" />
     <Compile Include="Interfaces\IAccountWorker.cs" />
     <Compile Include="Interfaces\IPartialRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />

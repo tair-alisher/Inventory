@@ -2,6 +2,7 @@
 using Inventory.DAL.Entities;
 using Inventory.DAL.Identity;
 using Inventory.DAL.Interfaces;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Threading.Tasks;
@@ -14,12 +15,22 @@ namespace Inventory.DAL.Repositories
 
         private ApplicationUserManager userManager;
         private ApplicationRoleManager roleManager;
+        PasswordValidator passwordValidator = new PasswordValidator
+        {
+            RequiredLength = 6,
+            RequireNonLetterOrDigit = true,
+            RequireDigit = true,
+            RequireLowercase = true
+        };
 
         public AccountWorker(string connectionString)
         {
             context = new IdentityContext(connectionString);
             userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(context));
             roleManager = new ApplicationRoleManager(new RoleStore<ApplicationRole>(context));
+
+            userManager.PasswordValidator = passwordValidator;
+            userManager.UserValidator = new AppUserValidator(userManager);
         }
 
         public ApplicationUserManager UserManager

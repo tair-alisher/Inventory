@@ -6,7 +6,8 @@ namespace Inventory.BLL.Interfaces
 {
     public interface IAccountService
     {
-        Task<bool> CreateUser(UserDTO userDTO);
+        Task CreateUser(UserDTO userDTO);
+        Task AuthenticateUser(UserDTO userDTO);
         IEnumerable<UserDTO> GetAllUsers();
         IEnumerable<RoleDTO> GetAllRoles();
     }

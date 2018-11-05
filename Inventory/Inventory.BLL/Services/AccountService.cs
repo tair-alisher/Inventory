@@ -19,7 +19,7 @@ namespace Inventory.BLL.Services
             this.worker = worker;
         }
 
-        public async Task<bool> CreateUser(UserDTO userDTO)
+        public async Task CreateUser(UserDTO userDTO)
         {
             ApplicationUser user = await worker.UserManager.FindByEmailAsync(userDTO.UserName);
             if (user == null)
@@ -39,8 +39,11 @@ namespace Inventory.BLL.Services
                         throw new System.Exception("Something went wrong.");
                 }
             }
+        }
 
-            return true;
+        public async Task AuthenticateUser(UserDTO userDTO)
+        {
+            var user = await worker.UserManager.FindAsync(userDTO.UserName, userDTO.Password);
         }
 
         public IEnumerable<UserDTO> GetAllUsers()

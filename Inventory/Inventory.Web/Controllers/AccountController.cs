@@ -13,6 +13,7 @@ namespace Inventory.Web.Controllers
     public class AccountController : Controller
     {
         private IAccountService AccountService;
+        //private IAuthenticationManager
 
         public AccountController(IAccountService accountService)
         {
@@ -38,6 +39,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterModel model)
         {
             ViewBag.Role = new SelectList(
@@ -49,7 +51,15 @@ namespace Inventory.Web.Controllers
             {
                 try
                 {
-                    bool success = await AccountService.CreateUser(new UserDTO { UserName = model.UserName, Email = model.Email, Password = model.Password, Role = model.Role });
+                    UserDTO userDTO = new UserDTO
+                    {
+                        UserName = model.UserName,
+                        Email = model.Email,
+                        Password = model.Password,
+                        Role = model.Role
+                    };
+                    await AccountService.CreateUser(userDTO);
+
                     return RedirectToAction("Index", "Home");
                 }
                 catch (UserAlreadyExistsException)
@@ -63,6 +73,28 @@ namespace Inventory.Web.Controllers
             }
 
             return View(model);
+        }
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Login([Bind(Include = "UserName,Password")]LoginModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                UserDTO userDTO = new UserDTO
+                {
+                    UserName = model.UserName,
+                    Password = model.Password
+                };
+
+                await AccountService.AuthenticateUser(userDTO);
+            }
+            return View();
         }
     }
 }
