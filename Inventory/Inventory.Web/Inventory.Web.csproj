@@ -90,6 +90,11 @@
     <Reference Include="Ninject.Web.Mvc, Version=3.3.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.MVC5.3.3.0\lib\net45\Ninject.Web.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
@@ -213,6 +218,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RepairPlaceController.cs" />
     <Compile Include="Controllers\RelationController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\StatusTypeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -256,6 +262,7 @@
     <Content Include="Content\Chosen\chosen-sprite.png" />
     <Content Include="Content\Chosen\chosen.min.css" />
     <Content Include="Content\fonts\gijgo-material.svg" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -294,26 +301,19 @@
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\notify.min.js" />
+    <Content Include="Scripts\pagination.js" />
     <Content Include="Scripts\popper-utils.js" />
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
-    <Content Include="Scripts\treeview\checkbox.js" />
-    <Content Include="Scripts\treeview\checkbox.min.js" />
-    <Content Include="Scripts\treeview\core.js" />
-    <Content Include="Scripts\treeview\core.min.js" />
-    <Content Include="Scripts\treeview\draggable.js" />
-    <Content Include="Scripts\treeview\draggable.min.js" />
-    <Content Include="Scripts\treeview\droppable.js" />
-    <Content Include="Scripts\treeview\droppable.min.js" />
-    <Content Include="Scripts\treeview\tree.js" />
-    <Content Include="Scripts\treeview\tree.min.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
@@ -373,6 +373,20 @@
     <Content Include="Views\History\Create.cshtml" />
     <Content Include="Views\History\Edit.cshtml" />
     <Content Include="Views\Equipment\OwnerInfo.cshtml" />
+    <Content Include="Views\Search\HistoryFilter.cshtml" />
+    <Content Include="Views\Search\StatusTypes.cshtml" />
+    <Content Include="Views\Search\NotFound.cshtml" />
+    <Content Include="Views\StatusType\AjaxStatusTypeList.cshtml" />
+    <Content Include="Views\RepairPlace\AjaxRepairPlaceList.cshtml" />
+    <Content Include="Views\Search\RepairPlaces.cshtml" />
+    <Content Include="Views\EquipmentType\AjaxEquipmentTypeList.cshtml" />
+    <Content Include="Views\Search\EquipmentTypes.cshtml" />
+    <Content Include="Views\ComponentType\AjaxComponentTypeList.cshtml" />
+    <Content Include="Views\Search\ComponentTypes.cshtml" />
+    <Content Include="Views\Search\Histories.cshtml" />
+    <Content Include="Views\History\AjaxHistoryList.cshtml" />
+    <Content Include="Views\Equipment\AjaxEquipmentList.cshtml" />
+    <Content Include="Views\Search\Equipments.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />

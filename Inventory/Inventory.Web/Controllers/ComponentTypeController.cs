@@ -3,6 +3,7 @@ using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.Web.Models;
 using Inventory.Web.Util;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,15 +20,32 @@ namespace Inventory.Web.Controllers
             ComponentTypeService = componentTypeService;
         }
 
-        public ActionResult Index()
+        public ActionResult AjaxComponentTypeList(int? page)
         {
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
+            IEnumerable<ComponentTypeDTO> componentTypeDTOs = ComponentTypeService
+               .GetAll()
+               .ToList();
+            IEnumerable<ComponentTypeVM> componentTypeVMs = WebComponentTypeMapper
+                .DtoToVm(componentTypeDTOs);
+
+            return PartialView(componentTypeVMs.OrderBy(s => s.Name).ToPagedList(pageNumber, pageSize));
+        }
+
+        public ActionResult Index(int? page)
+        {
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
             IEnumerable<ComponentTypeDTO> componentTypeDTOs = ComponentTypeService
                 .GetAll()
                 .ToList();
             IEnumerable<ComponentTypeVM> componentTypeVMs = WebComponentTypeMapper
                 .DtoToVm(componentTypeDTOs);
 
-            return View(componentTypeVMs);
+            return View(componentTypeVMs.OrderBy(s => s.Name).ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult Details(Guid? id)

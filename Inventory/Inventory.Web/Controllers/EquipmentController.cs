@@ -3,6 +3,7 @@ using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.Web.Models;
 using Inventory.Web.Util;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,14 +28,30 @@ namespace Inventory.Web.Controllers
             EquipmentTypeService = equipmentTypeService;
         }
 
-        public ActionResult Index()
+        public ActionResult AjaxEquipmentList(int? page)
         {
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
+            IEnumerable<EquipmentDTO> equipmentDTOs = EquipmentService
+             .GetAll()
+             .ToList();
+            IEnumerable<EquipmentVM> equipmentVMs = WebEquipmentMapper.DtoToVm(equipmentDTOs);
+
+            return PartialView(equipmentVMs.ToPagedList(pageNumber, pageSize));
+        }
+
+        public ActionResult Index(int? page)
+        {
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
             IEnumerable<EquipmentDTO> equipmentDTOs = EquipmentService
                 .GetAll()
                 .ToList();
             IEnumerable<EquipmentVM> equipmentVMs = WebEquipmentMapper.DtoToVm(equipmentDTOs);
 
-            return View(equipmentVMs.ToList());
+            return View(equipmentVMs.ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult Details(Guid? id)

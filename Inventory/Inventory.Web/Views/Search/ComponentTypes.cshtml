@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Inventory.Web.Models.ComponentTypeVM>
+<table class="table" id="listTable">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Name)</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in ViewBag.Items)
+        {
+            <tr id="@item.Id">
+                <td>@item.Name</td>
+
+                <td>
+                    <div class="btn-group float-right" role="group">
+                        <a class="btn btn-info" name="editButton" id="editButton" href="@Url.Action("Edit", "ComponentType", new { id = item.Id })"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"> Редактировать</i></a>
+                        <a class="btn btn-warning" name="detailsButton" id="detailsButton" href="@Url.Action("Details", "ComponentType", new { id = item.Id })"><i class="fa fa-eye" aria-hidden="true" title="Просмотреть" data-toggle="tooltip" data-placement="top"> Просмотреть</i></a>
+                        <a class="btn btn-danger delete-prompt" name="deleteButton" id="@item.Id"><i class="fa fa-trash" aria-hidden="true" title="Удалить" data-toggle="tooltip" data-placement="top"> Удалить</i></a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<button class="btn btn-default" onclick="toPrevMain()">Вернуться к списку</button>
+
+<!-- Bootstrap modal popup -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Удаление</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="success-message"> Вы действительно хотите удалить запись? </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger delete-confirm">Да</button>
+                <button class="btn btn-default delete-cancel" data-dismiss="modal">Нет</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    modalRemovalWindow('/ComponentType/Delete');
+</script>
