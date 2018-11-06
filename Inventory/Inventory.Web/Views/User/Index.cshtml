@@ -25,8 +25,8 @@
                 <td>@Html.DisplayFor(modelItem => item.UserName)</td>
                 <td>
                     <div class="btn-group float-right" role="group">
-                        <a class="btn btn-info" name="editButton" id="editButton" href="@Url.Action("Edit", "Account", new { id = item.Id })"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"> Редактировать</i></a>
-                        <a class="btn btn-warning" name="detailsButton" id="detailsButton" href="@Url.Action("Details", "Account", new { id = item.Id })"><i class="fa fa-cog" aria-hidden="true" title="Просмотреть" data-toggle="tooltip" data-placement="top"> Сменить пароль</i></a>
+                        <a class="btn btn-info" name="editButton" id="editButton" href="@Url.Action("ChangeRole", "User", new { userId = item.Id })"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"> Сменить роль</i></a>
+                        <a class="btn btn-warning" name="detailsButton" id="detailsButton" href="@Url.Action("ChangePassword", "User", new { userId = item.Id })"><i class="fa fa-cog" aria-hidden="true" title="Просмотреть" data-toggle="tooltip" data-placement="top"> Сменить пароль</i></a>
                         <a class="btn btn-danger delete-prompt" name="deleteButton" id="@item.Id"><i class="fa fa-trash" aria-hidden="true" title="Удалить" data-toggle="tooltip" data-placement="top"> Удалить</i></a>
                     </div>
                 </td>
@@ -58,6 +58,6 @@
 
 @section scripts {
     <script>
-        modalRemovalWindow('/Account/Delete');
+        modalRemovalWindow('/User/Delete');
     </script>
 }
