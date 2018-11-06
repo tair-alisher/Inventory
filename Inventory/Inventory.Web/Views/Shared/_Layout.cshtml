@@ -8,6 +8,7 @@
     <link href="~/Content/Chosen/chosen.min.css" rel="stylesheet" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
@@ -89,10 +90,19 @@
     </nav>
     @if (TempData["success"] != null)
     {
-        <div id="success-div" class="p-3 mb-2 bg-success text-white">
+        <div id="message-div" class="p-3 mb-2 bg-success text-white">
             <div class="container">
                 <b>@TempData["success"]</b>
-                <span class="float-right success-div-close" onclick="closeSuccessDiv()" style="cursor: pointer"><i class="fa fa-times" aria-hidden="true"></i></span>
+                <span class="float-right message-div-close" onclick="closeMessageDiv()"><i class="fa fa-times" aria-hidden="true"></i></span>
+            </div>
+        </div>
+    }
+    @if (TempData["fail"] != null)
+    {
+        <div id="message-div" class="p-3 mb-2 bg-danger text-white">
+            <div class="container">
+                <b>@TempData["fail"]</b>
+                <span class="float-right message-div-close" onclick="closeMessageDiv()"><i class="fa fa-times" aria-hidden="true"></i></span>
             </div>
         </div>
     }
@@ -105,12 +115,15 @@
         </footer>
     </div>
 
-    <script src="~/Scripts/app.js"></script>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
 
+    <script src="~/Scripts/app.js"></script>
     <script src="~/Scripts/chosen.jquery.min.js"></script>
     <script src="~/Scripts/notify.min.js"></script>
+    <script src="~/Scripts/pagination.js"></script>
+
     @RenderSection("scripts", required: false)
 </body>
 </html>

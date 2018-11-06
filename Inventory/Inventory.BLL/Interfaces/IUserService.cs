@@ -8,5 +8,7 @@ namespace Inventory.BLL.Interfaces
     {
         IEnumerable<UserDTO> GetAllUsers();
         Task<string> GetUserRole(string userId);
+        Task ChangeUserRole(ChangeRoleDTO changeRoleDTO);
+        Task DeleteUser(string userId);
     }
 }

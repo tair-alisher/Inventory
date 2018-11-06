@@ -1,6 +1,8 @@
-﻿using Inventory.BLL.Interfaces;
+﻿using Inventory.BLL.DTO;
+using Inventory.BLL.Interfaces;
 using Inventory.Web.Models.User;
 using Inventory.Web.Util;
+using PagedList;
 using System;
 using System.Linq;
 using System.Net;
@@ -20,10 +22,13 @@ namespace Inventory.Web.Controllers
             AccountService = accountService;
         }
 
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
+            int pageSize = 5;
+            int pageNumber = (page ?? 1);
+
             var userDTOs = UserService.GetAllUsers().ToList();
-            var userVMs = WebUserMapper.DtoToVm(userDTOs).ToList();
+            var userVMs = WebUserMapper.DtoToVm(userDTOs).ToPagedList(pageNumber, pageSize);
 
             return View(userVMs);
         }
@@ -33,13 +38,15 @@ namespace Inventory.Web.Controllers
             if (userId == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
+            var role = await UserService.GetUserRole(userId);
             ChangeRoleModel model = new ChangeRoleModel
             {
                 UserId = userId,
-                Role = await UserService.GetUserRole(userId)
+                OldRole = role,
+                Role = role
             };
 
-            var userRole = UserService.GetUserRole(userId.ToString());
+            var userRole = UserService.GetUserRole(userId);
             var roles = AccountService.GetAllRoles().ToList();
 
             ViewBag.Role = new SelectList(
@@ -51,9 +58,56 @@ namespace Inventory.Web.Controllers
             return View(model);
         }
 
-        public ActionResult ChangePassword(Guid userId)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangeRole([Bind(Include = "UserId,OldRole,Role")] ChangeRoleModel model)
         {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    ChangeRoleDTO changeRoleDTO = new ChangeRoleDTO
+                    {
+                        UserId = model.UserId,
+                        OldRole = model.OldRole,
+                        Role = model.Role
+                    };
+                    await UserService.ChangeUserRole(changeRoleDTO);
+                    TempData["success"] = "Изменения сохранены.";
+                }
+                catch (Exception)
+                {
+                    ModelState.AddModelError("", "Произошла ошибка. Попробуйте еще раз либо обратитесь к администратору.");
+                }
+            }
+
+            var roles = AccountService.GetAllRoles().ToList();
+            ViewBag.Role = new SelectList(
+                roles,
+                "Name",
+                "Description",
+                model.Role);
+
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Delete(string id)
+        {
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            try
+            {
+                await UserService.DeleteUser(id);
+            }
+            catch (Exception)
+            {
+                TempData["fail"] = "Произошла ошибка.";
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

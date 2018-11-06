@@ -1,35 +1,25 @@
-﻿@model PagedList.IPagedList<Inventory.Web.Models.Account.UserVM>
-@using PagedList.Mvc
+﻿@model PagedList<Inventory.Web.Models.ComponentTypeVM>
+@using PagedList;
+@using PagedList.Mvc;
 
-@{
-    ViewBag.Title = "Пользователи";
-}
-
-<h2>Пользователи</h2>
-
-@Html.AntiForgeryToken()
-
-<p>
-    <a href="@Url.Action("Register", "Account")" class="btn btn-primary" type="button">
-        <i class="fa fa-plus"></i> Зарегистрировать пользователя
-    </a>
-</p>
-
-<table class="table">
+<table class="table" id="listTable">
     <thead>
         <tr>
-            <th>@Html.DisplayNameFor(model => model.First().UserName)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Name)</th>
             <th></th>
         </tr>
     </thead>
+
     <tbody>
         @foreach (var item in Model)
         {
             <tr id="@item.Id">
-                <td>@Html.DisplayFor(modelItem => item.UserName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+
                 <td>
                     <div class="btn-group float-right" role="group">
-                        <a class="btn btn-info" name="editButton" id="editButton" href="@Url.Action("ChangeRole", "User", new { userId = item.Id })"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"> Сменить роль</i></a>
+                        <a class="btn btn-info" name="editButton" id="editButton" href="@Url.Action("Edit", "ComponentType", new { id = item.Id })"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"> Редактировать</i></a>
+                        <a class="btn btn-warning" name="detailsButton" id="detailsButton" href="@Url.Action("Details", "ComponentType", new { id = item.Id })"><i class="fa fa-eye" aria-hidden="true" title="Просмотреть" data-toggle="tooltip" data-placement="top"> Просмотреть</i></a>
                         <a class="btn btn-danger delete-prompt" name="deleteButton" id="@item.Id"><i class="fa fa-trash" aria-hidden="true" title="Удалить" data-toggle="tooltip" data-placement="top"> Удалить</i></a>
                     </div>
                 </td>
@@ -38,13 +28,10 @@
     </tbody>
 </table>
 
-@if (!(Model.PageCount <= 0))
-{
-    <p>Страница @Model.PageNumber из @Model.PageCount</p>
-
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
-}
-
+<!-- Pagination -->
+@Html.PagedListPager(Model, page => Url.Action("AjaxComponentTypeList", new { page }),
+         PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "result"}))
+        Страница @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) из @Model.PageCount
 
 <!-- Bootstrap modal popup -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -67,8 +54,6 @@
     </div>
 </div>
 
-@section scripts {
-    <script>
-        modalRemovalWindow('/User/Delete');
-    </script>
-}
+<script>
+    modalRemovalWindow('/ComponentType/Delete');
+</script>

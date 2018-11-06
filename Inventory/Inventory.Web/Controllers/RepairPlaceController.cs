@@ -3,6 +3,7 @@ using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.Web.Models;
 using Inventory.Web.Util;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,15 +21,31 @@ namespace Inventory.Web.Controllers
             RepairPlaceService = repairPlaceService;
         }
 
-        // GET: StatusType
-        public ActionResult Index()
+        public ActionResult AjaxRepairPlaceList(int? page)
         {
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
+            IEnumerable<RepairPlaceDTO> repairPlaceDTOs = RepairPlaceService
+             .GetAll()
+             .ToList();
+            IEnumerable<RepairPlaceVM> repairPlaceVMs = WebRepairPlaceMapper
+                .DtoToVm(repairPlaceDTOs);
+            return PartialView(repairPlaceVMs.OrderBy(n => n.Name).ToPagedList(pageNumber,pageSize));
+        }
+
+        // GET: StatusType
+        public ActionResult Index(int? page)
+        {
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
             IEnumerable<RepairPlaceDTO> repairPlaceDTOs = RepairPlaceService
                 .GetAll()
                 .ToList();
             IEnumerable<RepairPlaceVM> repairPlaceVMs = WebRepairPlaceMapper
                 .DtoToVm(repairPlaceDTOs);
-            return View(repairPlaceVMs);
+            return View(repairPlaceVMs.OrderBy(n => n.Name).ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult Details(Guid? id)

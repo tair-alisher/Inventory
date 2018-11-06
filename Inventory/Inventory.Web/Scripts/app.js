@@ -226,13 +226,14 @@ function detachItem(id) {
 
 function modalRemovalWindow(url) {
     $(document).ready(function () {
+        var firstPaginationPage = $('.pagination li:nth-child(2)>a');
         var elementId;
-        $('.delete-prompt').click(function () {
+        $('.delete-prompt').on('click',function () {
             elementId = $(this).attr('id');
             $('#myModal').modal('show');
         });
 
-        $('.delete-confirm').click(function () {
+        $('.delete-confirm').on('click', function () {
             var token = $('input[name="__RequestVerificationToken"]').val();
             if (elementId != '') {
                 $.ajax({
@@ -251,7 +252,8 @@ function modalRemovalWindow(url) {
                         else if (data) {
                             $("#" + elementId).remove();
                             $('#myModal').modal('hide');
-                            $.notify("Запись удалена успешно!", "success");
+                            //$.notify("Запись удалена успешно!", "success");
+                            location.reload();
                         }
                     }, error: function (err) {
                         if (!$('.modal-header').hasClass('alert-danger')) {
@@ -272,6 +274,31 @@ function modalRemovalWindow(url) {
     });
 }
 
-function closeSuccessDiv() {
-    $("#success-div").remove();
+function hideAccordion() {
+    $("#accordion").hide();
+}
+
+function removeListAndPagination() {
+    $("#listTable").remove();
+    $("#paginationToDelete").remove();
+}
+
+
+function toPrevMain(from = "") {
+    if (from == "list") {
+        $("#employee-list").empty();
+    } else if (from == "admin") {
+        $("#name").val("");
+        $("#position-select-list").val("");
+        $("#department-select-list").val("");
+        $("#administration-select-list").val("");
+        $("#division-select-list").val("");
+        $("#results").empty();
+    } else {
+        $("#results").empty();
+    }
+    $("#accordion").show();
+}
+function closeMessageDiv() {
+    $("#message-div").remove();
 }
