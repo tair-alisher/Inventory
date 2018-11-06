@@ -299,3 +299,6 @@ function toPrevMain(from = "") {
     }
     $("#accordion").show();
 }
+function closeSuccessDiv() {
+    $("#success-div").remove();
+}

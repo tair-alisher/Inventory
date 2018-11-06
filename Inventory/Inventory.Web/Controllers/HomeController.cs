@@ -20,6 +20,7 @@ namespace Inventory.Web.Controllers
             EquipmentService = equipmentService;
         }
 
+        [AllowAnonymous]
         public ActionResult Index()
         {
             IEnumerable<DivisionEquipmentDTO> structuredEquipment = EquipmentService
