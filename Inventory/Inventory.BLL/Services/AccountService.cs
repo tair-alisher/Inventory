@@ -63,13 +63,6 @@ namespace Inventory.BLL.Services
             return BLLUserMapper.EntityToDto(user);
         }
 
-        public IEnumerable<UserDTO> GetAllUsers()
-        {
-            var users = worker.UserManager.Users.ToList();
-
-            return BLLUserMapper.EntityToDto(users);
-        }
-
         public IEnumerable<RoleDTO> GetAllRoles()
         {
             var roles = worker.RoleManager.Roles.ToList();

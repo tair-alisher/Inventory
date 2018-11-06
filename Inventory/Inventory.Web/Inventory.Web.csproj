@@ -214,6 +214,7 @@
     <Compile Include="Controllers\RepairPlaceController.cs" />
     <Compile Include="Controllers\RelationController.cs" />
     <Compile Include="Controllers\StatusTypeController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -373,7 +374,7 @@
     <Content Include="Views\History\Edit.cshtml" />
     <Content Include="Views\Equipment\OwnerInfo.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\ChangeEmail.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />

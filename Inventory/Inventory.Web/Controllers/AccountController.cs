@@ -30,14 +30,6 @@ namespace Inventory.Web.Controllers
             AccountService = accountService;
         }
 
-        public ActionResult Index()
-        {
-            var userDTOs = AccountService.GetAllUsers().ToList();
-            var userVMs = WebUserMapper.DtoToVm(userDTOs).ToList();
-
-            return View(userVMs);
-        }
-
         public ActionResult Register()
         {
             ViewBag.Role = new SelectList(
@@ -159,6 +151,8 @@ namespace Inventory.Web.Controllers
                         Email = model.Email
                     };
                     await AccountService.UpdateEmail(userDTO);
+
+                    TempData["success"] = "Изменения сохранены.";
                 }
                 catch (Exception)
                 {
@@ -190,11 +184,7 @@ namespace Inventory.Web.Controllers
                     };
                     await AccountService.UpdatePassword(changePasswordDTO);
 
-                    return RedirectToRoute(new
-                    {
-                        controller = "Home",
-                        action = "Index"
-                    });
+                    TempData["success"] = "Изменения сохранены.";
                 }
                 catch (OldPasswordIsWrongException)
                 {

@@ -40,3 +40,10 @@ select:invalid[multiple] {
 .custom-card-style {
     border-radius: 0px !important;
 }
+
+#success-div {
+    margin-top: -4px;
+}
+.success-div-close {
+    cursor: pointer;
+}

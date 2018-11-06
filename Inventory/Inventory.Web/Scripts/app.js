@@ -271,3 +271,7 @@ function modalRemovalWindow(url) {
         });
     });
 }
+
+function closeSuccessDiv() {
+    $("#success-div").remove();
+}

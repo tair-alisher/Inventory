@@ -10,7 +10,6 @@ namespace Inventory.BLL.Interfaces
         Task CreateUser(UserDTO userDTO);
         Task<ClaimsIdentity> AuthenticateUser(UserDTO userDTO);
         Task<UserDTO> GetUser(string id);
-        IEnumerable<UserDTO> GetAllUsers();
         IEnumerable<RoleDTO> GetAllRoles();
         Task UpdateEmail(UserDTO userDTO);
         Task UpdatePassword(ChangePasswordDTO changePasswordDTO);
