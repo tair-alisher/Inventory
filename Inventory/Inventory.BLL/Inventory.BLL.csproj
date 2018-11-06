@@ -80,6 +80,7 @@
   <ItemGroup>
     <Compile Include="DTO\AdministrationDTO.cs" />
     <Compile Include="DTO\ChangePasswordDTO.cs" />
+    <Compile Include="DTO\ChangeRoleDTO.cs" />
     <Compile Include="DTO\ComponentDTO.cs" />
     <Compile Include="DTO\ComponentTypeDTO.cs" />
     <Compile Include="DTO\DepartmentDTO.cs" />

@@ -41,9 +41,9 @@ select:invalid[multiple] {
     border-radius: 0px !important;
 }
 
-#success-div {
+#message-div {
     margin-top: -4px;
 }
-.success-div-close {
+.message-div-close {
     cursor: pointer;
 }

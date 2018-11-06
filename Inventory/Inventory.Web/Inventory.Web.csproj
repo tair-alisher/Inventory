@@ -240,6 +240,7 @@
     <Compile Include="Models\OwnerInfoVM.cs" />
     <Compile Include="Models\RepairPlaceVM.cs" />
     <Compile Include="Models\StatusTypeVM.cs" />
+    <Compile Include="Models\User\ChangeRoleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\WebComponentMapper.cs" />
     <Compile Include="Util\WebComponentTypeMapper.cs" />
@@ -394,6 +395,7 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\ChangeEmail.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\User\ChangeRole.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
