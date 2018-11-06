@@ -1,8 +1,11 @@
-﻿@model IEnumerable<Inventory.Web.Models.StatusTypeVM>
+﻿@model IEnumerable<Inventory.Web.Models.EquipmentVM>
+
 <table class="table" id="listTable">
     <thead>
         <tr>
-            <th>@Html.DisplayNameFor(model => model.Name)</th>
+            <th>@Html.DisplayNameFor(model => model.EquipmentTypeId)</th>
+            <th>@Html.DisplayNameFor(model => model.InventNumber)</th>
+            <th>@Html.DisplayNameFor(model => model.Price)</th>
             <th></th>
         </tr>
     </thead>
@@ -11,12 +14,14 @@
         @foreach (var item in ViewBag.Items)
         {
             <tr id="@item.Id">
-                <td>@item.Name</td>
+                <td>@item.EquipmentType.Name</td>
+                <td>@item.InventNumber</td>
+                <td>@item.Price</td>
 
                 <td>
                     <div class="btn-group float-right" role="group">
-                        <a class="btn btn-info" name="editButton" id="editButton" href="@Url.Action("Edit", "StatusType", new { id = item.Id })"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"> Редактировать</i></a>
-                        <a class="btn btn-warning" name="detailsButton" id="detailsButton" href="@Url.Action("Details", "StatusType", new { id = item.Id })"><i class="fa fa-eye" aria-hidden="true" title="Просмотреть" data-toggle="tooltip" data-placement="top"> Просмотреть</i></a>
+                        <a class="btn btn-info" name="editButton" id="editButton" href="@Url.Action("Edit", "Equipment", new { id = item.Id })"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"> Редактировать</i></a>
+                        <a class="btn btn-warning" name="detailsButton" id="detailsButton" href="@Url.Action("Details", "Equipment", new { id = item.Id })"><i class="fa fa-eye" aria-hidden="true" title="Просмотреть" data-toggle="tooltip" data-placement="top"> Просмотреть</i></a>
                         <a class="btn btn-danger delete-prompt" name="deleteButton" id="@item.Id"><i class="fa fa-trash" aria-hidden="true" title="Удалить" data-toggle="tooltip" data-placement="top"> Удалить</i></a>
                     </div>
                 </td>
@@ -49,5 +54,5 @@
 </div>
 
 <script>
-    modalRemovalWindow('/StatusType/Delete');
+    modalRemovalWindow('/Equipment/Delete');
 </script>

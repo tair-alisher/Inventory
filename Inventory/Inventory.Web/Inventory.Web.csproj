@@ -350,6 +350,16 @@
     <Content Include="Views\Search\StatusTypes.cshtml" />
     <Content Include="Views\Search\NotFound.cshtml" />
     <Content Include="Views\StatusType\AjaxStatusTypeList.cshtml" />
+    <Content Include="Views\RepairPlace\AjaxRepairPlaceList.cshtml" />
+    <Content Include="Views\Search\RepairPlaces.cshtml" />
+    <Content Include="Views\EquipmentType\AjaxEquipmentTypeList.cshtml" />
+    <Content Include="Views\Search\EquipmentTypes.cshtml" />
+    <Content Include="Views\ComponentType\AjaxComponentTypeList.cshtml" />
+    <Content Include="Views\Search\ComponentTypes.cshtml" />
+    <Content Include="Views\Search\Histories.cshtml" />
+    <Content Include="Views\History\AjaxHistoryList.cshtml" />
+    <Content Include="Views\Equipment\AjaxEquipmentList.cshtml" />
+    <Content Include="Views\Search\Equipments.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

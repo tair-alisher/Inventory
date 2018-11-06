@@ -23,7 +23,7 @@ namespace Inventory.Web.Controllers
 
         public ActionResult AjaxStatusTypeList(int? page)
         {
-            int pageSize = 1;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
             IEnumerable<StatusTypeDTO> statusTypeDTOs = StatusTypeService
                 .GetAll()
@@ -42,7 +42,7 @@ namespace Inventory.Web.Controllers
             IEnumerable<StatusTypeVM> statusTypeVMs = WebStatusTypeMapper
                 .DtoToVm(statusTypeDTOs);
 
-            int pageSize = 1;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
             return View(statusTypeVMs.OrderBy(s => s.Name).ToPagedList(pageNumber, pageSize));
         }

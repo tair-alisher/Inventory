@@ -226,6 +226,7 @@ function detachItem(id) {
 
 function modalRemovalWindow(url) {
     $(document).ready(function () {
+        var firstPaginationPage = $('.pagination li:nth-child(2)>a');
         var elementId;
         $('.delete-prompt').on('click',function () {
             elementId = $(this).attr('id');
@@ -251,8 +252,8 @@ function modalRemovalWindow(url) {
                         else if (data) {
                             $("#" + elementId).remove();
                             $('#myModal').modal('hide');
-                            $.notify("Запись удалена успешно!", "success");
-                            $('.pagination li:nth-child(2)>a').click();
+                            //$.notify("Запись удалена успешно!", "success");
+                            location.reload();
                         }
                     }, error: function (err) {
                         if (!$('.modal-header').hasClass('alert-danger')) {

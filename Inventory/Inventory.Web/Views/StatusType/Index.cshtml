@@ -1,4 +1,4 @@
-﻿@model PagedList<Inventory.Web.Models.StatusTypeVM>
+﻿@model PagedList.IPagedList<Inventory.Web.Models.StatusTypeVM>
 @using PagedList;
 @using PagedList.Mvc;
 
@@ -63,33 +63,33 @@ new { @class = "ajax-form", @id = "ajax-form" }))
         </tbody>
     </table>
 
-    <!-- Bootstrap modal popup -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">Удаление</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p class="success-message"> Вы действительно хотите удалить запись? </p>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-danger delete-confirm">Да</button>
-                    <button class="btn btn-default delete-cancel" data-dismiss="modal">Нет</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div id="result"> </div>
 
     <div id="paginationToDelete">
         @Html.PagedListPager(Model, page => Url.Action("AjaxStatusTypeList", new { page }),
          PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "result", OnSuccess = "removeListAndPagination()" }))
         Страница @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) из @Model.PageCount
+    </div>
+</div>
+
+<!-- Bootstrap modal popup -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Удаление</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="success-message"> Вы действительно хотите удалить запись? </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger delete-confirm">Да</button>
+                <button class="btn btn-default delete-cancel" data-dismiss="modal">Нет</button>
+            </div>
+        </div>
     </div>
 </div>
 
