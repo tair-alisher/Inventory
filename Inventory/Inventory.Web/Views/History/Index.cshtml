@@ -9,7 +9,7 @@
 
 <h2>История</h2>
 
-@Html.AntiForgeryToken()
+
 
 <p>
     <a type="button" class="btn btn-primary" href="@Url.Action("Create", "History")"><i class="fa fa-plus"></i> Добавить новую запись</a>
@@ -22,43 +22,44 @@
     OnSuccess = "hideAccordion()"
 }, new { @class = "ajax-form" }))
 {
+    @Html.AntiForgeryToken()
     <div class="header">
         <div class="row">
             @*<div class="col-md-3">
-            <label class="control-label" for="administration-select-list">Выберите орган управления (опционально)</label>
-            <select id="administration-select-list" class="form-control" name="administrationId">
-                <option selected=selected value="">Орган управления</option>
-                @foreach (Inventory.Web.Models.EquipmentVM item in ViewBag.EquipmentId)
-                {
-                    <option value="@item.Id">@item.</option>
-                }
-            </select>
-        </div>*@
+                    <label class="control-label" for="administration-select-list">Выберите орган управления (опционально)</label>
+                    <select id="administration-select-list" class="form-control" name="administrationId">
+                        <option selected=selected value="">Орган управления</option>
+                        @foreach (Inventory.Web.Models.EquipmentVM item in ViewBag.EquipmentId)
+                        {
+                            <option value="@item.Id">@item.</option>
+                        }
+                    </select>
+                </div>*@
             @*<div class="col-md-3">
-            <label class="control-label" for="administration-select-list">Выберите орган управления (опционально)</label>
-            <select id="administration-select-list" class="form-control" name="administrationId">
-                <option selected=selected value="">Орган управления</option>
-                @foreach (Inventory.Web.Models.EquipmentTypeVM item in ViewBag.EmployeeId)
-                {
-                    <option value="@item.Id">@item.Name</option>
-                }
-            </select>
-        </div>*@
+                    <label class="control-label" for="administration-select-list">Выберите орган управления (опционально)</label>
+                    <select id="administration-select-list" class="form-control" name="administrationId">
+                        <option selected=selected value="">Орган управления</option>
+                        @foreach (Inventory.Web.Models.EquipmentTypeVM item in ViewBag.EmployeeId)
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+                    </select>
+                </div>*@
             <div class="col-md-3">
-            <label class="control-label" for="administration-select-list">Выберите орган управления (опционально)</label>
-            <select id="administration-select-list" class="form-control" name="administrationId">
-                <option selected=selected value="">Орган управления</option>
-                @foreach (Inventory.Web.Models.RepairPlaceVM item in ViewBag.RepairPlaceId)
-                {
-                    <option value="@item.Id">@item.Name</option>
-                }
-            </select>
-        </div>
+                <label class="control-label" for="administration-select-list">Выберите орган управления (опционально)</label>
+                <select id="repairPlace-select-list" class="form-control" name="administrationId">
+                    <option selected=selected value="">Орган управления</option>
+                    @foreach (Inventory.Web.Models.RepairPlaceVM item in ViewBag.RepairPlaceId)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
+            </div>
 
 
             <div class="col-md-3">
                 <label class="control-label" for="administration-select-list">Выберите орган управления (опционально)</label>
-                <select id="administration-select-list" class="form-control" name="administrationId">
+                <select id="statusType-select-list" class="form-control" name="administrationId">
                     <option selected=selected value="">Орган управления</option>
                     @foreach (Inventory.Web.Models.StatusTypeVM item in ViewBag.StatusTypeId)
                     {

@@ -136,6 +136,13 @@ namespace Inventory.BLL.Services
             return relations.Count() > 0;
         }
 
+        //private bool HasRelationsWithComponents(Guid id)
+        //{
+        //    var relations = _unitOfWork.EquipmentComponentRelations.Find(r => r.EquipmentId == id);
+
+        //    return relations.Count() > 0;
+        //}
+
         public IEnumerable<OwnerInfoDTO> GetOwnerHistory(Guid id)
         {
             IEnumerable<int> equipmentEmployeeIds = _unitOfWork

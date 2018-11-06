@@ -32,7 +32,7 @@ namespace Inventory.Web.Controllers
 
         public ActionResult AjaxHistoryList(int? page)
         {
-            int pageSize = 1;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
             IEnumerable<HistoryDTO> historyDTOs = HistoryService.GetAll().ToList();
 
@@ -43,7 +43,7 @@ namespace Inventory.Web.Controllers
 
         public ActionResult Index(int? page)
         {
-            int pageSize = 1;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
 
             List<EquipmentSelectModel> equipmentSelectModel = new List<EquipmentSelectModel>();
