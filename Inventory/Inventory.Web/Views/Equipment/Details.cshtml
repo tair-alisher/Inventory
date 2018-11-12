@@ -32,6 +32,7 @@
 
         <dd>
             <img src="@Url.Content(Model.QRCode)" alt="Image" />
+            <button onclick="QRCodePrint('@Model.QRCode'); return false;" class="btn btn-secondary"><i class="fa fa-print" aria-hidden="true" title="Печать" data-toggle="tooltip" data-placement="top"> Печать</i></button>          
         </dd>
 
         <dt>
