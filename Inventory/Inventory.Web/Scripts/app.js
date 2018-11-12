@@ -1,7 +1,22 @@
 ﻿const TYPE = "Тип";
 const NUMBER = "Инвентаризационный номер";
 const MODEL = "Модель";
-const NAME = "Название"
+const NAME = "Название";
+
+function menuInit() {
+    console.log('here');
+    $(document).ready(function () {
+        $("#sidebar").mCustomScrollbar({
+            theme: "minimal"
+        });
+
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar, #content').toggleClass('active');
+            $('.collapse.in').toggleClass('in');
+            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        });
+    });
+}
 
 function searchEmployees() {
     var employeeName = $("#search-input-value").val();
