@@ -4,12 +4,14 @@ body {
     font-family: 'Roboto', sans-serif;
     background: #E0E8EF;
     color: #34495E;
+    height: 100%;
 }
 
 .block {
     background-color: #f9f9f9;
     padding: 40px;
     overflow-x: auto;
+    min-height: 85vh;
 }
 .block-title {
     color: #2E4052;
@@ -203,7 +205,7 @@ a.article:hover {
 #content {
     width: calc(100% - 250px);
     padding: 80px 40px 40px 40px;
-    min-height: 100vh;
+    min-height: 100vh; /* 100vh */
     transition: all 0.1s;
     position: absolute;
     top: 0;
