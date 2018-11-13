@@ -188,10 +188,12 @@ a.article:hover {
 .icon {
     color: #A3BCD9;
     padding-right: 10px;
+    width: 27.95px;
 }
 .icon-muted {
     color: #5D7E9F;
     padding-right: 10px;
+    width: 23.08px;
 }
 
 .list-unstyled > li > a {
