@@ -4,66 +4,69 @@
     ViewBag.Title = "Оборудование";
 }
 
-<h2>@Model.EquipmentType.Name</h2>
+<div class="block">
+    <h2 class="block-title">@Model.EquipmentType.Name</h2>
 
-<div>
-    <h4>Инвентаризационный номер: <b>@Model.InventNumber</b></h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.EquipmentTypeId)
-        </dt>
+    <div>
+        <h4>Инвентаризационный номер: <b>@Model.InventNumber</b></h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.EquipmentTypeId)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.EquipmentType.Name)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.EquipmentType.Name)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.InventNumber)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.InventNumber)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.InventNumber)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.InventNumber)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.QRCode)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.QRCode)
+            </dt>
 
-        <dd>
-            <img src="@Url.Content(Model.QRCode)" alt="Image" />
-        </dd>
+            <dd>
+                <img src="@Url.Content(Model.QRCode)" alt="Image" />
+                <button onclick="QRCodePrint('@Model.QRCode'); return false;" class="btn btn-secondary"><i class="fa fa-print" aria-hidden="true" title="Печать" data-toggle="tooltip" data-placement="top"> Печать</i></button>
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Price)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Price)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Price)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Supplier)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Supplier)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Supplier)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Supplier)
+            </dd>
 
-    @if (ViewBag.OwnerHistory != null)
-    {
-        <dt>История владельцев</dt>
-        foreach (var owner in ViewBag.OwnerHistory)
-        {
-            <dd>@owner.FullName (@owner.StartDate @{ if (!owner.IsActual) { String.Format("- {0}", owner.EndDate); } }) <a href="http://phone.stat.kg/crud/Employee/Details/@owner.EmployeeId" target="_blank">Просмотреть</a></dd>
-        }
-    }
+            @if (ViewBag.OwnerHistory != null)
+            {
+                <dt>История владельцев</dt>
+                foreach (var owner in ViewBag.OwnerHistory)
+                {
+                    <dd>@owner.FullName (@owner.StartDate @{ if (!owner.IsActual) { String.Format("- {0}", owner.EndDate); } }) <a href="http://phone.stat.kg/crud/Employee/Details/@owner.EmployeeId" class="btn btn-link" target="_blank">Просмотреть</a></dd>
+                }
+            }
 
-    </dl>
-</div>
-<div class="form-group">
-    <div class="btn-group" role="group">
-        <a href="@Url.Action("Edit", "Equipment", new { id = Model.Id})" class="btn btn-success"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"><span style="padding: 5px;">Редактировать</span></i></a>
-        <a href="@Url.Action("Index", "Equipment")" class="btn btn-info"><i class="fa fa-arrow-left" aria-hidden="true" title="Назад" data-toggle="tooltip" data-placement="top"><span style="padding: 5px;">Назад</span></i></a>
+        </dl>
+    </div>
+    <div class="form-group">
+        <div class="btn-group" role="group">
+            <a href="@Url.Action("Edit", "Equipment", new { id = Model.Id})" class="btn btn-success"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"></i> Редактировать</a>
+            <a href="@Url.Action("Index", "Equipment")" class="btn btn-info"><i class="fa fa-arrow-left" aria-hidden="true" title="Назад" data-toggle="tooltip" data-placement="top"></i> Назад</a>
+        </div>
     </div>
 </div>

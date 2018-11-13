@@ -4,75 +4,74 @@
     ViewBag.Title = "История владельцев";
 }
 
-<h2>История владельцев</h2>
+<div class="block">
+    <h2 class="block-title">История владельцев</h2>
 
-@using (Html.BeginForm("UpdateOwnerHistory", "Relation", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
+    @using (Html.BeginForm("UpdateOwnerHistory", "Relation", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
 
-    <input type="hidden" name="equipmentId" value="@ViewBag.EquipmentId" />
+        <input type="hidden" name="equipmentId" value="@ViewBag.EquipmentId" />
 
-    <div class="form-group" id="responsible-employees">
-        <div calss="col-md-12" id="search-input">
-            <div class="input-group">
-                <input type="text" class="form-control" id="search-input-value" placeholder="Поиск по имени и/или фамилии" aria-describedby="search-cancel-buttons" />
-                <div class="input-group-append" id="search-cancel-buttons">
-                    <button class="btn btn-outline-primary" type="button" onclick="searchEmployees()">Искать</button>
-                    <button class="btn btn-outline-secondary" type="button" onclick="clearSearch()">Сбросить</button>
+        <div class="form-group" id="responsible-employees">
+            <div calss="col-md-12" id="search-input">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="search-input-value" placeholder="Поиск по имени и/или фамилии" aria-describedby="search-cancel-buttons" />
+                    <div class="input-group-append" id="search-cancel-buttons">
+                        <button class="btn btn-outline-primary" type="button" onclick="searchEmployees()">Искать</button>
+                        <button class="btn btn-outline-secondary" type="button" onclick="clearSearch()">Сбросить</button>
+                    </div>
                 </div>
+                <small id="information" class="form-text text-muted">Для редактирования добавленных сотрудников, сохраните изменения.</small>
             </div>
-            <small id="information" class="form-text text-muted">Для редактирования добавленных сотрудников, сохраните изменения.</small>
         </div>
-    </div>
 
-    <div id="found-items-area"></div>
+        <div id="found-items-area"></div>
 
-    <div class="row" id="attached-items">
-        <table class="table table-responsive" id="attached-items-table">
-            <caption>Список закрепленных сотрудников</caption>
-            <thead>
-                <tr>
-                    <th>Действие</th>
-                    <th>ФИО</th>
-                    <th>Статус</th>
-                    <th>Период</th>
-                </tr>
-            </thead>
-            <tbody id="attached-items-tbody">
-                @if (!(Model.Count() <= 0))
-                {
-                    foreach (Inventory.Web.Models.OwnerInfoVM owner in Model)
+        <div class="row" id="attached-items">
+            <table class="table table-responsive table-sm" id="attached-items-table">
+                <caption>Список закрепленных сотрудников</caption>
+                <thead>
+                    <tr>
+                        <th>Действие</th>
+                        <th>ФИО</th>
+                        <th>Статус</th>
+                        <th>Период</th>
+                    </tr>
+                </thead>
+                <tbody id="attached-items-tbody">
+                    @if (!(Model.Count() <= 0))
                     {
-                        <tr id="pinned-@owner.EmployeeId">
-                            <td class="btn-group">
-                                <button class="btn btn-danger" type="button" data-id="@owner.EmployeeId" onclick="detachItem('@owner.EmployeeId')">Убрать</button>
-                                <input type="hidden" name="employeeId[]" value="@owner.EmployeeId" />
-                                <a href="@Url.Action("EditEquipmentEmployeeRelation", "Relation", new { equipmentId = ViewBag.EquipmentId, employeeId = owner.EmployeeId })" class="btn btn-primary">Редактировать</a>
-                                <a href="@Url.Action("OwnerInfo", "Equipment", new { equipmentId = ViewBag.EquipmentId, employeeId = owner.EmployeeId })" class="btn btn-info">Подробнее</a>
-                            </td>
-                            <td class="name">@owner.FullName</td>
-                            <td>
-                                <label>
-                                    <input type="radio" name="ownerId" value="@owner.EmployeeId" @Html.Raw(owner.IsActual ? " checked" : "") /> Текущий владелец
-                                </label>
-                            </td>
-                            <td>
-                                @owner.StartDate.ToString("dd.MM.yyyy") @Html.Raw(owner.IsActual ? "" : $"- {owner.EndDate.ToString("dd.MM.yyyy")}")
-                            </td>
-                        </tr>
+                        foreach (Inventory.Web.Models.OwnerInfoVM owner in Model)
+                        {
+                            <tr id="pinned-@owner.EmployeeId">
+                                <td class="btn-group">
+                                    <button class="btn btn-danger" type="button" data-id="@owner.EmployeeId" onclick="detachItem('@owner.EmployeeId')">Убрать</button>
+                                    <input type="hidden" name="employeeId[]" value="@owner.EmployeeId" />
+                                    <a href="@Url.Action("EditEquipmentEmployeeRelation", "Relation", new { equipmentId = ViewBag.EquipmentId, employeeId = owner.EmployeeId })" class="btn btn-primary">Редактировать</a>
+                                    <a href="@Url.Action("OwnerInfo", "Equipment", new { equipmentId = ViewBag.EquipmentId, employeeId = owner.EmployeeId })" class="btn btn-info">Подробнее</a>
+                                </td>
+                                <td class="name">@owner.FullName</td>
+                                <td>
+                                    <label>
+                                        <input type="radio" name="ownerId" value="@owner.EmployeeId" @Html.Raw(owner.IsActual ? " checked" : "") /> Текущий владелец
+                                    </label>
+                                </td>
+                                <td>
+                                    @owner.StartDate.ToString("dd.MM.yyyy") @Html.Raw(owner.IsActual ? "" : $"- {owner.EndDate.ToString("dd.MM.yyyy")}")
+                                </td>
+                            </tr>
+                        }
                     }
-                }
-            </tbody>
-        </table>
-    </div>
-
-    <div class="form-group">
-        <div class="btn-group" role="group">
-            <button type="submit" class="btn btn-success"><i class="fa fa-save" aria-hidden="true" title="Сохранить" data-toggle="tooltip" data-placement="top"><span style="padding: 5px;">Сохранить</span></i></button>
-            <a href="@Url.Action("Edit", "Equipment", new { id = ViewBag.EquipmentId })" class="btn btn-info"><i class="fa fa-arrow-left" aria-hidden="true" title="Назад" data-toggle="tooltip" data-placement="top"><span style="padding: 5px;">Назад</span></i></a>
+                </tbody>
+            </table>
         </div>
-    </div>
-}
-@section scripts {
-    <script src="~/Scripts/app.js"></script>
-}
+
+        <div class="form-group">
+            <div class="btn-group" role="group">
+                <button type="submit" class="btn btn-success"><i class="fa fa-save" aria-hidden="true" title="Сохранить" data-toggle="tooltip" data-placement="top"></i> Сохранить</button>
+                <a href="@Url.Action("Edit", "Equipment", new { id = ViewBag.EquipmentId })" class="btn btn-info"><i class="fa fa-arrow-left" aria-hidden="true" title="Назад" data-toggle="tooltip" data-placement="top"></i> Назад</a>
+            </div>
+        </div>
+    }
+</div>

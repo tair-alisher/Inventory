@@ -9,111 +9,149 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/jquery.mCustomScrollbar.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="@Url.Action("Index", "Home")">Инвентаризация</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index", "Home")">Главная</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="componentDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Комплектующие
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="componentDropdown">
-                            <a class="dropdown-item" href="@Url.Action("Index", "ComponentType")">Тип комплектующего</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="@Url.Action("Index", "Component")">Комплектующие</a>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="equipmentDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Оборудование
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="equipmentDropdown">
-                            <a class="dropdown-item" href="@Url.Action("Index", "EquipmentType")">Тип оборудования</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="@Url.Action("Index", "Equipment")">Оборудование</a>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="componentDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Отслеживание
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="componentDropdown">
-
-                            <a class="dropdown-item" href="@Url.Action("Index", "StatusType")">Тип статуса</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="@Url.Action("Index", "RepairPlace")">Место ремонта</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="@Url.Action("Index", "History")">История</a>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index", "User")">Пользователи</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav">
-                    @if (!User.Identity.IsAuthenticated)
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Login", "Account")">Войти</a>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                @User.Identity.Name
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="accountDropdown">
-
-                                <a class="dropdown-item" href="@Url.Action("ChangeEmail", "Account")">Сменить почту</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="@Url.Action("ChangePassword", "Account")">Сменить пароль</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="@Url.Action("Logout", "Account")">Выйти</a>
-                            </div>
-                        </li>
-                    }
-                </ul>
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h4 class="text-center"><a href="@Url.Action("Index", "Home")">Инвентаризация</a></h4>
             </div>
-        </div>
-    </nav>
-    @if (TempData["success"] != null)
-    {
-        <div id="success-div" class="p-3 mb-2 bg-success text-white">
-            <div class="container">
-                <b>@TempData["success"]</b>
-                <span class="float-right success-div-close" onclick="closeSuccessDiv()" style="cursor: pointer"><i class="fa fa-times" aria-hidden="true"></i></span>
-            </div>
-        </div>
-    }
 
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year – приложение ASP.NET</p>
-        </footer>
+            <ul class="list-unstyled components">
+                <!-- <p>Навигация</p> -->
+                <li id="main-page-menu-item" class="active">
+                    <a href="@Url.Action("Index", "Home")"><i class="fa fa-home icon" aria-hidden="true"></i> Главная</a>
+                </li>
+                <li id="user-page-menu-item">
+                    <a href="@Url.Action("Index", "User")"><i class="fa fa-users icon" aria-hidden="true"></i> Пользователи</a>
+                </li>
+                <li id="equipment-page-menu-item">
+                    <!-- class="active" -->
+                    <a href="#equipmentDropdown" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-laptop icon" aria-hidden="true"></i> Оборудование</a>
+                    <ul class="collapse list-unstyled" id="equipmentDropdown">
+                        <li>
+                            <a href="@Url.Action("Index", "Equipment")">Оборудование</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "EquipmentType")">Тип оборудования</a>
+                        </li>
+                    </ul>
+                </li>
+                <li id="component-page-menu-item">
+                    <!-- class="active" -->
+                    <a href="#componentDropdown" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-headphones icon" aria-hidden="true"></i> Комплектующие</a>
+                    <ul class="collapse list-unstyled" id="componentDropdown">
+                        <li>
+                            <a href="@Url.Action("Index", "Component")">Комплектующие</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "ComponentType")">Тип комплектующего</a>
+                        </li>
+                    </ul>
+                </li>
+                <li id="tracking-page-menu-item">
+                    <!-- class="active" -->
+                    <a href="#trackingDropdown" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-address-card icon" aria-hidden="true"></i> Отслеживание</a>
+                    <ul class="collapse list-unstyled" id="trackingDropdown">
+                        <li>
+                            <a href="@Url.Action("Index", "History")">История</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "RepairPlace")">Место ремонта</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "StatusType")">Тип статуса</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <ul class="list-unstyled account">
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <li id="login-page-menu-item">
+                        <a href="@Url.Action("Login", "Account")"><i class="fa fa-sign-in icon-muted" aria-hidden="true"></i> Войти</a>
+                    </li>
+                }
+                else
+                {
+                    <li id="change-email-page-menu-item">
+                        <a href="@Url.Action("ChangeEmail", "Account")"><i class="fa fa-at icon-muted" aria-hidden="true"></i> Сменить почту</a>
+                    </li>
+                    <li id="change-password-page-menu-item">
+                        <a href="@Url.Action("ChangePassword", "Account")"><i class="fa fa-unlock-alt icon-muted" aria-hidden="true"></i> Сменить пароль</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Logout", "Account")"><i class="fa fa-sign-out icon-muted" aria-hidden="true"></i> Выйти</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+
+        <!-- top nav -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+
+                <button type="button" id="sidebarCollapse" class="btn btn-light">
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                    <span>Меню</span>
+                </button>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="justify-content-end text-muted logged-as">
+                        Вы вошли как: @User.Identity.Name
+                    </div>
+                }
+
+            </div>
+        </nav>
+
+        <!-- Page Content  -->
+        <div id="content">
+
+            @if (TempData["success"] != null)
+            {
+                <div id="message-div" class="p-3 mb-2 bg-success text-white">
+                    <div class="container">
+                        <b>@TempData["success"]</b>
+                        <span class="float-right message-div-close" onclick="closeMessageDiv()"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </div>
+                </div>
+            }
+            @if (TempData["fail"] != null)
+            {
+                <div id="message-div" class="p-3 mb-2 bg-danger text-white">
+                    <div class="container">
+                        <b>@TempData["fail"]</b>
+                        <span class="float-right message-div-close" onclick="closeMessageDiv()"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </div>
+                </div>
+            }
+
+
+            @RenderBody()
+        </div>
     </div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
+    <script src="~/Scripts/jquery.mCustomScrollbar.concat.min.js"></script>
 
     <script src="~/Scripts/app.js"></script>
     <script src="~/Scripts/chosen.jquery.min.js"></script>
     <script src="~/Scripts/notify.min.js"></script>
     <script src="~/Scripts/pagination.js"></script>
+
+    <script>
+        menuInit();
+        activeMenuItem();
+    </script>
 
     @RenderSection("scripts", required: false)
 </body>

@@ -39,23 +39,14 @@ namespace Inventory.Web.Controllers
         public ActionResult HistoryFilter(/*string name,*/ int? page, Guid? equipmentId, int? employeeId, Guid? repairPlaceId, Guid? statusTypeId)
         {
             IQueryable<HistoryDTO> historyDTOs = Enumerable.Empty<HistoryDTO>().AsQueryable();
-
-            IQueryable<HistoryVM> historyVMs = WebHistoryMapper.DtoToVm(historyDTOs).AsQueryable();
-
-            //return PartialView(historyVMs.ToPagedList(pageNumber, pageSize));
-
-            //IQueryable<Employee> employees = Enumerable.Empty<Employee>().AsQueryable();
-
             //name = name.Trim();
             //if (name.Length <= 0)
-            //employees = db.Employees.OrderBy(c => c.EmployeeFullName);
+                historyDTOs = HistoryService.GetAll().OrderBy(i=>i.Id).AsQueryable();
+            IQueryable<HistoryVM> historyVMs = WebHistoryMapper.DtoToVm(historyDTOs).AsQueryable();
             //else
             //    employees = BuildEmployeeSearchQueryByName(name);
-            historyVMs = FilterAdditions(historyVMs, equipmentId, employeeId, repairPlaceId, statusTypeId);
-            //employees = FilterAdditions(employees, positionId, departmentId, administrationId, divisionId);
-
+            historyVMs = FilterAdditions(historyVMs, equipmentId, employeeId, repairPlaceId, statusTypeId);       
             historyVMs = AddIncludes(historyVMs);
-            //employees = AddIncludes(employees);
 
             string view = "";
             //if (User.IsInRole("admin"))

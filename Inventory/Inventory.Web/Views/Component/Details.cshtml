@@ -1,76 +1,78 @@
 ﻿@model Inventory.Web.Models.ComponentVM
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Комплектующее";
 }
 
-<h2>Details</h2>
+<div class="block">
+    <h2 class="block-title">@Model.ComponentType.Name</h2>
 
-<div>
-    <h4>Инвентаризационный номер: <b>@Model.InventNumber</b></h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.ComponentTypeId)
-        </dt>
+    <div>
+        <h4>Инвентаризационный номер: <b>@Model.InventNumber</b></h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.ComponentTypeId)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ComponentType.Name)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ComponentType.Name)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ModelName)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ModelName)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ModelName)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ModelName)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Description)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Price)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Price)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Price)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.InventNumber)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.InventNumber)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.InventNumber)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.InventNumber)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Supplier)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Supplier)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Supplier)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Supplier)
+            </dd>
 
-    </dl>
-</div>
-<div class="form-group">
-    <div class="btn-group" role="group">
-        <a href="@Url.Action("Edit", "Component", new { id = Model.Id})" class="btn btn-success"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"><span style="padding: 5px;">Редактировать</span></i></a>
-        <a href="@Url.Action("Index", "Component")" class="btn btn-info"><i class="fa fa-arrow-left" aria-hidden="true" title="Назад" data-toggle="tooltip" data-placement="top"><span style="padding: 5px;">Назад</span></i></a>
+        </dl>
+    </div>
+    <div class="form-group">
+        <div class="btn-group" role="group">
+            <a href="@Url.Action("Edit", "Component", new { id = Model.Id})" class="btn btn-success"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"></i> Редактировать</a>
+            <a href="@Url.Action("Index", "Component")" class="btn btn-info"><i class="fa fa-arrow-left" aria-hidden="true" title="Назад" data-toggle="tooltip" data-placement="top"></i> Назад</a>
+        </div>
     </div>
 </div>

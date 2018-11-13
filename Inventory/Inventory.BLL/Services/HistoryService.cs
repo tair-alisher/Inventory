@@ -35,7 +35,7 @@ namespace Inventory.BLL.Services
         {
             History history = BLLHistoryMapper.DtoToEntity(item);
             history.Id = Guid.NewGuid();
-
+            history.ChangeDate = DateTime.Now;
             _unitOfWork.History.Create(history);
             _unitOfWork.Save();
         }
@@ -43,6 +43,7 @@ namespace Inventory.BLL.Services
         public void Update(HistoryDTO item)
         {
             History history = BLLHistoryMapper.DtoToEntity(item);
+            history.ChangeDate = DateTime.Now;
             _unitOfWork.History.Update(history);
             _unitOfWork.Save();
         }

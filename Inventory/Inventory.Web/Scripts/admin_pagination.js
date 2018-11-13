@@ -1,30 +1,30 @@
 ﻿function pagination() {
     $(document).ready(function () {
         $(document).on("click", "#contentPager a[href]", post_request);
-        $("#equipment-select-list").on("change", post_request_without_page);
-        $("#employee-select-list").on("change", post_request_without_page);
-        $("#repairPlace-select-list").on("change", post_request_without_page);
-        $("#statusType-select-list").on("change", post_request_without_page);
+        $("#position-select-list").on("change", post_request_without_page);
+        $("#department-select-list").on("change", post_request_without_page);
+        $("#administration-select-list").on("change", post_request_without_page);
+        $("#division-select-list").on("change", post_request_without_page);
     });
 }
 
 function post_request_without_page() {
     var name = $("#name").val();
-    var equipmentId = $("#equipment-select-list").val();
-    var employeeId = $("#employee-select-list").val();
-    var repairPlaceId = $("#repairPlace-select-list").val();
-    var statusTypeId = $("#statusType-select-list").val();
+    var positionId = $("#position-select-list").val();
+    var departmentId = $("#department-select-list").val();
+    var administrationId = $("#administration-select-list").val();
+    var divisionId = $("#division-select-list").val();
 
     $("#loading").show();
     $.ajax({
-        url: "Search/HistoryFilter",
+        url: "/Search/HistoryFilter",
         type: 'POST',
         data: {
             //"name": name,
-            "equipmentId": equipmentId,
-            "employeeId": employeeId,
+            "statusTypeId": statusTypeId,
             "repairPlaceId": repairPlaceId,
-            "statusTypeId": statusTypeId
+            "administrationId": administrationId,
+            "divisionId": divisionId
         },
         cache: false,
         success: function (result) {
@@ -43,10 +43,10 @@ function post_request_without_page() {
 function post_request() {
     var name = $("#name").val();
 
-    var equipmentId = $("#equipment-select-list").val();
-    var employeeId = $("#employee-select-list").val();
-    var repairPlaceId = $("#repairPlace-select-list").val();
-    var statusTypeId = $("#statusType-select-list").val();
+    var positionId = $("#position-select-list").val();
+    var departmentId = $("#department-select-list").val();
+    var administrationId = $("#administration-select-list").val();
+    var divisionId = $("#division-select-list").val();
 
     var parts = $(this).attr("href").split("?");
     var url = parts[0];
@@ -57,12 +57,12 @@ function post_request() {
         url: url,
         type: 'POST',
         data: {
-            //"name": name,
+            "name": name,
             "page": page,
-            "equipmentId": equipmentId,
-            "employeeId": employeeId,
-            "repairPlaceId": repairPlaceId,
-            "statusTypeId": statusTypeId
+            "positionId": positionId,
+            "departmentId": departmentId,
+            "administrationId": administrationId,
+            "divisionId": divisionId
         },
         cache: false,
         success: function (result) {

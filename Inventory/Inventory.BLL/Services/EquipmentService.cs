@@ -33,8 +33,8 @@ namespace Inventory.BLL.Services
         {
             Equipment equipment = BLLEquipmentMapper.DtoToEntity(equipmentDTO);
             equipment.Id = Guid.NewGuid();
-
-            string url = $"http://localhost:58644/Equipment/Details/{equipment.Id}";
+            string domainName = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority);
+            string url = $"{domainName}/Equipment/Details/{equipment.Id}";
             equipment.QRCode = GenerateQRCode(url, equipment.Id);
 
             _unitOfWork.Equipments.Create(equipment);
@@ -135,6 +135,13 @@ namespace Inventory.BLL.Services
 
             return relations.Count() > 0;
         }
+
+        //private bool HasRelationsWithComponents(Guid id)
+        //{
+        //    var relations = _unitOfWork.EquipmentComponentRelations.Find(r => r.EquipmentId == id);
+
+        //    return relations.Count() > 0;
+        //}
 
         public IEnumerable<OwnerInfoDTO> GetOwnerHistory(Guid id)
         {
