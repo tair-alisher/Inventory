@@ -5,46 +5,48 @@
     ViewBag.Title = "Пользователи";
 }
 
-<h2>Пользователи</h2>
+<div class="block">
+    <h2 class="block-title">Пользователи</h2>
 
-@Html.AntiForgeryToken()
+    @Html.AntiForgeryToken()
 
-<p>
-    <a href="@Url.Action("Register", "Account")" class="btn btn-primary" type="button">
-        <i class="fa fa-plus"></i> Зарегистрировать пользователя
-    </a>
-</p>
+    <p>
+        <a href="@Url.Action("Register", "Account")" class="btn btn-primary app-btn app-btn-main" type="button">
+            <i class="fa fa-plus"></i> Добавить пользователя
+        </a>
+    </p>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.First().UserName)</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr id="@item.Id">
-                <td>@Html.DisplayFor(modelItem => item.UserName)</td>
-                <td>
-                    <div class="btn-group float-right" role="group">
-                        <a class="btn btn-info" name="editButton" id="editButton" href="@Url.Action("ChangeRole", "User", new { userId = item.Id })"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"> Сменить роль</i></a>
-                        <a class="btn btn-danger delete-prompt" name="deleteButton" id="@item.Id"><i class="fa fa-trash" aria-hidden="true" title="Удалить" data-toggle="tooltip" data-placement="top"> Удалить</i></a>
-                    </div>
-                </td>
+    <table class="table table-responsive-sm table-responsive-md table-responsive-lg table-sm">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.First().UserName)</th>
+                <th>Действия</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr id="@item.Id">
+                    <td>@Html.DisplayFor(modelItem => item.UserName)</td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a class="btn btn-info" name="editButton" id="editButton" href="@Url.Action("ChangeRole", "User", new { userId = item.Id })"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"></i> Сменить роль</a>
+                            <a class="btn btn-danger delete-prompt text-light" name="deleteButton" id="@item.Id"><i class="fa fa-trash" aria-hidden="true" title="Удалить" data-toggle="tooltip" data-placement="top"></i> Удалить</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
-@if (!(Model.PageCount <= 0))
-{
-    <p>Страница @Model.PageNumber из @Model.PageCount</p>
+    @if (!(Model.PageCount <= 0))
+    {
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
 
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
-}
+        <p class="pagination-info">Страница @Model.PageNumber из @Model.PageCount</p>
+    }
 
+</div>
 
 <!-- Bootstrap modal popup -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
