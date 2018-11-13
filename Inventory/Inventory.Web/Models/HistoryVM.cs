@@ -21,7 +21,7 @@ namespace Inventory.Web.Models
         public Guid StatusTypeId { get; set; }
 
         [Display(Name = "Дата изменения")]
-        public DateTime ChangeDate { get; set; }
+        public DateTime ChangeDate { get; set; } 
 
         [Display(Name = "Комментарий")]
         [StringLength(100, ErrorMessage = "Длина строки не должна превышать 100 символов")]

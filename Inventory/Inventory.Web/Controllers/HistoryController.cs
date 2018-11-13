@@ -113,6 +113,7 @@ namespace Inventory.Web.Controllers
                     }
                 );
             }
+            ViewBag.ChangeDateNow = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss");
 
             ViewBag.StatusTypeId = new SelectList(
                 StatusTypeService.GetAll(),
@@ -163,6 +164,8 @@ namespace Inventory.Web.Controllers
                 return RedirectToAction("Index");
             }
 
+            ViewBag.ChangeDateNow = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss");
+
             ViewBag.StatusTypeId = new SelectList(
                 StatusTypeService.GetAll(),
                 "Id",
@@ -210,6 +213,7 @@ namespace Inventory.Web.Controllers
                     }
                 );
             }
+            ViewBag.ChangeDateNow = ((DateTime)historyVM.ChangeDate).ToString("dd.MM.yyyy HH:mm:ss");
 
             ViewBag.StatusTypeId = new SelectList(
                 StatusTypeService.GetAll(),
@@ -263,6 +267,8 @@ namespace Inventory.Web.Controllers
                     }
                 );
             }
+
+            ViewBag.ChangeDateNow = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss");
 
             ViewBag.StatusTypeId = new SelectList(
                 StatusTypeService.GetAll(),
