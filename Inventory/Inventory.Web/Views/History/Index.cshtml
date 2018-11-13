@@ -35,11 +35,11 @@
     <div class="row">
         <div class="col-md-6">
             <label class="control-label" for="departmentName-select-list">Выберите место ремонта</label>
-            @Html.DropDownList("repairPlaceId", ViewBag.RepairPlaceName as SelectList, "Все", htmlAttributes: new { @class = "form-control localytics-chosen", @id = "repairPlaceDropDown", onchange = "form.submit();", style = "border: 1px solid; border-color: #008cba;" })
+            @Html.DropDownList("RepairPlaceId", ViewBag.RepairPlaceId as SelectList, "Все", htmlAttributes: new { @class = "form-control localytics-chosen", @id = "repairPlaceDropDown", onchange = "form.submit();", style = "border: 1px solid; border-color: #008cba;" })
         </div>
         <div class="col-md-6">
             <label class="control-label" for="position-select-list">Выберите статус</label>
-            @Html.DropDownList("statusId", ViewBag.StatusName as SelectList, "Все", htmlAttributes: new { @class = "form-control localytics-chosen", @id = "statusTypeDropDown", onchange = "form.submit();", style = "border: 1px solid; border-color: #008cba;" })
+            @Html.DropDownList("Id", ViewBag.StatusTypeId as SelectList, "Все", htmlAttributes: new { @class = "form-control localytics-chosen", @id = "statusTypeDropDown", onchange = "form.submit();", style = "border: 1px solid; border-color: #008cba;" })
         </div>
     </div>
     <hr />

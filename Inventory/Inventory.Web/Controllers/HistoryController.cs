@@ -41,7 +41,7 @@ namespace Inventory.Web.Controllers
             return PartialView(historyVMs.ToPagedList(pageNumber, pageSize));
         }
 
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page, string repairPlaceId, string statusId)
         {
             int pageSize = 10;
             int pageNumber = (page ?? 1);
@@ -68,14 +68,7 @@ namespace Inventory.Web.Controllers
 
             ViewBag.EquipmentId = equipmentSelectModel;
 
-            //List<CatalogEntities.Employee> employees = EmployeeService.GetAll().ToList();
-
             ViewBag.EmployeeId = EmployeeService.GetAll().ToList(); 
-
-            //ViewBag.EmployeeId = new SelectList(
-            //    EmployeeService.GetAll(),
-            //    "EmployeeId",
-            //    "EmployeeFullName");
 
             IEnumerable<HistoryDTO> historyDTOs = HistoryService.GetAll().ToList();
 
