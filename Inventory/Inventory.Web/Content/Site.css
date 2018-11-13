@@ -1,8 +1,9 @@
-﻿@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+﻿@import url('https://fonts.googleapis.com/css?family=Roboto');
 
 body {
-    font-family: 'Poppins', sans-serif;
-    background: #fafafa;
+    font-family: 'Roboto', sans-serif;
+    background: #E0E8EF;
+    color: #34495E;
 }
 
 p {
@@ -58,8 +59,8 @@ a:focus {
     left: 0;
     height: 100vh;
     z-index: 999;
-    background: #7386D5;
-    color: #fff;
+    background: #34495E;
+    color: #7DAFE1;
     transition: all 0.1s;
 }
 
@@ -68,8 +69,10 @@ a:focus {
     }
 
     #sidebar .sidebar-header {
-        padding: 20px;
-        background: #6d7fcc;
+        padding: 12px 0px 8px 0px;
+        letter-spacing: 0.1em;
+        color: #fff;
+        background: #2E4E6F;
     }
 
     #sidebar ul.components {
@@ -84,19 +87,19 @@ a:focus {
 
     #sidebar ul li a {
         padding: 10px;
-        font-size: 1.1em;
+        font-size: 1em;
         display: block;
     }
 
         #sidebar ul li a:hover {
-            color: #7386D5;
-            background: #fff;
+            background: #3A4F63;
         }
 
     #sidebar ul li.active > a,
-    a[aria-expanded="true"] {
-        color: #fff;
-        background: #6d7fcc;
+    a[aria-expanded="true"],
+    a[aria-expanded="true"] > i {
+        color: #FA8646;
+        background: #3A4F63;
     }
 
 a[data-toggle="collapse"] {
@@ -114,7 +117,7 @@ a[data-toggle="collapse"] {
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
-    background: #6d7fcc;
+    background: #34495E;
 }
 
 ul.account {
@@ -138,6 +141,15 @@ a.article,
 a.article:hover {
     background: #6d7fcc !important;
     color: #fff !important;
+}
+
+.icon {
+    color: #A3BCD9;
+    padding-right: 10px;
+}
+
+.list-unstyled > li > a {
+    letter-spacing: 0.05em;
 }
 
 /* ---------------------------------------------------

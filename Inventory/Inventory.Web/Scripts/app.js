@@ -4,7 +4,6 @@ const MODEL = "Модель";
 const NAME = "Название";
 
 function menuInit() {
-    console.log('here');
     $(document).ready(function () {
         $("#sidebar").mCustomScrollbar({
             theme: "minimal"

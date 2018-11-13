@@ -18,16 +18,16 @@
         <!-- Sidebar  -->
         <nav id="sidebar">
             <div class="sidebar-header">
-                <h3><a  href="@Url.Action("Index", "Home")">Инвентаризация</a></h3>
+                <h4 class="text-center"><a  href="@Url.Action("Index", "Home")">Инвентаризация</a></h4>
             </div>
 
             <ul class="list-unstyled components">
                 <!-- <p>Навигация</p> -->
                 <li>
-                    <a href="@Url.Action("Index", "Home")"><i class="fa fa-home" aria-hidden="true"></i> Главная</a>
+                    <a href="@Url.Action("Index", "Home")"><i class="fa fa-home icon" aria-hidden="true"></i> Главная</a>
                 </li>
                 <li><!-- class="active" -->
-                    <a href="#equipmentDropdown" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-laptop" aria-hidden="true"></i> Оборудование</a>
+                    <a href="#equipmentDropdown" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-laptop icon" aria-hidden="true"></i> Оборудование</a>
                     <ul class="collapse list-unstyled" id="equipmentDropdown">
                         <li>
                             <a href="@Url.Action("Index", "Equipment")">Оборудование</a>
@@ -38,7 +38,7 @@
                     </ul>
                 </li>
                 <li><!-- class="active" -->
-                    <a href="#componentDropdown" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-headphones" aria-hidden="true"></i> Комплектующие</a>
+                    <a href="#componentDropdown" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-headphones icon" aria-hidden="true"></i> Комплектующие</a>
                     <ul class="collapse list-unstyled" id="componentDropdown">
                         <li>
                             <a href="@Url.Action("Index", "Component")">Комплектующие</a>
@@ -49,7 +49,7 @@
                     </ul>
                 </li>
                 <li><!-- class="active" -->
-                    <a href="#trackingDropdown" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-address-card" aria-hidden="true"></i> Отслеживание</a>
+                    <a href="#trackingDropdown" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-address-card icon" aria-hidden="true"></i> Отслеживание</a>
                     <ul class="collapse list-unstyled" id="trackingDropdown">
                         <li>
                             <a href="@Url.Action("Index", "History")">История</a>
@@ -63,7 +63,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="@Url.Action("Index", "User")"><i class="fa fa-users" aria-hidden="true"></i> Пользователи</a>
+                    <a href="@Url.Action("Index", "User")"><i class="fa fa-users icon" aria-hidden="true"></i> Пользователи</a>
                 </li>
             </ul>
 
@@ -71,13 +71,13 @@
                 @if (!User.Identity.IsAuthenticated)
                 {
                     <li>
-                        <a href="@Url.Action("Login", "Account")"><i class="fa fa-sign-in" aria-hidden="true"></i> Войти</a>
+                        <a href="@Url.Action("Login", "Account")"><i class="fa fa-sign-in icon" aria-hidden="true"></i> Войти</a>
                     </li>
                 }
                 else
                 {
                     <li>
-                        <a href="@Url.Action("Logout", "Account")"><i class="fa fa-sign-out" aria-hidden="true"></i> Выйти</a>
+                        <a href="@Url.Action("Logout", "Account")"><i class="fa fa-sign-out icon" aria-hidden="true"></i> Выйти</a>
                     </li>
                 }
             </ul>
@@ -151,17 +151,7 @@
     <script src="~/Scripts/pagination.js"></script>
 
     <script>
-        $(document).ready(function () {
-            $("#sidebar").mCustomScrollbar({
-                theme: "minimal"
-            });
-
-            $('#sidebarCollapse').on('click', function () {
-                $('#sidebar, #content').toggleClass('active');
-                $('.collapse.in').toggleClass('in');
-                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-            });
-        });
+        menuInit();
     </script>
 
     @RenderSection("scripts", required: false)
