@@ -10,11 +10,69 @@ function menuInit() {
         });
 
         $('#sidebarCollapse').on('click', function () {
-            $('#sidebar, #content').toggleClass('active');
+            $('#sidebar, #content, .navbar').toggleClass('active');
             $('.collapse.in').toggleClass('in');
             $('a[aria-expanded=true]').attr('aria-expanded', 'false');
         });
     });
+}
+
+//function dontSubmitByEnter() {
+//    $(document).ready(function () {
+//        $("#search-input").keyup(function (event) {
+//            if (event.keyCode == 13) {
+//                return false;
+//            }
+//        });
+//    });
+//}
+
+function activeMenuItem() {
+    turnOffCurrentActiveMenuItem();
+
+    var url = window.location.href.toLowerCase();
+    if (url.indexOf('user') >= 0) {
+        $('#user-page-menu-item').addClass('active');
+    }
+    else if (url.indexOf('equipment') >= 0) {
+        $('#equipment-page-menu-item').addClass('active');
+    }
+    else if (url.indexOf('component') >= 0) {
+        $('#component-page-menu-item').addClass('active');
+    }
+    else if (url.indexOf('history') >= 0 || url.indexOf('repairplace') >= 0 || url.indexOf('statustype') >= 0) {
+        $('#tracking-page-menu-item').addClass('active');
+    }
+    else if (url.indexOf('login') >= 0) {
+        $('#login-page-menu-item').addClass('active');
+    }
+    else if (url.indexOf('changeemail') >= 0) {
+        $('#change-email-page-menu-item').addClass('active');
+    }
+    else if (url.indexOf('changepassword') >= 0) {
+        $('#change-password-page-menu-item').addClass('active');
+    }
+    else {
+        $('#main-page-menu-item').addClass('active');
+    }
+}
+
+function turnOffCurrentActiveMenuItem() {
+    var menuItems = [];
+    menuItems.push($('#main-page-menu-item'));
+    menuItems.push($('#user-page-menu-item'));
+    menuItems.push($('#equipment-page-menu-item'));
+    menuItems.push($('#component-page-menu-item'));
+    menuItems.push($('#tracking-page-menu-item'));
+    menuItems.push($('#login-page-menu-items'));
+    menuItems.push($('#change-email-page-menu-item'));
+    menuItems.push($('#change-password-page-menu-item'));
+
+    for (var i = 0; i < menuItems.length; i++) {
+        if (menuItems[i].hasClass('active') >= 0) {
+            menuItems[i].removeClass('active');
+        }
+    }
 }
 
 function searchEmployees() {

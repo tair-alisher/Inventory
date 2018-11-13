@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Inventory.Web.Models.EquipmentVM>
 
-<table class="table" id="listTable">
+<table class="table table-responsive-sm table-responsive-md table-responsive-lg table-sm" id="listTable">
     <thead>
         <tr>
             <th>@Html.DisplayNameFor(model => model.EquipmentTypeId)</th>
@@ -20,9 +20,9 @@
 
                 <td>
                     <div class="btn-group float-right" role="group">
-                        <a class="btn btn-info" name="editButton" id="editButton" href="@Url.Action("Edit", "Equipment", new { id = item.Id })"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"> Редактировать</i></a>
-                        <a class="btn btn-warning" name="detailsButton" id="detailsButton" href="@Url.Action("Details", "Equipment", new { id = item.Id })"><i class="fa fa-eye" aria-hidden="true" title="Просмотреть" data-toggle="tooltip" data-placement="top"> Просмотреть</i></a>
-                        <a class="btn btn-danger delete-prompt" name="deleteButton" id="@item.Id"><i class="fa fa-trash" aria-hidden="true" title="Удалить" data-toggle="tooltip" data-placement="top"> Удалить</i></a>
+                        <a class="btn btn-info" name="editButton" id="editButton" href="@Url.Action("Edit", "Equipment", new { id = item.Id })"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"></i> Редактировать</a>
+                        <a class="btn btn-warning" name="detailsButton" id="detailsButton" href="@Url.Action("Details", "Equipment", new { id = item.Id })"><i class="fa fa-eye" aria-hidden="true" title="Просмотреть" data-toggle="tooltip" data-placement="top"></i> Просмотреть</a>
+                        <a class="btn btn-danger delete-prompt" name="deleteButton" id="@item.Id"><i class="fa fa-trash" aria-hidden="true" title="Удалить" data-toggle="tooltip" data-placement="top"></i> Удалить</a>
                     </div>
                 </td>
             </tr>

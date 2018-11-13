@@ -24,7 +24,7 @@ namespace Inventory.Web.Controllers
 
         public ActionResult Index(int? page)
         {
-            int pageSize = 5;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
 
             var userDTOs = UserService.GetAllUsers().ToList();

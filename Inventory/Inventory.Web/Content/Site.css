@@ -6,6 +6,40 @@ body {
     color: #34495E;
 }
 
+.block {
+    background-color: #f9f9f9;
+    padding: 40px;
+    overflow-x: auto;
+}
+.block-title {
+    color: #2E4052;
+}
+.pagination-info {
+    font-size: 0.9em;
+}
+
+.app-btn {
+    font-family: 'Roboto', sans-serif;
+}
+.app-btn-main {
+    background-color: #34495E;
+    color: #f9f9f9;
+    border-radius: 3px !important;
+}
+    .app-btn-main:hover {
+        background-color: #3A4F63 !important;
+        color: #f9f9f9 !important;
+    }
+    .app-btn-main:active {
+        background-color: #3A4F63 !important;
+        color: #f9f9f9 !important;
+    }
+    .app-btn-main:focus {
+        background-color: #3A4F63 !important;
+        color: #f9f9f9 !important;
+        box-shadow: none !important;
+    }
+
 p {
     font-family: 'Poppins', sans-serif;
     font-size: 1.1em;
@@ -23,11 +57,16 @@ a:focus {
 
 .navbar {
     padding: 15px 10px;
-    background: #fff;
+    background: #f9f9f9 !important;
     border: none;
     border-radius: 0;
-    margin-bottom: 40px;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    height: 56px;
+    width: calc(100% - 250px);
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 3;
 }
 
 .navbar-btn {
@@ -96,8 +135,9 @@ a:focus {
         }
 
     #sidebar ul li.active > a,
-    a[aria-expanded="true"],
-    a[aria-expanded="true"] > i {
+    a.dropdown-toggle[aria-expanded="true"],
+    a.dropdown-toggle[aria-expanded="true"] > i,
+    li.active > a > i {
         color: #FA8646;
         background: #3A4F63;
     }
@@ -125,7 +165,7 @@ ul.account {
 }
 
     ul.account a {
-        text-align: center;
+        color: #6295C7;
         font-size: 0.9em !important;
         display: block;
         border-radius: 5px;
@@ -147,6 +187,10 @@ a.article:hover {
     color: #A3BCD9;
     padding-right: 10px;
 }
+.icon-muted {
+    color: #5D7E9F;
+    padding-right: 10px;
+}
 
 .list-unstyled > li > a {
     letter-spacing: 0.05em;
@@ -158,7 +202,7 @@ a.article:hover {
 
 #content {
     width: calc(100% - 250px);
-    padding: 40px;
+    padding: 80px 40px 40px 40px;
     min-height: 100vh;
     transition: all 0.1s;
     position: absolute;
@@ -166,14 +210,19 @@ a.article:hover {
     right: 0;
 }
 
-    #content.active {
+    #content.active,
+    .navbar.active {
         width: 100%;
     }
 
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
-
+@media (max-width: 460px) {
+    .logged-as {
+        display: none;
+    }
+}
 @media (max-width: 768px) {
     #sidebar {
         margin-left: -250px;
@@ -183,11 +232,13 @@ a.article:hover {
             margin-left: 0;
         }
 
-    #content {
+    #content,
+    .navbar {
         width: 100%;
     }
 
-        #content.active {
+        #content.active,
+        .navbar.active {
             width: calc(100% - 250px);
         }
 

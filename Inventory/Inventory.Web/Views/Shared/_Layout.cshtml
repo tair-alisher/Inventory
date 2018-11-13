@@ -18,15 +18,19 @@
         <!-- Sidebar  -->
         <nav id="sidebar">
             <div class="sidebar-header">
-                <h4 class="text-center"><a  href="@Url.Action("Index", "Home")">Инвентаризация</a></h4>
+                <h4 class="text-center"><a href="@Url.Action("Index", "Home")">Инвентаризация</a></h4>
             </div>
 
             <ul class="list-unstyled components">
                 <!-- <p>Навигация</p> -->
-                <li>
+                <li id="main-page-menu-item" class="active">
                     <a href="@Url.Action("Index", "Home")"><i class="fa fa-home icon" aria-hidden="true"></i> Главная</a>
                 </li>
-                <li><!-- class="active" -->
+                <li id="user-page-menu-item">
+                    <a href="@Url.Action("Index", "User")"><i class="fa fa-users icon" aria-hidden="true"></i> Пользователи</a>
+                </li>
+                <li id="equipment-page-menu-item">
+                    <!-- class="active" -->
                     <a href="#equipmentDropdown" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-laptop icon" aria-hidden="true"></i> Оборудование</a>
                     <ul class="collapse list-unstyled" id="equipmentDropdown">
                         <li>
@@ -37,7 +41,8 @@
                         </li>
                     </ul>
                 </li>
-                <li><!-- class="active" -->
+                <li id="component-page-menu-item">
+                    <!-- class="active" -->
                     <a href="#componentDropdown" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-headphones icon" aria-hidden="true"></i> Комплектующие</a>
                     <ul class="collapse list-unstyled" id="componentDropdown">
                         <li>
@@ -48,7 +53,8 @@
                         </li>
                     </ul>
                 </li>
-                <li><!-- class="active" -->
+                <li id="tracking-page-menu-item">
+                    <!-- class="active" -->
                     <a href="#trackingDropdown" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-address-card icon" aria-hidden="true"></i> Отслеживание</a>
                     <ul class="collapse list-unstyled" id="trackingDropdown">
                         <li>
@@ -62,59 +68,51 @@
                         </li>
                     </ul>
                 </li>
-                <li>
-                    <a href="@Url.Action("Index", "User")"><i class="fa fa-users icon" aria-hidden="true"></i> Пользователи</a>
-                </li>
             </ul>
 
             <ul class="list-unstyled account">
                 @if (!User.Identity.IsAuthenticated)
                 {
-                    <li>
-                        <a href="@Url.Action("Login", "Account")"><i class="fa fa-sign-in icon" aria-hidden="true"></i> Войти</a>
+                    <li id="login-page-menu-item">
+                        <a href="@Url.Action("Login", "Account")"><i class="fa fa-sign-in icon-muted" aria-hidden="true"></i> Войти</a>
                     </li>
                 }
                 else
                 {
+                    <li id="change-email-page-menu-item">
+                        <a href="@Url.Action("ChangeEmail", "Account")"><i class="fa fa-at icon-muted" aria-hidden="true"></i> Сменить почту</a>
+                    </li>
+                    <li id="change-password-page-menu-item">
+                        <a href="@Url.Action("ChangePassword", "Account")"><i class="fa fa-unlock-alt icon-muted" aria-hidden="true"></i> Сменить пароль</a>
+                    </li>
                     <li>
-                        <a href="@Url.Action("Logout", "Account")"><i class="fa fa-sign-out icon" aria-hidden="true"></i> Выйти</a>
+                        <a href="@Url.Action("Logout", "Account")"><i class="fa fa-sign-out icon-muted" aria-hidden="true"></i> Выйти</a>
                     </li>
                 }
             </ul>
         </nav>
 
+        <!-- top nav -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+
+                <button type="button" id="sidebarCollapse" class="btn btn-light">
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                    <span>Меню</span>
+                </button>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="justify-content-end text-muted logged-as">
+                        Вы вошли как: @User.Identity.Name
+                    </div>
+                }
+
+            </div>
+        </nav>
+
         <!-- Page Content  -->
         <div id="content">
-
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="container-fluid">
-
-                    <button type="button" id="sidebarCollapse" class="btn btn-info">
-                        <i class="fa fa-bars" aria-hidden="true"></i>
-                        <span>Меню</span>
-                    </button>
-                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <i class="fas fa-align-justify"></i>
-                    </button>
-
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="nav navbar-nav ml-auto">
-                            <li class="nav-item active">
-                                <a class="nav-link" href="#">Page</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Page</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Page</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Page</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
 
             @if (TempData["success"] != null)
             {
@@ -152,6 +150,7 @@
 
     <script>
         menuInit();
+        activeMenuItem();
     </script>
 
     @RenderSection("scripts", required: false)
