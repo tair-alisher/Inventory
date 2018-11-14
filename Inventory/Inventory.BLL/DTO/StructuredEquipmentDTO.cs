@@ -29,5 +29,8 @@ namespace Inventory.BLL.DTO
         public Guid Id { get; set; }
         public string EquipmentType { get; set; }
         public string InventNumber { get; set; }
+        public string Supplier { get; set; }
+        public IEnumerable<ComponentDTO> Components { get; set; }
+        public IEnumerable<OwnerInfoDTO> Owners { get; set; }
     }
 }

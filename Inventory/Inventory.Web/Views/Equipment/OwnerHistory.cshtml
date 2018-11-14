@@ -7,24 +7,27 @@
 <div class="block">
     <h2 class="block-title">История владельцев</h2>
 
+    <div class="form-group" id="responsible-employees">
+        <div calss="col-md-12" id="search-input">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="searching">Поиск</span>
+                </div>
+                <input type="text" class="form-control" id="search-input-value" placeholder="Поиск по имени и/или фамилии" aria-describedby="search-cancel-buttons" />
+                <div class="input-group-append" id="search-cancel-buttons">
+                    <button class="btn btn-outline-primary" type="button" onclick="searchEmployees()">Искать</button>
+                    <button class="btn btn-outline-secondary" type="button" onclick="clearSearch()">Сбросить</button>
+                </div>
+            </div>
+            <small id="information" class="form-text text-muted">Для редактирования добавленных сотрудников, сохраните изменения.</small>
+        </div>
+    </div>
+
     @using (Html.BeginForm("UpdateOwnerHistory", "Relation", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
 
         <input type="hidden" name="equipmentId" value="@ViewBag.EquipmentId" />
-
-        <div class="form-group" id="responsible-employees">
-            <div calss="col-md-12" id="search-input">
-                <div class="input-group">
-                    <input type="text" class="form-control" id="search-input-value" placeholder="Поиск по имени и/или фамилии" aria-describedby="search-cancel-buttons" />
-                    <div class="input-group-append" id="search-cancel-buttons">
-                        <button class="btn btn-outline-primary" type="button" onclick="searchEmployees()">Искать</button>
-                        <button class="btn btn-outline-secondary" type="button" onclick="clearSearch()">Сбросить</button>
-                    </div>
-                </div>
-                <small id="information" class="form-text text-muted">Для редактирования добавленных сотрудников, сохраните изменения.</small>
-            </div>
-        </div>
 
         <div id="found-items-area"></div>
 
@@ -70,8 +73,14 @@
         <div class="form-group">
             <div class="btn-group" role="group">
                 <button type="submit" class="btn btn-success"><i class="fa fa-save" aria-hidden="true" title="Сохранить" data-toggle="tooltip" data-placement="top"></i> Сохранить</button>
-                <a href="@Url.Action("Edit", "Equipment", new { id = ViewBag.EquipmentId })" class="btn btn-info"><i class="fa fa-arrow-left" aria-hidden="true" title="Назад" data-toggle="tooltip" data-placement="top"></i> Назад</a>
+                <a href="@Url.Action("Index", "Equipment")" class="btn btn-info"><i class="fa fa-arrow-left" aria-hidden="true" title="Назад" data-toggle="tooltip" data-placement="top"></i> Назад</a>
             </div>
         </div>
     }
 </div>
+
+@section scripts {
+    <script>
+        searchEmployeesByEnter();
+    </script>
+}

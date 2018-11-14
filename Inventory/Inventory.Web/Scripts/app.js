@@ -17,15 +17,15 @@ function menuInit() {
     });
 }
 
-//function dontSubmitByEnter() {
-//    $(document).ready(function () {
-//        $("#search-input").keyup(function (event) {
-//            if (event.keyCode == 13) {
-//                return false;
-//            }
-//        });
-//    });
-//}
+function searchEmployeesByEnter() {
+    $(document).ready(function () {
+        $("#search-input-value").keyup(function (event) {
+            if (event.keyCode == 13) {
+                searchEmployees();
+            }
+        });
+    });
+}
 
 function activeMenuItem() {
     turnOffCurrentActiveMenuItem();
@@ -78,6 +78,9 @@ function turnOffCurrentActiveMenuItem() {
 function searchEmployees() {
     var employeeName = $("#search-input-value").val();
     var token = $('input[name="__RequestVerificationToken"]').val();
+    var oldSearchingText = document.getElementById('searching').innerText;
+
+    document.getElementById('searching').innerText = "Идет поиск...";
 
     $.ajax({
         url: "/Equipment/FindEmployees",
@@ -89,9 +92,11 @@ function searchEmployees() {
         success: function (html) {
             $("#found-items-area").empty();
             $("#found-items-area").append(html);
+            document.getElementById('searching').innerText = oldSearchingText;
         },
         error: function (XMLHttpRequest) {
             console.log(XMLHttpRequest);
+            document.getElementById('searching').innerText = oldSearchingText;
         }
     });
     return false;
@@ -167,6 +172,10 @@ function createTd(tdClass, value) {
 function searchComponents(type) {
     var searchValue = $("#search-input-value").val();
     var token = $('input[name="__RequestVerificationToken"]').val();
+    var oldSearchingText = document.getElementById('searching').innerText;
+
+    document.getElementById('searching').innerText = "Идет поиск...";
+
 
     $.ajax({
         url: "/Component/FindComponents",
@@ -179,9 +188,11 @@ function searchComponents(type) {
         success: function (html) {
             $("#found-items-area").empty();
             $("#found-items-area").append(html);
+            document.getElementById('searching').innerText = oldSearchingText;
         },
         error: function (XMLHttpRequest) {
             console.log(XMLHttpRequest);
+            document.getElementById('searching').innerText = oldSearchingText;
         }
     });
     return false;
@@ -382,6 +393,7 @@ function QRCodeSourcetoPrint(source) {
         "</scri" + "pt></head><body onload='step1()'>\n" +
         "<img src='" + source + "' /></body></html>";
 }
+
 function QRCodePrint(source) {
     Pagelink = "about:blank";
     var pwa = window.open(Pagelink, "_new");

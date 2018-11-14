@@ -89,7 +89,7 @@ namespace Inventory.Web.Controllers
                 EquipmentDTO equipmentDTO = WebEquipmentMapper.VmToDto(equipmentVM);
                 Guid equipmentId = EquipmentService.AddAndGetId(equipmentDTO);
 
-                return RedirectToAction("Edit", new { id = equipmentId });
+                return RedirectToAction("Index");
             }
 
             ViewBag.EquipmentTypeId = new SelectList(

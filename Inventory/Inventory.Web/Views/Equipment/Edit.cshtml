@@ -48,12 +48,6 @@
                 @Html.ValidationMessageFor(model => model.Supplier, "", new { @class = "text-danger" })
             </div>
 
-            <div class="btn-group float-right">
-                <a class="btn btn-primary" href="@Url.Action("OwnerHistory", "Equipment", new { equipmentId = Model.Id})">История владельцев</a>
-                <a class="btn btn-info" href="@Url.Action("Components", "Equipment", new { equipmentId = Model.Id })">Комплектующие</a>
-            </div>
-
-
             <div class="form-group">
                 <div class="btn-group" role="group">
                     <button type="submit" class="btn btn-success"><i class="fa fa-save" aria-hidden="true" title="Сохранить" data-toggle="tooltip" data-placement="top"></i> Сохранить</button>

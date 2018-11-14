@@ -320,11 +320,11 @@ namespace Inventory.BLL.Services
                 {
                     DepartmentId = dep.DepartmentId,
                     DepartmentName = dep.DepartmentName,
-                    Equipments = GetDepartmentEquipment(dep.DepartmentId)
+                    Equipments = GetDepartmentEquipments(dep.DepartmentId)
                 }).ToList();
         }
 
-        private List<StructuredEquipmentDTO> GetDepartmentEquipment(int departmentId)
+        private List<StructuredEquipmentDTO> GetDepartmentEquipments(int departmentId)
         {
             return (
                 from
@@ -347,7 +347,10 @@ namespace Inventory.BLL.Services
                 {
                     Id = equip.Id,
                     EquipmentType = eq_type.Name,
-                    InventNumber = equip.InventNumber
+                    InventNumber = equip.InventNumber,
+                    Supplier = equip.Supplier,
+                    Components = GetComponents(equip.Id),
+                    Owners = GetOwnerHistory(equip.Id)
                 }).ToList();
         }
 

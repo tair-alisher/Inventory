@@ -8,5 +8,6 @@ namespace Inventory.BLL.Interfaces
     {
         Guid AddAndGetId(ComponentDTO component);
         IEnumerable<ComponentDTO> GetComponentsBy(string type, string value);
+        IEnumerable<ComponentDTO> Filter(int pageNumber, int pageSize, IEnumerable<ComponentDTO> components, string componentTypeId, string modelName, string name);
     }
 }
