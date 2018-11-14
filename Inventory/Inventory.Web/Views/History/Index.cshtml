@@ -1,6 +1,6 @@
-﻿@model PagedList.IPagedList<Inventory.Web.Models.HistoryVM>
-@using PagedList;
-@using PagedList.Mvc;
+﻿@model PagedList.PagedList<Inventory.Web.Models.HistoryVM>
+@using PagedList
+@using PagedList.Mvc
 
 @{
     ViewBag.Title = "История";
@@ -14,83 +14,74 @@
         <a type="button" class="btn btn-primary app-btn app-btn-main" href="@Url.Action("Create", "History")"><i class="fa fa-plus"></i> Добавить новую запись</a>
     </p>
 
-   @using (Html.BeginForm("Index", "History", FormMethod.Get))
-{
-    @Html.AntiForgeryToken()
-    <!-- Search  -->
-    <div class="row">
-        <div class="col-md-11 search-div">
-            <input type="text" id="searching" name="searching" class="form-control search" autocomplete="off" placeholder="Введите имя сотрудника" onchange="form.submit();"
-                   style="border: 1px solid; border-color: #008cba;" />
+    @using (Html.BeginForm("Index", "History", FormMethod.Get))
+    {
+        @Html.AntiForgeryToken()
+        <hr />
+        <h5 class="block-title">Фильтры</h5>
+        <!-- Filter  -->
+        <div class="row">
+            <div class="col-md-3">
+                <label class="control-label" for="departmentName-select-list">Выберите оборудование</label>
+                @Html.DropDownList("equipmentId", ViewBag.EquipmentId as SelectList, "Все", htmlAttributes: new { @class = "form-control localytics-chosen", @id = "equipmentDropDown", onchange = "form.submit();" })
+            </div>
+            <div class="col-md-3">
+                <label class="control-label" for="position-select-list">Выберите сотрудника</label>
+                @Html.DropDownList("employeeId", ViewBag.EmployeeId as SelectList, "Все", htmlAttributes: new { @class = "form-control localytics-chosen", @id = "employeeDropDown", onchange = "form.submit();" })
+            </div>
+            <div class="col-md-3">
+                <label class="control-label" for="departmentName-select-list">Выберите место ремонта</label>
+                @Html.DropDownList("repairPlaceId", ViewBag.RepairPlaceId as SelectList, "Все", htmlAttributes: new { @class = "form-control localytics-chosen", @id = "repairPlaceDropDown", onchange = "form.submit();" })
+            </div>
+            <div class="col-md-3">
+                <label class="control-label" for="position-select-list">Выберите статус</label>
+                @Html.DropDownList("statusTypeId", ViewBag.StatusTypeId as SelectList, "Все", htmlAttributes: new { @class = "form-control localytics-chosen", @id = "statusTypeDropDown", onchange = "form.submit();" })
+            </div>
         </div>
-        <div class="col-md-1 search-div-btn">
-            <button type="submit" class="btn btn-default default-btn">
-                <i class="fa fa-search"></i>
-                Поиск
-            </button>
+        <br />
+    }
+    <table class="table table-responsive-sm table-responsive-md table-responsive-lg table-sm" id="listTable">
+        <thead>
+            <tr>
+                <th> @Html.DisplayNameFor(model => model.First().EquipmentId)</th>
+                <th> @Html.DisplayNameFor(model => model.First().EmployeeId)</th>
+                <th>@Html.DisplayNameFor(model => model.First().RepairPlaceId) </th>
+                <th> @Html.DisplayNameFor(model => model.First().StatusTypeId) </th>
+                <th>@Html.DisplayNameFor(model => model.First().ChangeDate) </th>
+                <th> @Html.DisplayNameFor(model => model.First().Comments)</th>
+                <th></th>
+            </tr>
+        </thead>
 
-        </div>
-    </div>
-    <!-- Filter  -->
-    <div class="row">
-        <div class="col-md-6">
-            <label class="control-label" for="departmentName-select-list">Выберите место ремонта</label>
-            @Html.DropDownList("RepairPlaceId", ViewBag.RepairPlaceId as SelectList, "Все", htmlAttributes: new { @class = "form-control localytics-chosen", @id = "repairPlaceDropDown", onchange = "form.submit();", style = "border: 1px solid; border-color: #008cba;" })
-        </div>
-        <div class="col-md-6">
-            <label class="control-label" for="position-select-list">Выберите статус</label>
-            @Html.DropDownList("Id", ViewBag.StatusTypeId as SelectList, "Все", htmlAttributes: new { @class = "form-control localytics-chosen", @id = "statusTypeDropDown", onchange = "form.submit();", style = "border: 1px solid; border-color: #008cba;" })
-        </div>
-    </div>
-    <hr />
-}
-        <table class="table table-responsive-sm table-responsive-md table-responsive-lg table-sm" id="listTable">
-            <thead>
-                <tr>
-                    <th> @Html.DisplayNameFor(model => model.First().EquipmentId)</th>
-                    <th> @Html.DisplayNameFor(model => model.First().EmployeeId)</th>
-                    <th>@Html.DisplayNameFor(model => model.First().RepairPlaceId) </th>
-                    <th> @Html.DisplayNameFor(model => model.First().StatusTypeId) </th>
-                    <th>@Html.DisplayNameFor(model => model.First().ChangeDate) </th>
-                    <th> @Html.DisplayNameFor(model => model.First().Comments)</th>
-                    <th></th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr id="@item.Id">
-                        <td>@Html.DisplayFor(modelItem => item.Equipment.EquipmentType.Name)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Employee.EmployeeFullName)</td>
-                        <td>@Html.DisplayFor(modelItem => item.RepairPlace.Name)</td>
-                        <td>@Html.DisplayFor(modelItem => item.StatusType.Name)</td>
-                        <td>@Html.DisplayFor(modelItem => item.ChangeDate)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Comments)</td>
-                        <td>
-                            <div class="btn-group float-right" role="group">
-                                <a class="btn btn-info" name="editButton" id="editButton" href="@Url.Action("Edit", "History", new { id = item.Id })"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"></i> Редактировать</a>
-                                <a class="btn btn-warning" name="detailsButton" id="detailsButton" href="@Url.Action("Details", "History", new { id = item.Id })"><i class="fa fa-eye" aria-hidden="true" title="Просмотреть" data-toggle="tooltip" data-placement="top"></i> Просмотреть</a>
-                                <a class="btn btn-danger delete-prompt" name="deleteButton" id="@item.Id"><i class="fa fa-trash" aria-hidden="true" title="Удалить" data-toggle="tooltip" data-placement="top"></i> Удалить</a>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-
-        <div id="result"> </div>
-
-        <div id="paginationToDelete">
-            @Html.PagedListPager(Model, page => Url.Action("AjaxHistoryList", new { page }),
-             PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "result", OnSuccess = "removeListAndPagination()" }))
-
-            @if (!(Model.PageCount <= 0))
+        <tbody>
+            @foreach (var item in Model)
             {
-                <p class="pagination-info">Страница @Model.PageNumber из @Model.PageCount</p>
+                <tr id="@item.Id">
+                    <td>@Html.DisplayFor(modelItem => item.Equipment.EquipmentType.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Employee.EmployeeFullName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.RepairPlace.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.StatusType.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ChangeDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Comments)</td>
+                    <td>
+                        <div class="btn-group float-right" role="group">
+                            <a class="btn btn-info" name="editButton" id="editButton" href="@Url.Action("Edit", "History", new { id = item.Id })"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"></i> Редактировать</a>
+                            <a class="btn btn-warning" name="detailsButton" id="detailsButton" href="@Url.Action("Details", "History", new { id = item.Id })"><i class="fa fa-eye" aria-hidden="true" title="Просмотреть" data-toggle="tooltip" data-placement="top"></i> Просмотреть</a>
+                            <a class="btn btn-danger delete-prompt" name="deleteButton" id="@item.Id"><i class="fa fa-trash" aria-hidden="true" title="Удалить" data-toggle="tooltip" data-placement="top"></i> Удалить</a>
+                        </div>
+                    </td>
+                </tr>
             }
-        </div>
+        </tbody>
+    </table>
+    <div>
+        @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page }), PagedListRenderOptions.PageNumbersOnly)
+        @if (!(Model.PageCount <= 0))
+        {
+            <p class="pagination-info">Страница @Model.PageNumber из @Model.PageCount</p>
+        }
     </div>
+</div>
 
 <!-- Bootstrap modal popup -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -123,6 +114,5 @@
         })
 
         modalRemovalWindow('/History/Delete');
-        pagination();
     </script>
 }

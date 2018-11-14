@@ -30,26 +30,15 @@ namespace Inventory.Web.Controllers
             EmployeeService = employeeService;
         }
 
-        public ActionResult AjaxHistoryList(int? page)
-        {
-            int pageSize = 10;
-            int pageNumber = (page ?? 1);
-            IEnumerable<HistoryDTO> historyDTOs = HistoryService.GetAll().ToList();
-
-            IEnumerable<HistoryVM> historyVMs = WebHistoryMapper.DtoToVm(historyDTOs);
-
-            return PartialView(historyVMs.ToPagedList(pageNumber, pageSize));
-        }
-
-        public ActionResult Index(int? page, string repairPlaceId, string statusId)
+        public ActionResult Index(int? page, string equipmentId, string employeeId, string repairPlaceId, string statusTypeId)
         {
             int pageSize = 10;
             int pageNumber = (page ?? 1);
 
             List<EquipmentSelectModel> equipmentSelectModel = new List<EquipmentSelectModel>();
-            var eqipmentWithInventNumber = EquipmentService.GetAll();
+            var equipmentWithInventNumber = EquipmentService.GetAll();
 
-            foreach (var item in eqipmentWithInventNumber)
+            foreach (var item in equipmentWithInventNumber)
             {
                 equipmentSelectModel.Add(
                     new EquipmentSelectModel
@@ -61,20 +50,24 @@ namespace Inventory.Web.Controllers
             }
 
             List<StatusTypeVM> statusTypeVMs = WebStatusTypeMapper.DtoToVm(StatusTypeService.GetAll()).ToList();
-            ViewBag.StatusTypeId = statusTypeVMs;
+            ViewBag.StatusTypeId = new SelectList(statusTypeVMs,"Id","Name");
 
             List<RepairPlaceVM> repairPlaceVMs = WebRepairPlaceMapper.DtoToVm(RepairPlaceService.GetAll()).ToList();
-            ViewBag.RepairPlaceId = repairPlaceVMs;
+            ViewBag.RepairPlaceId = new SelectList(repairPlaceVMs, "Id", "Name");
 
-            ViewBag.EquipmentId = equipmentSelectModel;
+            ViewBag.EquipmentId = new SelectList(equipmentSelectModel,"Id","TypeAndInventNumber");
 
-            ViewBag.EmployeeId = EmployeeService.GetAll().ToList(); 
+            ViewBag.EmployeeId = new SelectList(EmployeeService.GetAll(),"EmployeeId","EmployeeFullName");
 
             IEnumerable<HistoryDTO> historyDTOs = HistoryService.GetAll().ToList();
 
             IEnumerable<HistoryVM> historyVMs = WebHistoryMapper.DtoToVm(historyDTOs);
 
-            return View(historyVMs.ToPagedList(pageNumber, pageSize));
+            var filteredHistories = (!String.IsNullOrEmpty(equipmentId)) || (!String.IsNullOrEmpty(employeeId)) || (!String.IsNullOrEmpty(repairPlaceId)) || (!String.IsNullOrEmpty(statusTypeId))
+              ? HistoryService.Filter(pageNumber, pageSize, historyDTOs, equipmentId, employeeId, repairPlaceId, statusTypeId).OrderBy(x => x.Employee.EmployeeFullName)
+              : null;
+
+            return filteredHistories == null ? View(historyVMs.ToPagedList(pageNumber, pageSize)) : View(WebHistoryMapper.DtoToVm(filteredHistories).ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult Details(Guid? id)
