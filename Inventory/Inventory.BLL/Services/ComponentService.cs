@@ -6,6 +6,7 @@ using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.DAL.Entities;
 using Inventory.DAL.Interfaces;
+using PagedList;
 
 namespace Inventory.BLL.Services
 {
@@ -34,6 +35,30 @@ namespace Inventory.BLL.Services
         public void Add(ComponentDTO item)
         {
             AddAndGetId(item);
+        }
+
+        //public IEnumerable<ComponentDTO> GetAllIndex(int pageNumber, int pageSize, string search)
+        //{
+        //    List<Component> component = _unitOfWork.Components.GetAll().ToList();
+        //    component.Where(x => x.InventNumber.Contains(search) || search == null).ToPagedList(pageNumber, pageSize);
+        //    return component;
+        //}
+
+        public IEnumerable<ComponentDTO> Filter(int pageNumber, int pageSize, IEnumerable<ComponentDTO> components, string componentTypeId, string modelName, string name)
+        {
+            var rawData = (from e in GetAll()
+                           select e).ToList();
+            var employee = from e in rawData
+                           select e;
+
+            if (!String.IsNullOrEmpty(componentTypeId))
+                components = components.Where(e => e.ComponentType.Id.ToString() == componentTypeId).ToPagedList(pageNumber, pageSize);
+            if (!String.IsNullOrEmpty(modelName))
+                components = components.Where(e => e.ModelName.ToString() == modelName).ToPagedList(pageNumber, pageSize);
+            if (!String.IsNullOrEmpty(name))
+                components = components.Where(e => e.Name.ToString() == name).ToPagedList(pageNumber, pageSize);
+         
+            return components;
         }
 
         public Guid AddAndGetId(ComponentDTO componentDTO)

@@ -38,7 +38,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7</LangVersion>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -382,7 +382,6 @@
     <Content Include="Views\History\Create.cshtml" />
     <Content Include="Views\History\Edit.cshtml" />
     <Content Include="Views\Equipment\OwnerInfo.cshtml" />
-    <Content Include="Views\Search\HistoryFilter.cshtml" />
     <Content Include="Views\Search\StatusTypes.cshtml" />
     <Content Include="Views\Search\NotFound.cshtml" />
     <Content Include="Views\StatusType\AjaxStatusTypeList.cshtml" />
@@ -392,8 +391,6 @@
     <Content Include="Views\Search\EquipmentTypes.cshtml" />
     <Content Include="Views\ComponentType\AjaxComponentTypeList.cshtml" />
     <Content Include="Views\Search\ComponentTypes.cshtml" />
-    <Content Include="Views\Search\Histories.cshtml" />
-    <Content Include="Views\History\AjaxHistoryList.cshtml" />
     <Content Include="Views\Equipment\AjaxEquipmentList.cshtml" />
     <Content Include="Views\Search\Equipments.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
@@ -402,6 +399,7 @@
     <Content Include="Views\Account\ChangeEmail.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\User\ChangeRole.cshtml" />
+    <Content Include="Views\Search\Components.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -18,93 +18,24 @@ namespace Inventory.Web.Controllers
     public class SearchController : Controller
     {
         private IComponentTypeService ComponentTypeService;
+        private IComponentService ComponentService;
         private IEquipmentTypeService EquipmentTypeService;
         private IEquipmentService EquipmentService;
         private IStatusTypeService StatusTypeService;
         private IRepairPlaceService RepairPlaceService;
         private IHistoryService HistoryService;
 
-        public SearchController(IComponentTypeService componentTypeService, IEquipmentTypeService equipmentTypeService, IEquipmentService equipmentService, IStatusTypeService statusTypeService, IRepairPlaceService repairPlaceService, IHistoryService historyService)
+        public SearchController(IComponentTypeService componentTypeService, IComponentService componentService, IEquipmentTypeService equipmentTypeService, IEquipmentService equipmentService, IStatusTypeService statusTypeService, IRepairPlaceService repairPlaceService, IHistoryService historyService)
         {
             ComponentTypeService = componentTypeService;
+            ComponentService = componentService;
             EquipmentTypeService = equipmentTypeService;
             EquipmentService = equipmentService;
             StatusTypeService = statusTypeService;
             RepairPlaceService = repairPlaceService;
             HistoryService = historyService;
         }
-
-        // Builds the ajax employee search query with pagination
-        [HttpPost]
-        public ActionResult HistoryFilter(/*string name,*/ int? page, Guid? equipmentId, int? employeeId, Guid? repairPlaceId, Guid? statusTypeId)
-        {
-            IQueryable<HistoryDTO> historyDTOs = Enumerable.Empty<HistoryDTO>().AsQueryable();
-            //name = name.Trim();
-            //if (name.Length <= 0)
-                historyDTOs = HistoryService.GetAll().OrderBy(i=>i.Id).AsQueryable();
-            IQueryable<HistoryVM> historyVMs = WebHistoryMapper.DtoToVm(historyDTOs).AsQueryable();
-            //else
-            //    employees = BuildEmployeeSearchQueryByName(name);
-            historyVMs = FilterAdditions(historyVMs, equipmentId, employeeId, repairPlaceId, statusTypeId);       
-            historyVMs = AddIncludes(historyVMs);
-
-            string view = "";
-            //if (User.IsInRole("admin"))
-                view = "~/Views/Search/Histories.cshtml";
-            //else if (User.IsInRole("manager"))
-            //    view = "~/Views/Search/ManagerEmployeeFilter.cshtml";
-            //else
-            //    view = "~/Views/Search/EmployeeFilter.cshtml";
-
-            int pageSize = 10;
-            int pageNumber = (page ?? 1);
-
-            return PartialView(view, historyVMs.ToPagedList(pageNumber, pageSize));
-        }
-
-        // Adds filters to the search query
-        private IQueryable<HistoryVM> FilterAdditions(IQueryable<HistoryVM> query, Guid? equipmentId, int? employeeId, Guid? repairPlaceId, Guid? statusTypeId)
-        {
-            if (equipmentId != null)
-                query = query.Where(e => e.EquipmentId == equipmentId);
-
-            if (employeeId != null)
-                query = query.Where(e => e.EmployeeId == employeeId);
-
-            if (repairPlaceId != null)
-                query = query.Where(e => e.RepairPlaceId == repairPlaceId);
-
-            if (statusTypeId != null)
-                query = query.Where(e => e.StatusTypeId == statusTypeId);
-
-            //if (administrationId != null)
-            //{
-            //    List<int> departmentIds = GetDepartmentIds("administration", administrationId);
-            //    query = query.Where(e => departmentIds.Contains(e.DepartmentId));
-            //}
-
-            //if (divisionId != null)
-            //{
-            //    List<int> departmentIds = GetDepartmentIds("division", divisionId);
-            //    query = query.Where(e => departmentIds.Contains(e.DepartmentId));
-            //}
-
-            return query;
-        }
-
-        // Adds relationships Position and Department to the (Employee) query
-        private IQueryable<HistoryVM> AddIncludes(IQueryable<HistoryVM> query)
-        {
-            IQueryable<HistoryVM> employeeMatches = query
-                .OrderBy(c => c.Id)
-                .Include(d => d.Equipment)
-                .Include(e => e.Employee)
-                .Include(r => r.RepairPlace)
-                .Include(s => s.StatusType);
-
-            return employeeMatches;
-        }
-
+            
         public ActionResult AdminSearch(string title, string type)
         {
             string view = "~/Views/Search/";
@@ -128,6 +59,11 @@ namespace Inventory.Web.Controllers
             {
                 List<ComponentTypeVM> componentTypeVMs = BuildComponentTypeSearchQuery(words).ToList();
                 BindSearchResults(componentTypeVMs, ref view, "ComponentTypes.cshtml");
+            }
+            else if (type == "component")
+            {
+                List<ComponentVM> componentVMs = BuildComponentSearchQuery(words).ToList();
+                BindSearchResults(componentVMs, ref view, "Components.cshtml");
             }
             else if (type == "statusType")
             {
@@ -176,6 +112,18 @@ namespace Inventory.Web.Controllers
                .DtoToVm(componentTypeDTOs);
 
             return componentTypeVMs;
+        }
+
+        private IEnumerable<ComponentVM> BuildComponentSearchQuery(params string[] words)
+        {
+            IEnumerable<ComponentDTO> componentDTOs = ComponentService.GetAll()
+                .ToList()
+                .Where(d => words.All(d.InventNumber.ToLower().Contains));
+
+            IEnumerable<ComponentVM> componentVMs = WebComponentMapper
+               .DtoToVm(componentDTOs);
+
+            return componentVMs;
         }
 
         private IEnumerable<StatusTypeVM> BuildStatusTypeSearchQuery(params string[] words)

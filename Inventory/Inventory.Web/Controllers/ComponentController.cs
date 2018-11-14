@@ -3,6 +3,7 @@ using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.Web.Models;
 using Inventory.Web.Util;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,14 +28,27 @@ namespace Inventory.Web.Controllers
             EquipmentService = equipmentService;
         }
 
-        public ActionResult Index()
+        public ActionResult Index(int? page, string componentTypeId, string modelName, string name)
         {
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
             IEnumerable<ComponentDTO> componentDTOs = ComponentService
                 .GetAll()
                 .ToList();
             IEnumerable<ComponentVM> componentVMs = WebComponentMapper.DtoToVm(componentDTOs);
 
-            return View(componentVMs.ToList());
+            ViewBag.ComponentTypeId = new SelectList( ComponentTypeService.GetAll(), "Id", "Name");
+            ViewBag.ModelName = new SelectList(ComponentService.GetAll(), "ModelName", "ModelName");
+            ViewBag.Name = new SelectList(ComponentService.GetAll(), "Name", "Name");
+
+            var filteredComponents = (!String.IsNullOrEmpty(componentTypeId)) || (!String.IsNullOrEmpty(modelName)) || (!String.IsNullOrEmpty(name))
+            ? ComponentService.Filter(pageNumber, pageSize, componentDTOs, componentTypeId, modelName, name).OrderBy(x => x.ComponentType.Name)
+            : null;
+
+            return filteredComponents == null ? View(componentVMs.ToPagedList(pageNumber, pageSize)) : View(WebComponentMapper.DtoToVm(filteredComponents).ToPagedList(pageNumber, pageSize));
+
+            //return View(componentVMs.ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult Details(Guid? id)
