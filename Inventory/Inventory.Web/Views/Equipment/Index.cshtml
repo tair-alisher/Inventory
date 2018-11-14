@@ -36,6 +36,47 @@
     }
 
     <div id="results" class="content"></div>
+
+    <div class="content" id="accordion">
+        @foreach (var item in Model)
+        {
+            <div class="item-block equipment-block row">
+                <div class="col-md-6">
+                    <p><b>@Html.DisplayFor(modelItem => item.EquipmentType.Name)</b></p>
+                    <p><b>@Html.DisplayNameFor(model => model.First().InventNumber):</b> @Html.DisplayFor(modelItem => item.InventNumber)</p>
+                    <p><b>@Html.DisplayNameFor(model => model.First().Supplier):</b> @Html.DisplayFor(modelItem => item.Supplier)</p>
+                    <p><b>Текущий владелец:</b> @Html.DisplayFor(modelItem => item.EquipmentEmployeeRelations.Where(r => r.IsOwner == true).FirstOrDefault().Employee.EmployeeFullName)</p>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a href="#" class="btn btn-link">
+                                <i class="fa fa-pencil" aria-hidden="true"></i> Редактировать
+                            </a><br />
+                            <a href="#" class="btn btn-link">
+                                <i class="fa fa-eye" aria-hidden="true"></i> Просмотреть
+                            </a><br />
+                        </div>
+                        <div class="col-md-6">
+                            <a href="#" class="btn btn-link">
+                                <i class="fa fa-users" aria-hidden="true"></i> История владельцев
+                            </a><br />
+                            <a href="#" class="btn btn-link">
+                                <i class="fa fa-headphones" aria-hidden="true"></i> Список комплектующих
+                            </a><br />
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <a href="#" class="btn btn-link">
+                            <i class="fa fa-trash" aria-hidden="true" title="Удалить" data-toggle="tooltip" data-placement="top"></i> Удалить запись
+                        </a><br />
+                    </div>
+                </div>
+            </div>
+            <hr />
+        }
+    </div>
+
     <div class="content" id="accordion">
         <table class="table table-responsive-sm table-responsive-md table-responsive-lg table-sm" id="listTable">
             <thead>
