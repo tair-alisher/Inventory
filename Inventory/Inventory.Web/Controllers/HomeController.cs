@@ -23,7 +23,7 @@ namespace Inventory.Web.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-            IEnumerable<DivisionEquipmentDTO> structuredEquipment = EquipmentService
+           IEnumerable<DivisionEquipmentDTO> structuredEquipment = EquipmentService
                 .GetEquipmentByStructure()
                 .ToList();
 

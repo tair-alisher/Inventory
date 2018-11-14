@@ -7,29 +7,29 @@
 <div class="block">
     <h2 class="block-title">Комплектующие оборудования</h2>
 
+    <div class="form-group" id="components">
+        <div id="search-input" class="col-md-12">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="searching">Поиск</span>
+                </div>
+                <input type="text" class="form-control" placeholder="введите тип, модель или инвентаризационный номер" id="search-input-value" />
+                <div id="search-buttons" class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" onclick="searchComponents('type')">по типу</button>
+                    <button class="btn btn-outline-secondary" type="button" onclick="searchComponents('model')">по модели</button>
+                    <button class="btn btn-outline-secondary" type="button" onclick="searchComponents('number')">по номеру</button>
+                    <button class="btn btn-outline-danger" type="button" onclick="clearSearch()">сбросить</button>
+                </div>
+            </div>
+            <small id="information" class="form-text text-muted">Поиск по типу, модели или инвентаризационному номеру.</small>
+        </div>
+    </div>
+
     @using (Html.BeginForm("UpdateComponents", "Relation", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
 
         <input type="hidden" name="equipmentId" value="@ViewBag.EquipmentId" />
-
-        <div class="form-group" id="components">
-            <div id="search-input" class="col-md-12">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="inputGroup-sizing-default">Поиск</span>
-                    </div>
-                    <input type="text" class="form-control" placeholder="введите тип, модель или инвентаризационный номер" id="search-input-value" />
-                    <div id="search-buttons" class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button" onclick="searchComponents('type')">по типу</button>
-                        <button class="btn btn-outline-secondary" type="button" onclick="searchComponents('model')">по модели</button>
-                        <button class="btn btn-outline-secondary" type="button" onclick="searchComponents('number')">по номеру</button>
-                        <button class="btn btn-outline-danger" type="button" onclick="clearSearch()">сбросить</button>
-                    </div>
-                </div>
-                <small id="information" class="form-text text-muted">Поиск по типу, модели или инвентаризационному номеру.</small>
-            </div>
-        </div>
 
         <div id="found-items-area"></div>
 
@@ -87,7 +87,7 @@
         <div class="form-group">
             <div class="btn-group" role="group">
                 <button type="submit" class="btn btn-success"><i class="fa fa-save" aria-hidden="true" title="Сохранить" data-toggle="tooltip" data-placement="top"></i> Сохранить</button>
-                <a href="@Url.Action("Edit", "Equipment", new { id = ViewBag.EquipmentId })" class="btn btn-info"><i class="fa fa-arrow-left" aria-hidden="true" title="Назад" data-toggle="tooltip" data-placement="top"></i> Назад</a>
+                <a href="@Url.Action("Index", "Equipment")" class="btn btn-info"><i class="fa fa-arrow-left" aria-hidden="true" title="Назад" data-toggle="tooltip" data-placement="top"></i> Назад</a>
             </div>
         </div>
     }

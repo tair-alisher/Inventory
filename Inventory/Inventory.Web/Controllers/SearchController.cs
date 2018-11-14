@@ -105,7 +105,6 @@ namespace Inventory.Web.Controllers
             return employeeMatches;
         }
 
-
         public ActionResult AdminSearch(string title, string type)
         {
             string view = "~/Views/Search/";
@@ -142,8 +141,6 @@ namespace Inventory.Web.Controllers
             }
             return PartialView(view);
         }
-
-
 
         private IEnumerable<EquipmentTypeVM> BuildEquipmentTypeSearchQuery(params string[] words)
         {
