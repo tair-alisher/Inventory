@@ -5,8 +5,10 @@
     <div class="item-block equipment-block row">
         <div class="col-md-4">
             <p><b>@item.EquipmentType.Name</b></p>
-            <p><b>Инвентаризационный номер:</b> @item.InventNumber)</p>
+            <p><b>Инвентаризационный номер:</b> @item.InventNumber</p>
             <p><b>Источник поступления:</b> @item.Supplier</p>
+
+            <p><b>Текущий владелец:</b> @(((IEnumerable<dynamic>)item.EquipmentEmployeeRelations).Where(r => r.IsOwner == true).FirstOrDefault().Employee.EmployeeFullName)</p>
         </div>
         <div class="col-md-4">
             <a href="@Url.Action("Edit", "Equipment", new { id = item.Id })" class="btn btn-link app-color app-link">
@@ -14,6 +16,9 @@
             </a><br />
             <a href="@Url.Action("Details", "Equipment", new { id = item.Id })" class="btn btn-link app-color app-link">
                 <i class="fa fa-eye" aria-hidden="true"></i> Просмотреть
+            </a><br />
+            <a href="@Url.Action("Index", "History", new { equipmentId = item.Id })" class="btn btn-link app-color app-link">
+                <i class="fa fa-history" aria-hidden="true"></i> История компьютера
             </a><br />
             <a href="@Url.Action("OwnerHistory", "Equipment", new { equipmentId = item.Id})" class="btn btn-link app-color app-link">
                 <i class="fa fa-users" aria-hidden="true"></i> История владельцев

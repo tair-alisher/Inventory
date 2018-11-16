@@ -7,6 +7,11 @@ body {
     height: 100%;
 }
 
+.my-list {
+    background-color: #fff;
+    border: 1px solid #ccc;
+}
+
 .app-color {
     color: #34495E;
 }

@@ -99,10 +99,8 @@
 
         <div id="result"> </div>
 
-        <div id="paginationToDelete">
-            @Html.PagedListPager(Model, page => Url.Action("AjaxComponentTypeList", new { page }),
-             PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "result", OnSuccess = "removeListAndPagination()" }))
-
+        <div>
+            @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page }), PagedListRenderOptions.PageNumbersOnly)
             @if (!(Model.PageCount <= 0))
             {
                 <p class="pagination-info">Страница @Model.PageNumber из @Model.PageCount</p>

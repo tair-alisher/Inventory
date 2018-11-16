@@ -96,14 +96,14 @@
                                                                                         </b>
                                                                                     </p>
                                                                                 </div>
-                                                                                <div class="collapse col-md-12" id="components-@item.Id">
+                                                                                <ul class="list-group my-list collapse col-md-4" id="components-@item.Id">
                                                                                     @foreach (var component in item.Components)
                                                                                     {
-                                                                                        <div class="card card-body row col-md-4">
-                                                                                            <p><b>@component.ComponentType.Name  (@component.Name - @component.ModelName)</b></p>
-                                                                                        </div>
+                                                                                        <li class="list-group-item">
+                                                                                            <b>@component.ComponentType.Name  (@component.Name - @component.ModelName)</b>
+                                                                                        </li>
                                                                                     }
-                                                                                </div>
+                                                                                </ul>
                                                                             }
                                                                             else
                                                                             {
