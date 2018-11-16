@@ -70,6 +70,9 @@
                                                                                 <a href="@Url.Action("Details", "Equipment", new { id = item.Id })" class="btn btn-link app-color app-link">
                                                                                     <i class="fa fa-eye" aria-hidden="true"></i> Просмотреть
                                                                                 </a><br />
+                                                                                <a href="@Url.Action("Index", "History", new { equipmentId = item.Id })" class="btn btn-link app-color app-link">
+                                                                                    <i class="fa fa-history" aria-hidden="true"></i> История компьютера
+                                                                                </a><br />
                                                                                 <a href="@Url.Action("OwnerHistory", "Equipment", new { equipmentId = item.Id})" class="btn btn-link app-color app-link">
                                                                                     <i class="fa fa-users" aria-hidden="true"></i> История владельцев
                                                                                 </a><br />
@@ -97,10 +100,7 @@
                                                                                     @foreach (var component in item.Components)
                                                                                     {
                                                                                         <div class="card card-body row col-md-4">
-                                                                                            <p><b>@component.ComponentType.Name  (@component.Name - @component.ModelName)</b> </p>
-                                                                                            <p><b>Инвентаризационный номер:</b> @component.InventNumber</p>
-                                                                                            <p><b>Модель:</b> @component.ModelName</p>
-                                                                                            <p><b>Источник поступления:</b> @component.Supplier</p>
+                                                                                            <p><b>@component.ComponentType.Name  (@component.Name - @component.ModelName)</b></p>
                                                                                         </div>
                                                                                     }
                                                                                 </div>

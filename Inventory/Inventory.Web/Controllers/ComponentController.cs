@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using System.Web.UI;
 
 namespace Inventory.Web.Controllers
 {
@@ -28,6 +29,7 @@ namespace Inventory.Web.Controllers
             EquipmentService = equipmentService;
         }
 
+        [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult Index(int? page, string componentTypeId, string modelName, string name)
         {
             int pageSize = 10;

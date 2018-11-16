@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 
 namespace Inventory.Web.Controllers
 {
@@ -30,6 +31,7 @@ namespace Inventory.Web.Controllers
             EmployeeService = employeeService;
         }
 
+        [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult Index(int? page, string equipmentId, string employeeId, string repairPlaceId, string statusTypeId)
         {
             int pageSize = 10;

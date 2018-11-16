@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using System.Web.UI;
 
 namespace Inventory.Web.Controllers
 {
@@ -28,6 +29,7 @@ namespace Inventory.Web.Controllers
             EquipmentTypeService = equipmentTypeService;
         }
 
+        [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult AjaxEquipmentList(int? page)
         {
             int pageSize = 10;
@@ -41,6 +43,7 @@ namespace Inventory.Web.Controllers
             return PartialView(equipmentVMs.ToPagedList(pageNumber, pageSize));
         }
 
+        [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult Index(int? page)
         {
             int pageSize = 10;
