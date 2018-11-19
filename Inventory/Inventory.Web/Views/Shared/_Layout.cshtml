@@ -26,50 +26,52 @@
                 <li id="main-page-menu-item" class="active">
                     <a href="@Url.Action("Index", "Home")"><i class="fa fa-home icon" aria-hidden="true"></i> Главная</a>
                 </li>
-                <li id="user-page-menu-item">
-                    <a href="@Url.Action("Index", "User")"><i class="fa fa-users icon" aria-hidden="true"></i> Пользователи</a>
-                </li>
-                <li id="component-page-menu-item">
-                    <!-- class="active" -->
-                    <a href="#componentDropdown" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-headphones icon" aria-hidden="true"></i> Комплектующие</a>
-                    <ul class="collapse list-unstyled" id="componentDropdown">
-                        <li>
-                            <a href="@Url.Action("Index", "ComponentType")">Тип комплектующего</a>
-                        </li>
-                        <li>
-                            <a href="@Url.Action("Index", "Component")">Комплектующие</a>
-                        </li>
-                    </ul>
-                </li>
-                <li id="equipment-page-menu-item">
-                    <!-- class="active" -->
-                    <a href="#equipmentDropdown" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-laptop icon" aria-hidden="true"></i> Оборудование</a>
-                    <ul class="collapse list-unstyled" id="equipmentDropdown">
-                        <li>
-                            <a href="@Url.Action("Index", "EquipmentType")">Тип оборудования</a>
-                        </li>
-                        <li>
-                            <a href="@Url.Action("Index", "Equipment")">Оборудование</a>
-                        </li>
-                    </ul>
-                </li>
-                <li id="tracking-page-menu-item">
-                    <!-- class="active" -->
-                    <a href="#trackingDropdown" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-address-card icon" aria-hidden="true"></i> Отслеживание</a>
-                    <ul class="collapse list-unstyled" id="trackingDropdown">
-                        <li>
-                            <a href="@Url.Action("Index", "RepairPlace")">Место ремонта</a>
-                        </li>
-                        <li>
-                            <a href="@Url.Action("Index", "StatusType")">Тип статуса</a>
-                        </li>
-                        <li>
-                            <a href="@Url.Action("Index", "History")">История</a>
-                        </li>
-                    </ul>
-                </li>
+                @if (User.IsInRole("admin"))
+                {
+                    <li id="user-page-menu-item">
+                        <a href="@Url.Action("Index", "User")"><i class="fa fa-users icon" aria-hidden="true"></i> Пользователи</a>
+                    </li>
+                    <li id="component-page-menu-item">
+                        <!-- class="active" -->
+                        <a href="#componentDropdown" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-headphones icon" aria-hidden="true"></i> Комплектующие</a>
+                        <ul class="collapse list-unstyled" id="componentDropdown">
+                            <li>
+                                <a href="@Url.Action("Index", "ComponentType")">Тип комплектующего</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Index", "Component")">Комплектующие</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li id="equipment-page-menu-item">
+                        <!-- class="active" -->
+                        <a href="#equipmentDropdown" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-laptop icon" aria-hidden="true"></i> Оборудование</a>
+                        <ul class="collapse list-unstyled" id="equipmentDropdown">
+                            <li>
+                                <a href="@Url.Action("Index", "EquipmentType")">Тип оборудования</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Index", "Equipment")">Оборудование</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li id="tracking-page-menu-item">
+                        <!-- class="active" -->
+                        <a href="#trackingDropdown" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-address-card icon" aria-hidden="true"></i> Отслеживание</a>
+                        <ul class="collapse list-unstyled" id="trackingDropdown">
+                            <li>
+                                <a href="@Url.Action("Index", "RepairPlace")">Место ремонта</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Index", "StatusType")">Тип статуса</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Index", "History")">История</a>
+                            </li>
+                        </ul>
+                    </li>
+                }
             </ul>
-
             <ul class="list-unstyled account">
                 @if (!User.Identity.IsAuthenticated)
                 {

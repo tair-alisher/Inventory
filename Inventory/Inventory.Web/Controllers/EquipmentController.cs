@@ -29,6 +29,7 @@ namespace Inventory.Web.Controllers
             EquipmentTypeService = equipmentTypeService;
         }
 
+        [Authorize(Roles = "admin")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult AjaxEquipmentList(int? page)
         {
@@ -43,6 +44,7 @@ namespace Inventory.Web.Controllers
             return PartialView(equipmentVMs.ToPagedList(pageNumber, pageSize));
         }
 
+        [Authorize(Roles = "admin")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult Index(int? page)
         {
@@ -57,6 +59,7 @@ namespace Inventory.Web.Controllers
             return View(equipmentVMs.ToPagedList(pageNumber, pageSize));
         }
 
+        [Authorize(Roles = "admin")]
         public ActionResult Details(Guid? id)
         {
             if (id == null)
@@ -73,6 +76,7 @@ namespace Inventory.Web.Controllers
             return View(equipmentVM);
         }
 
+        [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
             ViewBag.EquipmentTypeId = new SelectList(
@@ -84,6 +88,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "EquipmentTypeId,InventNumber,QRCode,Price,Supplier")] EquipmentVM equipmentVM)
         {
@@ -104,6 +109,7 @@ namespace Inventory.Web.Controllers
             return View(equipmentVM);
         }
 
+        [Authorize(Roles = "admin")]
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
@@ -125,6 +131,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,EquipmentTypeId,InventNumber,QRCode,Price,Supplier")] EquipmentVM equipmentVM)
         {
@@ -149,6 +156,7 @@ namespace Inventory.Web.Controllers
             return View(equipmentVM);
         }
 
+        [Authorize(Roles = "admin")]
         public ActionResult OwnerHistory(Guid? equipmentId)
         {
             if (equipmentId == null)
@@ -165,6 +173,7 @@ namespace Inventory.Web.Controllers
             return View(ownerHistoryVM);
         }
 
+        [Authorize(Roles = "admin")]
         public ActionResult OwnerInfo(Guid? equipmentId, int employeeId)
         {
             if (equipmentId == null)
@@ -179,6 +188,7 @@ namespace Inventory.Web.Controllers
             return View(ownerInfoVM);
         }
 
+        [Authorize(Roles = "admin")]
         public ActionResult Components(Guid? equipmentId)
         {
             if (equipmentId == null)
@@ -196,6 +206,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(Guid id)
         {
@@ -215,6 +226,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public ActionResult FindEmployees(string name)
         {

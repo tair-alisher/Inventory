@@ -30,6 +30,7 @@ namespace Inventory.Web.Controllers
             AccountService = accountService;
         }
 
+        [Authorize(Roles = "admin")]
         public ActionResult Register()
         {
             ViewBag.Role = new SelectList(
@@ -41,6 +42,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterModel model)
         {
@@ -123,6 +125,7 @@ namespace Inventory.Web.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult> ChangeEmail()
         {
             UserDTO userDTO = await AccountService.GetUser(User.Identity.GetUserId());
@@ -138,6 +141,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangeEmail([Bind(Include = "UserName,Email")] ChangeEmailModel model)
         {
@@ -163,12 +167,14 @@ namespace Inventory.Web.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "admin")]
         public ActionResult ChangePassword()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ChangePasswordModel model)
         {

@@ -21,7 +21,8 @@ namespace Inventory.Web.Controllers
             EquipmentService = equipmentService;
         }
 
-        [AllowAnonymous]
+        //[AllowAnonymous]
+        [Authorize(Roles = "admin")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult Index()
         {

@@ -35,7 +35,8 @@ namespace Inventory.Web.Controllers
             RepairPlaceService = repairPlaceService;
             HistoryService = historyService;
         }
-            
+
+        [Authorize(Roles = "admin")]
         public ActionResult AdminSearch(string title, string type)
         {
             string view = "~/Views/Search/";

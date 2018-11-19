@@ -22,6 +22,7 @@ namespace Inventory.Web.Controllers
             StatusTypeService = statusTypeService;
         }
 
+        [Authorize(Roles = "admin")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult AjaxStatusTypeList(int? page)
         {
@@ -36,6 +37,7 @@ namespace Inventory.Web.Controllers
         }
 
         // GET: StatusType
+        [Authorize(Roles = "admin")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult Index(int? page)
         {
@@ -50,6 +52,7 @@ namespace Inventory.Web.Controllers
             return View(statusTypeVMs.OrderBy(s => s.Name).ToPagedList(pageNumber, pageSize));
         }
 
+        [Authorize(Roles = "admin")]
         public ActionResult Details(Guid? id)
         {
             if (id == null)
@@ -63,12 +66,14 @@ namespace Inventory.Web.Controllers
             return View(statusTypeVM);
         }
 
+        [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Name")] StatusTypeVM statusTypeVM)
         {
@@ -83,6 +88,7 @@ namespace Inventory.Web.Controllers
             return View();
         }
 
+        [Authorize(Roles = "admin")]
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
@@ -97,6 +103,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name")] StatusTypeVM statusTypeVM)
         {
@@ -112,6 +119,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(Guid id)
         {

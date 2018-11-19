@@ -23,6 +23,7 @@ namespace Inventory.Web.Controllers
             AccountService = accountService;
         }
 
+        [Authorize(Roles = "admin")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult Index(int? page)
         {
@@ -35,6 +36,7 @@ namespace Inventory.Web.Controllers
             return View(userVMs);
         }
 
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult> ChangeRole(string userId)
         {
             if (userId == null)
@@ -61,6 +63,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangeRole([Bind(Include = "UserId,OldRole,Role")] ChangeRoleModel model)
         {
@@ -94,6 +97,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(string id)
         {

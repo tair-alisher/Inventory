@@ -29,6 +29,7 @@ namespace Inventory.Web.Controllers
             EquipmentService = equipmentService;
         }
 
+        [Authorize(Roles = "admin")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult AjaxComponentList(int? page, string componentTypeId, string modelName, string name)
         {
@@ -52,6 +53,7 @@ namespace Inventory.Web.Controllers
 
         }
 
+        [Authorize(Roles = "admin")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult Index(int? page, string componentTypeId, string modelName, string name)
         {
@@ -76,6 +78,7 @@ namespace Inventory.Web.Controllers
             //return View(componentVMs.ToPagedList(pageNumber, pageSize));
         }
 
+        [Authorize(Roles = "admin")]
         public ActionResult Details(Guid? id)
         {
             if (id == null)
@@ -90,6 +93,7 @@ namespace Inventory.Web.Controllers
             return View(componentVM);
         }
 
+        [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
             ViewBag.ComponentTypeId = new SelectList(
@@ -101,6 +105,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ComponentTypeId,ModelName,Name,Description,Price,InventNumber,Supplier")] ComponentVM componentVM)
         {
@@ -120,6 +125,7 @@ namespace Inventory.Web.Controllers
             return View(componentVM);
         }
 
+        [Authorize(Roles = "admin")]
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
@@ -138,8 +144,9 @@ namespace Inventory.Web.Controllers
 
             return View(componentVM);
         }
-
+    
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,ComponentTypeId,ModelName,Name,Description,Price,InventNumber,Supplier")] ComponentVM componentVM)
         {
@@ -161,6 +168,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(Guid id)
         {
@@ -172,6 +180,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public ActionResult FindComponents(string value, string type)
         {
