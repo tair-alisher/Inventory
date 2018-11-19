@@ -400,6 +400,7 @@
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\User\ChangeRole.cshtml" />
     <Content Include="Views\Search\Components.cshtml" />
+    <Content Include="Views\Component\AjaxComponentList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

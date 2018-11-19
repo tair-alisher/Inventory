@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using System.Web.UI;
 
 namespace Inventory.Web.Controllers
 {
@@ -20,6 +21,7 @@ namespace Inventory.Web.Controllers
             ComponentTypeService = componentTypeService;
         }
 
+        [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult AjaxComponentTypeList(int? page)
         {
             int pageSize = 10;
@@ -34,6 +36,7 @@ namespace Inventory.Web.Controllers
             return PartialView(componentTypeVMs.OrderBy(s => s.Name).ToPagedList(pageNumber, pageSize));
         }
 
+        [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult Index(int? page)
         {
             int pageSize = 10;

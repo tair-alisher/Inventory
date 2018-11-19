@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using System.Web.UI;
 
 namespace Inventory.Web.Controllers
 {
@@ -28,6 +29,30 @@ namespace Inventory.Web.Controllers
             EquipmentService = equipmentService;
         }
 
+        [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
+        public ActionResult AjaxComponentList(int? page, string componentTypeId, string modelName, string name)
+        {
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
+            IEnumerable<ComponentDTO> componentDTOs = ComponentService
+                .GetAll()
+                .ToList();
+            IEnumerable<ComponentVM> componentVMs = WebComponentMapper.DtoToVm(componentDTOs);
+
+            ViewBag.ComponentTypeId = new SelectList(ComponentTypeService.GetAll(), "Id", "Name");
+            ViewBag.ModelName = new SelectList(ComponentService.GetAll(), "ModelName", "ModelName");
+            ViewBag.Name = new SelectList(ComponentService.GetAll(), "Name", "Name");
+
+            var filteredComponents = (!String.IsNullOrEmpty(componentTypeId)) || (!String.IsNullOrEmpty(modelName)) || (!String.IsNullOrEmpty(name))
+            ? ComponentService.Filter(pageNumber, pageSize, componentDTOs, componentTypeId, modelName, name).OrderBy(x => x.ComponentType.Name)
+            : null;
+
+            return filteredComponents == null ? View(componentVMs.ToPagedList(pageNumber, pageSize)) : View(WebComponentMapper.DtoToVm(filteredComponents).ToPagedList(pageNumber, pageSize));
+
+        }
+
+        [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult Index(int? page, string componentTypeId, string modelName, string name)
         {
             int pageSize = 10;

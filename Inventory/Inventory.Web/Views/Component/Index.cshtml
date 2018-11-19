@@ -1,6 +1,7 @@
 ﻿@model PagedList.PagedList<Inventory.Web.Models.ComponentVM>
 @using PagedList
 @using PagedList.Mvc
+
 @{
     ViewBag.Title = "Комплектующие";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -33,33 +34,31 @@
             </div>
         </div>
     }
-
+    @using (Html.BeginForm("Index", "Component", FormMethod.Get))
+    {
+        <hr />
+        <h5 class="block-title">Фильтры</h5>
+        <!-- Filter  -->
+        <div class="row">
+            <div class="col-md-3">
+                <label class="control-label" for="componentType-select-list">Выберите тип комплектующего</label>
+                @Html.DropDownList("componentTypeId", ViewBag.ComponentTypeId as SelectList, "Все", htmlAttributes: new { @class = "form-control localytics-chosen", @id = "equipmentDropDown", onchange = "form.submit();" })
+            </div>
+            <div class="col-md-5">
+                <label class="control-label" for="modelName-select-list">Выберите наименование модели</label>
+                @Html.DropDownList("modelName", ViewBag.ModelName as SelectList, "Все", htmlAttributes: new { @class = "form-control localytics-chosen", @id = "employeeDropDown", onchange = "form.submit();" })
+            </div>
+            <div class="col-md-4">
+                <label class="control-label" for="name-select-list">Выберите наименование</label>
+                @Html.DropDownList("name", ViewBag.Name as SelectList, "Все", htmlAttributes: new { @class = "form-control localytics-chosen", @id = "repairPlaceDropDown", onchange = "form.submit();" })
+            </div>
+        </div>
+        <br />
+    }
     <div id="results" class="content"></div>
 
     <div class="content" id="accordion">
-
-        @using (Html.BeginForm("Index", "Component", FormMethod.Get))
-        {
-            <hr />
-            <h5 class="block-title">Фильтры</h5>
-            <!-- Filter  -->
-            <div class="row">
-                <div class="col-md-3">
-                    <label class="control-label" for="departmentName-select-list">Выберите тип комплектующего</label>
-                    @Html.DropDownList("componentTypeId", ViewBag.ComponentTypeId as SelectList, "Все", htmlAttributes: new { @class = "form-control localytics-chosen", @id = "equipmentDropDown", onchange = "form.submit();" })
-                </div>
-                <div class="col-md-5">
-                    <label class="control-label" for="position-select-list">Выберите наименование модели</label>
-                    @Html.DropDownList("modelName", ViewBag.ModelName as SelectList, "Все", htmlAttributes: new { @class = "form-control localytics-chosen", @id = "employeeDropDown", onchange = "form.submit();" })
-                </div>
-                <div class="col-md-4">
-                    <label class="control-label" for="departmentName-select-list">Выберите наименование</label>
-                    @Html.DropDownList("name", ViewBag.Name as SelectList, "Все", htmlAttributes: new { @class = "form-control localytics-chosen", @id = "repairPlaceDropDown", onchange = "form.submit();" })
-                </div>
-            </div>
-            <br />
-        }
-        <table class="table table-responsive-sm table-responsive-md table-responsive-lg table-sm">
+        <table class="table table-responsive-sm table-responsive-md table-responsive-lg table-sm" id="listTable">
             <thead>
                 <tr>
                     <th>@Html.DisplayNameFor(model => model.First().ComponentTypeId)</th>
@@ -99,7 +98,15 @@
 
         <div id="result"> </div>
 
-        <div id="paginationToDelete">
+        <div>
+            @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page }), PagedListRenderOptions.PageNumbersOnly)
+            @if (!(Model.PageCount <= 0))
+            {
+                <p class="pagination-info">Страница @Model.PageNumber из @Model.PageCount</p>
+            }
+        </div>
+
+        @*<div id="paginationToDelete">
             @Html.PagedListPager(Model, page => Url.Action("AjaxComponentTypeList", new { page }),
              PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "result", OnSuccess = "removeListAndPagination()" }))
 
@@ -107,7 +114,8 @@
             {
                 <p class="pagination-info">Страница @Model.PageNumber из @Model.PageCount</p>
             }
-        </div>
+        </div>*@
+
     </div>
 </div>
 
@@ -138,7 +146,6 @@
             $("#equipmentDropDown").chosen({ width: "100%" });
             $("#employeeDropDown").chosen({ width: "100%" });
             $("#repairPlaceDropDown").chosen({ width: "100%" });
-            $("#statusTypeDropDown").chosen({ width: "100%" });
         })
 
         modalRemovalWindow('/Component/Delete');
