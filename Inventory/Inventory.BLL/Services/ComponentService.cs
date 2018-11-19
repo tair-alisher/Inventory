@@ -56,7 +56,7 @@ namespace Inventory.BLL.Services
             if (!String.IsNullOrEmpty(modelName))
                 components = components.Where(e => e.ModelName.ToString() == modelName).ToPagedList(pageNumber, pageSize);
             if (!String.IsNullOrEmpty(name))
-                components = components.Where(e => e.Name.ToString() == name).ToPagedList(pageNumber, pageSize);
+                components = components.Where(e => e.Name != null && e.Name.ToString() == name).ToPagedList(pageNumber, pageSize);
          
             return components;
         }

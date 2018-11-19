@@ -24,7 +24,7 @@ namespace Inventory.Web.Controllers
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult AjaxEquipmentTypeList(int? page)
         {
-            int pageSize = 1;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
 
             IEnumerable<EquipmentTypeDTO> equipmentTypeDTOs = EquipmentTypeService
@@ -39,7 +39,7 @@ namespace Inventory.Web.Controllers
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult Index(int? page)
         {
-            int pageSize = 1;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
 
             IEnumerable<EquipmentTypeDTO> equipmentTypeDTOs = EquipmentTypeService

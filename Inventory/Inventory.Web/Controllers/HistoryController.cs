@@ -34,7 +34,7 @@ namespace Inventory.Web.Controllers
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult Index(int? page, string equipmentId, string employeeId, string repairPlaceId, string statusTypeId)
         {
-            int pageSize = 1;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
 
             List<EquipmentSelectModel> equipmentSelectModel = new List<EquipmentSelectModel>();

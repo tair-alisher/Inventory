@@ -38,9 +38,9 @@
     <div id="results" class="content"></div>
 
     <div class="content" id="accordion">
-        <div id="listTable">
-            @foreach (var item in Model)
-            {
+        @foreach (var item in Model)
+        {
+            <div id="listTable">
                 <div class="item-block equipment-block row">
                     <div class="col-md-4">
                         <p><b>@Html.DisplayFor(modelItem => item.EquipmentType.Name)</b></p>
@@ -98,10 +98,11 @@
                         <p>Нет комплектующих</p>
                     }
                 </div>
-                <hr />
-            }
-        </div>
+            </div>
+            <hr />
+        }
 
+        <div id="result"> </div>
 
         <div id="paginationToDelete">
             @Html.PagedListPager(Model, page => Url.Action("AjaxEquipmentList", new { page }),

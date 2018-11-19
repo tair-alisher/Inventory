@@ -118,7 +118,7 @@ namespace Inventory.Web.Controllers
         {
             IEnumerable<ComponentDTO> componentDTOs = ComponentService.GetAll()
                 .ToList()
-                .Where(d => words.All(d.InventNumber.ToLower().Contains));
+                .Where(d => d.InventNumber != null && words.All(d.InventNumber.ToLower().Contains));
 
             IEnumerable<ComponentVM> componentVMs = WebComponentMapper
                .DtoToVm(componentDTOs);

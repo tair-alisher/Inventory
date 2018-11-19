@@ -2,63 +2,65 @@
 
 @foreach (var item in ViewBag.Items)
 {
-    <div class="item-block equipment-block row">
-        <div class="col-md-4">
-            <p><b>@item.EquipmentType.Name</b></p>
-            <p><b>Инвентаризационный номер:</b> @item.InventNumber</p>
-            <p><b>Источник поступления:</b> @item.Supplier</p>
+    <div id="listTable">
+        <div class="item-block equipment-block row">
+            <div class="col-md-4">
+                <p><b>@item.EquipmentType.Name</b></p>
+                <p><b>Инвентаризационный номер:</b> @item.InventNumber</p>
+                <p><b>Источник поступления:</b> @item.Supplier</p>
 
-            <p><b>Текущий владелец:</b> @(((IEnumerable<dynamic>)item.EquipmentEmployeeRelations).Where(r => r.IsOwner == true).FirstOrDefault().Employee.EmployeeFullName)</p>
-        </div>
-        <div class="col-md-4">
-            <a href="@Url.Action("Edit", "Equipment", new { id = item.Id })" class="btn btn-link app-color app-link">
-                <i class="fa fa-pencil" aria-hidden="true"></i> Редактировать
-            </a><br />
-            <a href="@Url.Action("Details", "Equipment", new { id = item.Id })" class="btn btn-link app-color app-link">
-                <i class="fa fa-eye" aria-hidden="true"></i> Просмотреть
-            </a><br />
-            <a href="@Url.Action("Index", "History", new { equipmentId = item.Id })" class="btn btn-link app-color app-link">
-                <i class="fa fa-history" aria-hidden="true"></i> История компьютера
-            </a><br />
-            <a href="@Url.Action("OwnerHistory", "Equipment", new { equipmentId = item.Id})" class="btn btn-link app-color app-link">
-                <i class="fa fa-users" aria-hidden="true"></i> История владельцев
-            </a><br />
-            <a href="@Url.Action("Components", "Equipment", new { equipmentId = item.Id })" class="btn btn-link app-color app-link">
-                <i class="fa fa-headphones" aria-hidden="true"></i> Список комплектующих
-            </a><br />
-            <a href="#" class="btn btn-link delete-prompt app-color app-link" name="deleteButton" id="@item.Id">
-                <i class="fa fa-trash" aria-hidden="true" title="Удалить" data-toggle="tooltip" data-placement="top"></i> Удалить запись
-            </a><br />
-        </div>
-    </div>
-    <div class="item-components-block">
-        @if (item.EquipmentComponentRelations.Count > 0)
-        {
-            <div class="row">
-                <p>
-                    <b>
-                        <a class="btn btn-link app-color app-link" data-toggle="collapse" href="#components-@item.Id" role="button" aria-expanded="false" aria-controls="collapseExample">
-                            <i class="fa fa-eye" aria-hidden="true"></i> Просмотреть комплектующие
-                        </a>
-                    </b>
-                </p>
+                <p><b>Текущий владелец:</b> @(((IEnumerable<dynamic>)item.EquipmentEmployeeRelations).Where(r => r.IsOwner == true).FirstOrDefault().Employee.EmployeeFullName)</p>
             </div>
-            <div class="collapse" id="components-@item.Id">
-                @foreach (var componentRelation in item.EquipmentComponentRelations)
-                {
-                    <div class="card card-body row col-md-4">
-                        <p><b>Комплектующее:</b> @componentRelation.Component.ComponentType.Name  (@componentRelation.Component.Name - @componentRelation.Component.ModelName)</p>
-                        <p><b>Инвентаризационный номер:</b> @componentRelation.Component.InventNumber</p>
-                        <p><b>Модель:</b> @componentRelation.Component.ModelName</p>
-                        <p><b>Источник поступления:</b> @componentRelation.Component.Supplier</p>
-                    </div>
-                }
+            <div class="col-md-4">
+                <a href="@Url.Action("Edit", "Equipment", new { id = item.Id })" class="btn btn-link app-color app-link">
+                    <i class="fa fa-pencil" aria-hidden="true"></i> Редактировать
+                </a><br />
+                <a href="@Url.Action("Details", "Equipment", new { id = item.Id })" class="btn btn-link app-color app-link">
+                    <i class="fa fa-eye" aria-hidden="true"></i> Просмотреть
+                </a><br />
+                <a href="@Url.Action("Index", "History", new { equipmentId = item.Id })" class="btn btn-link app-color app-link">
+                    <i class="fa fa-history" aria-hidden="true"></i> История компьютера
+                </a><br />
+                <a href="@Url.Action("OwnerHistory", "Equipment", new { equipmentId = item.Id})" class="btn btn-link app-color app-link">
+                    <i class="fa fa-users" aria-hidden="true"></i> История владельцев
+                </a><br />
+                <a href="@Url.Action("Components", "Equipment", new { equipmentId = item.Id })" class="btn btn-link app-color app-link">
+                    <i class="fa fa-headphones" aria-hidden="true"></i> Список комплектующих
+                </a><br />
+                <a href="#" class="btn btn-link delete-prompt app-color app-link" name="deleteButton" id="@item.Id">
+                    <i class="fa fa-trash" aria-hidden="true" title="Удалить" data-toggle="tooltip" data-placement="top"></i> Удалить запись
+                </a><br />
             </div>
-        }
-        else
-        {
-            <p>Нет комплектующих</p>
-        }
+        </div>
+        <div class="item-components-block">
+            @if (item.EquipmentComponentRelations.Count > 0)
+            {
+                <div class="row">
+                    <p>
+                        <b>
+                            <a class="btn btn-link app-color app-link" data-toggle="collapse" href="#components-@item.Id" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                <i class="fa fa-eye" aria-hidden="true"></i> Просмотреть комплектующие
+                            </a>
+                        </b>
+                    </p>
+                </div>
+                <div class="collapse" id="components-@item.Id">
+                    @foreach (var componentRelation in item.EquipmentComponentRelations)
+                    {
+                        <div class="card card-body row col-md-4">
+                            <p><b>Комплектующее:</b> @componentRelation.Component.ComponentType.Name  (@componentRelation.Component.Name - @componentRelation.Component.ModelName)</p>
+                            <p><b>Инвентаризационный номер:</b> @componentRelation.Component.InventNumber</p>
+                            <p><b>Модель:</b> @componentRelation.Component.ModelName</p>
+                            <p><b>Источник поступления:</b> @componentRelation.Component.Supplier</p>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p>Нет комплектующих</p>
+            }
+        </div>
     </div>
     <hr />
 }

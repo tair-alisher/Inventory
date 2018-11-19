@@ -25,7 +25,7 @@ namespace Inventory.Web.Controllers
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult AjaxRepairPlaceList(int? page)
         {
-            int pageSize = 1;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
 
             IEnumerable<RepairPlaceDTO> repairPlaceDTOs = RepairPlaceService
@@ -40,7 +40,7 @@ namespace Inventory.Web.Controllers
         [OutputCache(Duration = 30,  Location = OutputCacheLocation.Downstream)]
         public ActionResult Index(int? page)
         {
-            int pageSize = 1;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
 
             IEnumerable<RepairPlaceDTO> repairPlaceDTOs = RepairPlaceService
