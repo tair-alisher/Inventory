@@ -157,6 +157,27 @@ namespace Inventory.Web.Controllers
         }
 
         [Authorize(Roles = "admin")]
+        public ActionResult Copy(Guid? id)
+        {
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            EquipmentDTO equipmentDTO = EquipmentService.Get((Guid)id);
+            if (equipmentDTO == null)
+                return HttpNotFound();
+
+            EquipmentVM equipmentVM = WebEquipmentMapper.DtoToVm(equipmentDTO);
+            equipmentVM.InventNumber = null;
+
+            ViewBag.EquipmentTypeId = new SelectList(
+                EquipmentTypeService.GetAll(),
+                "Id",
+                "Name",
+                equipmentVM.EquipmentTypeId);
+
+            return View("Create", equipmentVM);
+        }
+
         public ActionResult OwnerHistory(Guid? equipmentId)
         {
             if (equipmentId == null)

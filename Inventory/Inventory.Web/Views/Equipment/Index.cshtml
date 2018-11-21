@@ -52,6 +52,9 @@
                         <a href="@Url.Action("Edit", "Equipment", new { id = item.Id })" class="btn btn-link app-color app-link">
                             <i class="fa fa-pencil" aria-hidden="true"></i> Редактировать
                         </a><br />
+                        <a href="@Url.Action("Copy", "Equipment", new { id = item.Id })" class="btn btn-link app-color app-link">
+                            <i class="fa fa-files-o" aria-hidden="true"></i> Копировать
+                        </a><br />
                         <a href="@Url.Action("Details", "Equipment", new { id = item.Id })" class="btn btn-link app-color app-link">
                             <i class="fa fa-eye" aria-hidden="true"></i> Просмотреть
                         </a><br />
