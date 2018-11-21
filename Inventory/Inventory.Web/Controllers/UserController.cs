@@ -1,9 +1,11 @@
-﻿using Inventory.BLL.DTO;
+﻿using AutoMapper;
+using Inventory.BLL.DTO;
 using Inventory.BLL.Interfaces;
+using Inventory.Web.Models.Account;
 using Inventory.Web.Models.User;
-using Inventory.Web.Util;
 using PagedList;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -31,7 +33,7 @@ namespace Inventory.Web.Controllers
             int pageNumber = (page ?? 1);
 
             var userDTOs = UserService.GetAllUsers().ToList();
-            var userVMs = WebUserMapper.DtoToVm(userDTOs).ToPagedList(pageNumber, pageSize);
+            var userVMs = Mapper.Map<IEnumerable<UserVM>>(userDTOs).ToPagedList(pageNumber, pageSize);
 
             return View(userVMs);
         }

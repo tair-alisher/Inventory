@@ -1,14 +1,13 @@
-﻿using Inventory.BLL.DTO;
+﻿using AutoMapper;
+using Inventory.BLL.DTO;
 using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.Web.Models;
-using Inventory.Web.Util;
 using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
 
@@ -31,8 +30,8 @@ namespace Inventory.Web.Controllers
             IEnumerable<StatusTypeDTO> statusTypeDTOs = StatusTypeService
                 .GetAll()
                 .ToList();
-            IEnumerable<StatusTypeVM> statusTypeVMs = WebStatusTypeMapper
-                .DtoToVm(statusTypeDTOs);
+            IEnumerable<StatusTypeVM> statusTypeVMs = Mapper.Map<IEnumerable<StatusTypeVM>>(statusTypeDTOs);
+
             return PartialView(statusTypeVMs.OrderBy(s => s.Name).ToPagedList(pageNumber, pageSize));
         }
 
@@ -41,11 +40,8 @@ namespace Inventory.Web.Controllers
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult Index(int? page)
         {
-            IEnumerable<StatusTypeDTO> statusTypeDTOs = StatusTypeService
-                .GetAll()
-                .ToList();
-            IEnumerable<StatusTypeVM> statusTypeVMs = WebStatusTypeMapper
-                .DtoToVm(statusTypeDTOs);
+            List<StatusTypeDTO> statusTypeDTOs = StatusTypeService.GetAll().ToList();
+            IEnumerable<StatusTypeVM> statusTypeVMs = Mapper.Map<IEnumerable<StatusTypeVM>>(statusTypeDTOs);
 
             int pageSize = 10;
             int pageNumber = (page ?? 1);
@@ -61,8 +57,8 @@ namespace Inventory.Web.Controllers
             if (statusTypeDTO == null)
                 return HttpNotFound();
 
-            StatusTypeVM statusTypeVM = WebStatusTypeMapper
-                .DtoToVm(statusTypeDTO);
+            StatusTypeVM statusTypeVM = Mapper.Map<StatusTypeVM>(statusTypeDTO);
+
             return View(statusTypeVM);
         }
 
@@ -79,10 +75,9 @@ namespace Inventory.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                StatusTypeDTO statusTypeDTO = WebStatusTypeMapper
-                    .VmToDto(statusTypeVM);
-                StatusTypeService
-                    .Add(statusTypeDTO);
+                StatusTypeDTO statusTypeDTO = Mapper.Map<StatusTypeDTO>(statusTypeVM);
+                StatusTypeService.Add(statusTypeDTO);
+
                 return RedirectToAction("Index");
             }
             return View();
@@ -98,7 +93,8 @@ namespace Inventory.Web.Controllers
             if (statusTypeDTO == null)
                 return HttpNotFound();
 
-            StatusTypeVM statusTypeVM = WebStatusTypeMapper.DtoToVm(statusTypeDTO);
+            StatusTypeVM statusTypeVM = Mapper.Map<StatusTypeVM>(statusTypeDTO);
+
             return View(statusTypeVM);
         }
 
@@ -109,7 +105,7 @@ namespace Inventory.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                StatusTypeDTO statusTypeDTO = WebStatusTypeMapper.VmToDto(statusTypeVM);
+                StatusTypeDTO statusTypeDTO = Mapper.Map<StatusTypeDTO>(statusTypeVM);
                 StatusTypeService.Update(statusTypeDTO);
 
                 return RedirectToAction("Index");

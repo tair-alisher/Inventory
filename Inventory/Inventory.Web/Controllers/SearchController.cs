@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Data.Entity;
 using Inventory.Web.Models;
-using PagedList.Mvc;
-using PagedList;
-using System.Net;
 using Inventory.BLL.Interfaces;
-using Inventory.BLL.Services;
 using Inventory.BLL.DTO;
-using Inventory.Web.Util;
+using AutoMapper;
 
 namespace Inventory.Web.Controllers
 {
@@ -81,12 +74,12 @@ namespace Inventory.Web.Controllers
 
         private IEnumerable<EquipmentTypeVM> BuildEquipmentTypeSearchQuery(params string[] words)
         {
-            IEnumerable<EquipmentTypeDTO> equipmentTypeDTOs = EquipmentTypeService.GetAll()
+            IEnumerable<EquipmentTypeDTO> equipmentTypeDTOs = EquipmentTypeService
+                .GetAll()
                 .ToList()
                 .Where(d => words.All(d.Name.ToLower().Contains));
 
-            IEnumerable<EquipmentTypeVM> equipmentTypeVMs = WebEquipmentTypeMapper
-               .DtoToVm(equipmentTypeDTOs);
+            IEnumerable<EquipmentTypeVM> equipmentTypeVMs = Mapper.Map<IEnumerable<EquipmentTypeVM>>(equipmentTypeDTOs);
 
             return equipmentTypeVMs;
         }
@@ -97,8 +90,7 @@ namespace Inventory.Web.Controllers
                 .ToList()
                 .Where(d => words.All(d.InventNumber.ToLower().Contains));
 
-            IEnumerable<EquipmentVM> equipmentVMs = WebEquipmentMapper
-               .DtoToVm(equipmentDTOs);
+            IEnumerable<EquipmentVM> equipmentVMs = Mapper.Map<IEnumerable<EquipmentVM>>(equipmentDTOs);
 
             return equipmentVMs;
         }
@@ -109,8 +101,7 @@ namespace Inventory.Web.Controllers
                 .ToList()
                 .Where(d => words.All(d.Name.ToLower().Contains));
 
-            IEnumerable<ComponentTypeVM> componentTypeVMs = WebComponentTypeMapper
-               .DtoToVm(componentTypeDTOs);
+            IEnumerable<ComponentTypeVM> componentTypeVMs = Mapper.Map<IEnumerable<ComponentTypeVM>>(componentTypeDTOs);
 
             return componentTypeVMs;
         }
@@ -121,8 +112,7 @@ namespace Inventory.Web.Controllers
                 .ToList()
                 .Where(d => d.InventNumber != null && words.All(d.InventNumber.ToLower().Contains));
 
-            IEnumerable<ComponentVM> componentVMs = WebComponentMapper
-               .DtoToVm(componentDTOs);
+            IEnumerable<ComponentVM> componentVMs = Mapper.Map<IEnumerable<ComponentVM>>(componentDTOs);
 
             return componentVMs;
         }
@@ -133,8 +123,7 @@ namespace Inventory.Web.Controllers
                 .ToList()
                 .Where(d => words.All(d.Name.ToLower().Contains));
 
-            IEnumerable<StatusTypeVM> statusTypeVMs = WebStatusTypeMapper
-               .DtoToVm(statusTypeDTOs);
+            IEnumerable<StatusTypeVM> statusTypeVMs = Mapper.Map<IEnumerable<StatusTypeVM>>(statusTypeDTOs);
 
             return statusTypeVMs;
         }
@@ -145,8 +134,7 @@ namespace Inventory.Web.Controllers
                 .ToList()
                 .Where(d => words.All(d.Name.ToLower().Contains));
 
-            IEnumerable<RepairPlaceVM> repairPlaceVMs = WebRepairPlaceMapper
-               .DtoToVm(repairPlaceDTOs);
+            IEnumerable<RepairPlaceVM> repairPlaceVMs = Mapper.Map<IEnumerable<RepairPlaceVM>>(repairPlaceDTOs);
 
             return repairPlaceVMs;
         }

@@ -1,14 +1,13 @@
-﻿using Inventory.BLL.DTO;
+﻿using AutoMapper;
+using Inventory.BLL.DTO;
 using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.Web.Models;
-using Inventory.Web.Util;
 using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
 
@@ -32,8 +31,7 @@ namespace Inventory.Web.Controllers
             IEnumerable<RepairPlaceDTO> repairPlaceDTOs = RepairPlaceService
              .GetAll()
              .ToList();
-            IEnumerable<RepairPlaceVM> repairPlaceVMs = WebRepairPlaceMapper
-                .DtoToVm(repairPlaceDTOs);
+            IEnumerable<RepairPlaceVM> repairPlaceVMs = Mapper.Map<IEnumerable<RepairPlaceVM>>(repairPlaceDTOs);
             return PartialView(repairPlaceVMs.OrderBy(n => n.Name).ToPagedList(pageNumber,pageSize));
         }
 
@@ -45,11 +43,8 @@ namespace Inventory.Web.Controllers
             int pageSize = 10;
             int pageNumber = (page ?? 1);
 
-            IEnumerable<RepairPlaceDTO> repairPlaceDTOs = RepairPlaceService
-                .GetAll()
-                .ToList();
-            IEnumerable<RepairPlaceVM> repairPlaceVMs = WebRepairPlaceMapper
-                .DtoToVm(repairPlaceDTOs);
+            IEnumerable<RepairPlaceDTO> repairPlaceDTOs = RepairPlaceService.GetAll().ToList();
+            IEnumerable<RepairPlaceVM> repairPlaceVMs = Mapper.Map<IEnumerable<RepairPlaceVM>>(repairPlaceDTOs);
 
             return View(repairPlaceVMs.OrderBy(n => n.Name).ToPagedList(pageNumber, pageSize));
         }
@@ -63,8 +58,7 @@ namespace Inventory.Web.Controllers
             if (repairPlaceDTO == null)
                 return HttpNotFound();
 
-            RepairPlaceVM repairPlaceVM = WebRepairPlaceMapper
-                .DtoToVm(repairPlaceDTO);
+            RepairPlaceVM repairPlaceVM = Mapper.Map<RepairPlaceVM>(repairPlaceDTO);
             return View(repairPlaceVM);
         }
 
@@ -81,10 +75,8 @@ namespace Inventory.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                RepairPlaceDTO repairPlaceDTO = WebRepairPlaceMapper
-                    .VmToDto(repairPlaceVM);
-                RepairPlaceService
-                    .Add(repairPlaceDTO);
+                RepairPlaceDTO repairPlaceDTO = Mapper.Map<RepairPlaceDTO>(repairPlaceVM);
+                RepairPlaceService.Add(repairPlaceDTO);
                 return RedirectToAction("Index");
             }
             return View();
@@ -100,7 +92,7 @@ namespace Inventory.Web.Controllers
             if (repairPlaceDTO == null)
                 return HttpNotFound();
 
-            RepairPlaceVM repairPlaceVM = WebRepairPlaceMapper.DtoToVm(repairPlaceDTO);
+            RepairPlaceVM repairPlaceVM = Mapper.Map<RepairPlaceVM>(repairPlaceDTO);
             return View(repairPlaceVM);
         }
 
@@ -111,7 +103,7 @@ namespace Inventory.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                RepairPlaceDTO repairPlaceDTO = WebRepairPlaceMapper.VmToDto(repairPlaceVM);
+                RepairPlaceDTO repairPlaceDTO = Mapper.Map<RepairPlaceDTO>(repairPlaceVM);
                 RepairPlaceService.Update(repairPlaceDTO);
 
                 return RedirectToAction("Index");

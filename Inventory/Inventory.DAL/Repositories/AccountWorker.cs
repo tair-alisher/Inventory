@@ -66,8 +66,6 @@ namespace Inventory.DAL.Repositories
             {
                 if (disposing)
                 {
-                    //userManager.Dispose();
-                    //roleManager.Dispose();
                     context.Dispose();
                 }
                 this.disposed = true;

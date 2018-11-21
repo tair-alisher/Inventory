@@ -1,8 +1,8 @@
-﻿using Inventory.BLL.DTO;
+﻿using AutoMapper;
+using Inventory.BLL.DTO;
 using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.Web.Models;
-using Inventory.Web.Util;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -28,11 +28,8 @@ namespace Inventory.Web.Controllers
             int pageSize = 10;
             int pageNumber = (page ?? 1);
 
-            IEnumerable<EquipmentTypeDTO> equipmentTypeDTOs = EquipmentTypeService
-              .GetAll()
-              .ToList();
-            IEnumerable<EquipmentTypeVM> equipmentTypeVMs = WebEquipmentTypeMapper
-                .DtoToVm(equipmentTypeDTOs);
+            IEnumerable<EquipmentTypeDTO> equipmentTypeDTOs = EquipmentTypeService.GetAll().ToList();
+            IEnumerable<EquipmentTypeVM> equipmentTypeVMs = Mapper.Map<IEnumerable<EquipmentTypeVM>>(equipmentTypeDTOs);
 
             return PartialView(equipmentTypeVMs.OrderBy(s => s.Name).ToPagedList(pageNumber, pageSize));
         }
@@ -44,11 +41,8 @@ namespace Inventory.Web.Controllers
             int pageSize = 10;
             int pageNumber = (page ?? 1);
 
-            IEnumerable<EquipmentTypeDTO> equipmentTypeDTOs = EquipmentTypeService
-                .GetAll()
-                .ToList();
-            IEnumerable<EquipmentTypeVM> equipmentTypeVMs = WebEquipmentTypeMapper
-                .DtoToVm(equipmentTypeDTOs);
+            IEnumerable<EquipmentTypeDTO> equipmentTypeDTOs = EquipmentTypeService.GetAll().ToList();
+            IEnumerable<EquipmentTypeVM> equipmentTypeVMs = Mapper.Map<IEnumerable<EquipmentTypeVM>>(equipmentTypeDTOs);
 
             return View(equipmentTypeVMs.OrderBy(s => s.Name).ToPagedList(pageNumber, pageSize));
         }
@@ -63,8 +57,7 @@ namespace Inventory.Web.Controllers
             if (equipmentTypeDTO == null)
                 return HttpNotFound();
 
-            EquipmentTypeVM equipmentTypeVM = WebEquipmentTypeMapper
-                .DtoToVm(equipmentTypeDTO);
+            EquipmentTypeVM equipmentTypeVM = Mapper.Map<EquipmentTypeVM>(equipmentTypeDTO);
 
             return View(equipmentTypeVM);
         }
@@ -81,10 +74,8 @@ namespace Inventory.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                EquipmentTypeDTO equipmentTypeDTO = WebEquipmentTypeMapper
-                    .VmToDto(equipmentTypeVM);
-                EquipmentTypeService
-                    .Add(equipmentTypeDTO);
+                EquipmentTypeDTO equipmentTypeDTO = Mapper.Map<EquipmentTypeDTO>(equipmentTypeVM);
+                EquipmentTypeService.Add(equipmentTypeDTO);
 
                 return RedirectToAction("Index");
             }
@@ -102,7 +93,7 @@ namespace Inventory.Web.Controllers
             if (equipmentTypeDTO == null)
                 return HttpNotFound();
 
-            EquipmentTypeVM equipmentTypeVM = WebEquipmentTypeMapper.DtoToVm(equipmentTypeDTO);
+            EquipmentTypeVM equipmentTypeVM = Mapper.Map<EquipmentTypeVM>(equipmentTypeDTO);
 
             return View(equipmentTypeVM);
         }
@@ -114,7 +105,7 @@ namespace Inventory.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                EquipmentTypeDTO equipmentTypeDTO = WebEquipmentTypeMapper.VmToDto(equipmentTypeVM);
+                EquipmentTypeDTO equipmentTypeDTO = Mapper.Map<EquipmentTypeDTO>(equipmentTypeVM);
                 EquipmentTypeService.Update(equipmentTypeDTO);
 
                 return RedirectToAction("Index");

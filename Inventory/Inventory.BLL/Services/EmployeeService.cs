@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using CatalogEntities;
 using Inventory.BLL.DTO;
-using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.DAL.Interfaces;
 
@@ -26,37 +26,18 @@ namespace Inventory.BLL.Services
         {
             Employee employee = _unitOfWork.Employees.Get(id);
 
-            return BLLEmployeeMapper.EntityToDto(employee);
+            return Mapper.Map<EmployeeDTO>(employee);
         }
 
         public IEnumerable<EmployeeDTO> GetAll()
         {
             List<Employee> employees = _unitOfWork.Employees.GetAll().ToList();
 
-            return BLLEmployeeMapper.EntityToDto(employees);
+            return Mapper.Map<IEnumerable<EmployeeDTO>>(employees);
         }
 
         public IEnumerable<OwnerInfoDTO> GetEmployeesByName(string fname)
         {
-            //IEnumerable<OwnerInfoDTO> employees = _unitOfWork
-            //    .Employees
-            //    .GetAll()
-            //    .Where(e => e.EmployeeFullName.Contains(fname))
-            //    .Join(
-            //        _unitOfWork
-            //            .Departments
-            //            .GetAll(),
-            //            e => e.DepartmentId,
-            //            d => d.DepartmentId,
-            //            (e, d) => new OwnerInfoDTO
-            //            {
-            //                EmployeeId = e.EmployeeId,
-            //                FullName = e.EmployeeFullName,
-            //                Room = e.EmployeeRoom,
-            //                Department = d.DepartmentName
-            //            }
-            //    );
-
             IEnumerable<OwnerInfoDTO> employees = (
                 from
                     emp in _unitOfWork.Employees.GetAll()

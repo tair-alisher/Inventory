@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Inventory.BLL.DTO;
 using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
@@ -21,7 +22,7 @@ namespace Inventory.BLL.Services
         {
             EquipmentEmployeeRelation relation = _unitOfWork.EquipmentEmployeeRelations.Get(id);
 
-            return BLLEquipmentEmployeeMapper.EntityToDto(relation);
+            return Mapper.Map<EquipmentEmployeeRelationDTO>(relation);
         }
 
         public EquipmentEmployeeRelationDTO GetByEquipmentAndEmployee(Guid equipmentId, int employeeId)
@@ -35,7 +36,7 @@ namespace Inventory.BLL.Services
             if (relation == null)
                 throw new NotFoundException();
 
-            return BLLEquipmentEmployeeMapper.EntityToDto(relation);
+            return Mapper.Map<EquipmentEmployeeRelationDTO>(relation);
         }
 
         public IEnumerable<EquipmentEmployeeRelationDTO> GetAll()
@@ -45,7 +46,7 @@ namespace Inventory.BLL.Services
                 .GetAll()
                 .ToList();
 
-            return BLLEquipmentEmployeeMapper.EntityToDto(relations);
+            return Mapper.Map<IEnumerable<EquipmentEmployeeRelationDTO>>(relations);
         }
 
         public void Create(Guid equipmentId, int employeeId)
@@ -68,9 +69,9 @@ namespace Inventory.BLL.Services
                 });
         }
 
-        public void Add(EquipmentEmployeeRelationDTO item)
+        public void Add(EquipmentEmployeeRelationDTO relationDTO)
         {
-            EquipmentEmployeeRelation relation = BLLEquipmentEmployeeMapper.DtoToEntity(item);
+            EquipmentEmployeeRelation relation = Mapper.Map<EquipmentEmployeeRelation>(relationDTO);
 
             relation.Id = Guid.NewGuid();
             relation.CreatedAt = DateTime.Now;
@@ -81,9 +82,9 @@ namespace Inventory.BLL.Services
             _unitOfWork.Save();
         }
 
-        public void Update(EquipmentEmployeeRelationDTO item)
+        public void Update(EquipmentEmployeeRelationDTO relationDTO)
         {
-            EquipmentEmployeeRelation relation = BLLEquipmentEmployeeMapper.DtoToEntity(item);
+            EquipmentEmployeeRelation relation = Mapper.Map<EquipmentEmployeeRelation>(relationDTO);
 
             _unitOfWork.EquipmentEmployeeRelations.Update(relation);
             _unitOfWork.Save();

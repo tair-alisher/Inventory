@@ -1,8 +1,8 @@
-﻿using Inventory.BLL.DTO;
+﻿using AutoMapper;
+using Inventory.BLL.DTO;
 using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.Web.Models;
-using Inventory.Web.Util;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -36,10 +36,8 @@ namespace Inventory.Web.Controllers
             int pageSize = 10;
             int pageNumber = (page ?? 1);
 
-            IEnumerable<EquipmentDTO> equipmentDTOs = EquipmentService
-             .GetAll()
-             .ToList();
-            IEnumerable<EquipmentVM> equipmentVMs = WebEquipmentMapper.DtoToVm(equipmentDTOs);
+            IEnumerable<EquipmentDTO> equipmentDTOs = EquipmentService.GetAll().ToList();
+            IEnumerable<EquipmentVM> equipmentVMs = Mapper.Map<IEnumerable<EquipmentVM>>(equipmentDTOs);
 
             return PartialView(equipmentVMs.ToPagedList(pageNumber, pageSize));
         }
@@ -51,10 +49,8 @@ namespace Inventory.Web.Controllers
             int pageSize = 10;
             int pageNumber = (page ?? 1);
 
-            IEnumerable<EquipmentDTO> equipmentDTOs = EquipmentService
-                .GetAll()
-                .ToList();
-            IEnumerable<EquipmentVM> equipmentVMs = WebEquipmentMapper.DtoToVm(equipmentDTOs);
+            IEnumerable<EquipmentDTO> equipmentDTOs = EquipmentService.GetAll().ToList();
+            IEnumerable<EquipmentVM> equipmentVMs = Mapper.Map<IEnumerable<EquipmentVM>>(equipmentDTOs);
 
             return View(equipmentVMs.ToPagedList(pageNumber, pageSize));
         }
@@ -71,7 +67,7 @@ namespace Inventory.Web.Controllers
 
             IEnumerable<OwnerInfoDTO> ownerHistory = EquipmentService.GetOwnerHistory((Guid)id);
             ViewBag.OwnerHistory = ownerHistory.ToList();
-            EquipmentVM equipmentVM = WebEquipmentMapper.DtoToVm(equipmentDTO);
+            EquipmentVM equipmentVM = Mapper.Map<EquipmentVM>(equipmentDTO);
 
             return View(equipmentVM);
         }
@@ -94,7 +90,7 @@ namespace Inventory.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                EquipmentDTO equipmentDTO = WebEquipmentMapper.VmToDto(equipmentVM);
+                EquipmentDTO equipmentDTO = Mapper.Map<EquipmentDTO>(equipmentVM);
                 Guid equipmentId = EquipmentService.AddAndGetId(equipmentDTO);
 
                 return RedirectToAction("Index");
@@ -119,7 +115,7 @@ namespace Inventory.Web.Controllers
             if (equipmentDTO == null)
                 return HttpNotFound();
 
-            EquipmentVM equipmentVM = WebEquipmentMapper.DtoToVm(equipmentDTO);
+            EquipmentVM equipmentVM = Mapper.Map<EquipmentVM>(equipmentDTO);
 
             ViewBag.EquipmentTypeId = new SelectList(
                 EquipmentTypeService.GetAll(),
@@ -137,15 +133,14 @@ namespace Inventory.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                EquipmentDTO equipmentDTO = WebEquipmentMapper
-                    .VmToDto(equipmentVM);
+                EquipmentDTO equipmentDTO = Mapper.Map<EquipmentDTO>(equipmentVM);
                 EquipmentService.Update(equipmentDTO);
             }
             else
                 ModelState.AddModelError(null, "Что-то пошло не так. Не удалось сохранить изменения.");
 
             EquipmentDTO dto = EquipmentService.Get(equipmentVM.Id);
-            equipmentVM = WebEquipmentMapper.DtoToVm(dto);
+            equipmentVM = Mapper.Map<EquipmentVM>(dto);
 
             ViewBag.EquipmentTypeId = new SelectList(
                 EquipmentTypeService.GetAll(),
@@ -166,7 +161,7 @@ namespace Inventory.Web.Controllers
             if (equipmentDTO == null)
                 return HttpNotFound();
 
-            EquipmentVM equipmentVM = WebEquipmentMapper.DtoToVm(equipmentDTO);
+            EquipmentVM equipmentVM = Mapper.Map<EquipmentVM>(equipmentDTO);
             equipmentVM.InventNumber = null;
 
             ViewBag.EquipmentTypeId = new SelectList(
@@ -184,12 +179,8 @@ namespace Inventory.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             ViewBag.EquipmentId = equipmentId;
-            IEnumerable<OwnerInfoDTO> ownerHistoryDTO = EquipmentService
-                .GetOwnerHistory((Guid)equipmentId)
-                .ToList();
-            List<OwnerInfoVM> ownerHistoryVM = WebOwnerInfoMapper
-                .DtoToVm(ownerHistoryDTO)
-                .ToList();
+            IEnumerable<OwnerInfoDTO> ownerHistoryDTO = EquipmentService.GetOwnerHistory((Guid)equipmentId).ToList();
+            List<OwnerInfoVM> ownerHistoryVM = Mapper.Map<IEnumerable<OwnerInfoVM>>(ownerHistoryDTO).ToList();
 
             return View(ownerHistoryVM);
         }
@@ -202,9 +193,8 @@ namespace Inventory.Web.Controllers
 
             ViewBag.EquipmentId = equipmentId;
 
-            OwnerInfoDTO ownerInfoDTO = EquipmentService
-                .GetOwnerInfo((Guid)equipmentId, employeeId);
-            OwnerInfoVM ownerInfoVM = WebOwnerInfoMapper.DtoToVm(ownerInfoDTO);
+            OwnerInfoDTO ownerInfoDTO = EquipmentService.GetOwnerInfo((Guid)equipmentId, employeeId);
+            OwnerInfoVM ownerInfoVM = Mapper.Map<OwnerInfoVM>(ownerInfoDTO);
 
             return View(ownerInfoVM);
         }
@@ -220,8 +210,7 @@ namespace Inventory.Web.Controllers
             IEnumerable<ComponentDTO> components = EquipmentService
                 .GetComponents((Guid)equipmentId)
                 .ToList();
-            IEnumerable<ComponentVM> componentVMs = WebComponentMapper
-                .DtoToVm(components);
+            IEnumerable<ComponentVM> componentVMs = Mapper.Map<IEnumerable<ComponentVM>>(components);
 
             return View(componentVMs);
         }

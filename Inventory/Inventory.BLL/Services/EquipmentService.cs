@@ -9,10 +9,9 @@ using Inventory.BLL.Infrastructure;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Net;
 using System.Web;
-using System.Web.Mvc;
 using ZXing;
+using AutoMapper;
 
 namespace Inventory.BLL.Services
 {
@@ -31,7 +30,7 @@ namespace Inventory.BLL.Services
 
         public Guid AddAndGetId(EquipmentDTO equipmentDTO)
         {
-            Equipment equipment = BLLEquipmentMapper.DtoToEntity(equipmentDTO);
+            Equipment equipment = Mapper.Map<Equipment>(equipmentDTO);
             equipment.Id = Guid.NewGuid();
             string domainName = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority);
             string url = $"{domainName}/Equipment/Details/{equipment.Id}";
@@ -75,14 +74,14 @@ namespace Inventory.BLL.Services
         {
             Equipment equipment = _unitOfWork.Equipments.Get(id);
 
-            return BLLEquipmentMapper.EntityToDto(equipment);
+            return Mapper.Map<EquipmentDTO>(equipment);
         }
 
         public IEnumerable<EquipmentDTO> GetAll()
         {
             List<Equipment> equipments = _unitOfWork.Equipments.GetAll().ToList();
 
-            return BLLEquipmentMapper.EntityToDto(equipments);
+            return Mapper.Map<IEnumerable<EquipmentDTO>>(equipments);
         }
 
         public void Update(EquipmentDTO item)
@@ -135,13 +134,6 @@ namespace Inventory.BLL.Services
 
             return relations.Count() > 0;
         }
-
-        //private bool HasRelationsWithComponents(Guid id)
-        //{
-        //    var relations = _unitOfWork.EquipmentComponentRelations.Find(r => r.EquipmentId == id);
-
-        //    return relations.Count() > 0;
-        //}
 
         public IEnumerable<OwnerInfoDTO> GetOwnerHistory(Guid id)
         {

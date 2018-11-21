@@ -21,7 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -106,24 +106,12 @@
     <Compile Include="DTO\StructuredEquipmentDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="Infrastructure\AccountModule.cs" />
-    <Compile Include="Infrastructure\BLLComponentMapper.cs" />
-    <Compile Include="Infrastructure\BLLComponentTypeMapper.cs" />
-    <Compile Include="Infrastructure\BLLEmployeeMapper.cs" />
-    <Compile Include="Infrastructure\BLLEquipmentComponentMapper.cs" />
-    <Compile Include="Infrastructure\BLLEquipmentEmployeeMapper.cs" />
-    <Compile Include="Infrastructure\BLLEquipmentMapper.cs" />
-    <Compile Include="Infrastructure\BLLEquipmentTypeMapper.cs" />
-    <Compile Include="Infrastructure\BLLHistoryMapper.cs" />
-    <Compile Include="Infrastructure\BLLRepairPlaceMapper.cs" />
-    <Compile Include="Infrastructure\BLLRoleMapper.cs" />
-    <Compile Include="Infrastructure\BLLStatusTypeMapper.cs" />
-    <Compile Include="Infrastructure\BLLUserMapper.cs" />
-    <Compile Include="Infrastructure\HasRelationsException.cs" />
-    <Compile Include="Infrastructure\InsecurePasswordException.cs" />
-    <Compile Include="Infrastructure\OldPasswordIsWrongException.cs" />
-    <Compile Include="Infrastructure\UserAlreadyExistsException.cs" />
+    <Compile Include="Infrastructure\Exceptions\HasRelationsException.cs" />
+    <Compile Include="Infrastructure\Exceptions\InsecurePasswordException.cs" />
+    <Compile Include="Infrastructure\Exceptions\OldPasswordIsWrongException.cs" />
+    <Compile Include="Infrastructure\Exceptions\UserAlreadyExistsException.cs" />
     <Compile Include="Interfaces\IAccountService.cs" />
-    <Compile Include="Infrastructure\NotFoundException.cs" />
+    <Compile Include="Infrastructure\Exceptions\NotFoundException.cs" />
     <Compile Include="Infrastructure\ServiceModule.cs" />
     <Compile Include="Interfaces\IComponentService.cs" />
     <Compile Include="Interfaces\IComponentTypeService.cs" />
@@ -138,6 +126,7 @@
     <Compile Include="Interfaces\IService.cs" />
     <Compile Include="Interfaces\IStatusTypeService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
+    <Compile Include="MappingProfiles\BLLMappingProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

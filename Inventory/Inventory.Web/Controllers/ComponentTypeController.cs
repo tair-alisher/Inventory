@@ -1,8 +1,8 @@
-﻿using Inventory.BLL.DTO;
+﻿using AutoMapper;
+using Inventory.BLL.DTO;
 using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.Web.Models;
-using Inventory.Web.Util;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -31,8 +31,7 @@ namespace Inventory.Web.Controllers
             IEnumerable<ComponentTypeDTO> componentTypeDTOs = ComponentTypeService
                .GetAll()
                .ToList();
-            IEnumerable<ComponentTypeVM> componentTypeVMs = WebComponentTypeMapper
-                .DtoToVm(componentTypeDTOs);
+            IEnumerable<ComponentTypeVM> componentTypeVMs = Mapper.Map<IEnumerable<ComponentTypeVM>>(componentTypeDTOs);
 
             return PartialView(componentTypeVMs.OrderBy(s => s.Name).ToPagedList(pageNumber, pageSize));
         }
@@ -47,8 +46,7 @@ namespace Inventory.Web.Controllers
             IEnumerable<ComponentTypeDTO> componentTypeDTOs = ComponentTypeService
                 .GetAll()
                 .ToList();
-            IEnumerable<ComponentTypeVM> componentTypeVMs = WebComponentTypeMapper
-                .DtoToVm(componentTypeDTOs);
+            IEnumerable<ComponentTypeVM> componentTypeVMs = Mapper.Map<IEnumerable<ComponentTypeVM>>(componentTypeDTOs);
 
             return View(componentTypeVMs.OrderBy(s => s.Name).ToPagedList(pageNumber, pageSize));
         }
@@ -63,8 +61,7 @@ namespace Inventory.Web.Controllers
             if (componentTypeDTO == null)
                 return HttpNotFound();
 
-            ComponentTypeVM componentTypeVM = WebComponentTypeMapper
-                .DtoToVm(componentTypeDTO);
+            ComponentTypeVM componentTypeVM = Mapper.Map<ComponentTypeVM>(componentTypeDTO);
 
             return View(componentTypeVM);
         }
@@ -82,10 +79,8 @@ namespace Inventory.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                ComponentTypeDTO componentTypeDTO = WebComponentTypeMapper
-                    .VmToDto(componentTypeVM);
-                ComponentTypeService
-                    .Add(componentTypeDTO);
+                ComponentTypeDTO componentTypeDTO = Mapper.Map<ComponentTypeDTO>(componentTypeVM);
+                ComponentTypeService.Add(componentTypeDTO);
 
                 return RedirectToAction("Index");
             }
@@ -103,7 +98,7 @@ namespace Inventory.Web.Controllers
             if (componentTypeDTO == null)
                 return HttpNotFound();
 
-            ComponentTypeVM componentTypeVM = WebComponentTypeMapper.DtoToVm(componentTypeDTO);
+            ComponentTypeVM componentTypeVM = Mapper.Map<ComponentTypeVM>(componentTypeDTO);
 
             return View(componentTypeVM);
         }
@@ -115,7 +110,7 @@ namespace Inventory.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                ComponentTypeDTO componentTypeDTO = WebComponentTypeMapper.VmToDto(componentTypeVM);
+                ComponentTypeDTO componentTypeDTO = Mapper.Map<ComponentTypeDTO>(componentTypeVM);
                 ComponentTypeService.Update(componentTypeDTO);
 
                 return RedirectToAction("Index");
