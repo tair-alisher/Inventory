@@ -67,6 +67,25 @@ namespace Inventory.BLL.Services
             return components;
         }
 
+        public IEnumerable<ComponentDTO> GetFilteredList(FilterParamsDTO parameters)
+        {
+            IEnumerable<ComponentDTO> filteredComponents = GetAll();
+
+            if (!string.IsNullOrEmpty(parameters.ComponentTypeId))
+            {
+                Guid guidComponentTypeId = Guid.Parse(parameters.ComponentTypeId);
+                filteredComponents = filteredComponents.Where(c => c.ComponentTypeId == guidComponentTypeId);
+            }
+
+            if (!string.IsNullOrEmpty(parameters.ModelName))
+                filteredComponents = filteredComponents.Where(c => c.ModelName == parameters.ModelName);
+
+            if (!string.IsNullOrEmpty(parameters.Name))
+                filteredComponents = filteredComponents.Where(c => c.Name != null && c.Name == parameters.Name);
+
+            return filteredComponents.OrderBy(c => c.Name);
+        }
+
         public Guid AddAndGetId(ComponentDTO componentDTO)
         {
             Component component = Mapper.Map<Component>(componentDTO);

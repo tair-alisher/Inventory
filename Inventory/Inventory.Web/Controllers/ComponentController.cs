@@ -22,28 +22,31 @@ namespace Inventory.Web.Controllers
 
         [Authorize(Roles = "admin")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
-        public ActionResult AjaxComponentList(int? page, string componentTypeId, string modelName, string name)
+        public ActionResult AjaxComponentList(int? page)
         {
             int pageNumber = (page ?? 1);
-
-            IEnumerable<ComponentDTO> componentDTOs = ComponentService.GetAll().ToList();
-            IEnumerable<ComponentVM> componentVMs = Mapper.Map<IEnumerable<ComponentVM>>(componentDTOs);
 
             ViewBag.ComponentTypeId = GetComponentTypeIdSelectList();
             ViewBag.ModelName = GetModelNameSelectList();
             ViewBag.Name = GetComponentNameSelectList();
 
-            var filteredComponents = (!String.IsNullOrEmpty(componentTypeId)) || (!String.IsNullOrEmpty(modelName)) || (!String.IsNullOrEmpty(name))
-            ? ComponentService.Filter(pageNumber, PageSize, componentDTOs, componentTypeId, modelName, name).OrderBy(x => x.ComponentType.Name)
-            : null;
+            FilterParamsDTO parameters = new FilterParamsDTO
+            {
+                ComponentTypeId = Request.QueryString["componentTypeId"],
+                ModelName = Request.QueryString["modelName"],
+                Name = Request.QueryString["Name"]
+            };
 
-            return filteredComponents == null ? View(componentVMs.ToPagedList(pageNumber, PageSize)) : View(Mapper.Map<IEnumerable<ComponentVM>>(filteredComponents).ToPagedList(pageNumber, PageSize));
+            IEnumerable<ComponentDTO> filteredComponentDTOList = ComponentService.GetFilteredList(parameters).ToList();
+            IEnumerable<ComponentVM> filteredComponentVMList = Mapper.Map<IEnumerable<ComponentVM>>(filteredComponentDTOList);
+
+            return View(filteredComponentVMList.ToPagedList(pageNumber, PageSize));
 
         }
 
         [Authorize(Roles = "admin")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
-        public ActionResult Index(int? page, string componentTypeId, string modelName, string name)
+        public ActionResult Index(int? page)
         {
             int pageNumber = (page ?? 1);
 
@@ -56,11 +59,17 @@ namespace Inventory.Web.Controllers
             ViewBag.ModelName = GetModelNameSelectList();
             ViewBag.Name = GetComponentNameSelectList();
 
-            var filteredComponents = (!String.IsNullOrEmpty(componentTypeId)) || (!String.IsNullOrEmpty(modelName)) || (!String.IsNullOrEmpty(name))
-            ? ComponentService.Filter(pageNumber, PageSize, componentDTOs, componentTypeId, modelName, name).OrderBy(x => x.ComponentType.Name)
-            : null;
+            FilterParamsDTO parameters = new FilterParamsDTO
+            {
+                ComponentTypeId = Request.QueryString["componentTypeId"],
+                ModelName = Request.QueryString["modelName"],
+                Name = Request.QueryString["Name"]
+            };
 
-            return filteredComponents == null ? View(componentVMs.ToPagedList(pageNumber, PageSize)) : View(Mapper.Map<IEnumerable<ComponentVM>>(filteredComponents).ToPagedList(pageNumber, PageSize));
+            IEnumerable<ComponentDTO> filteredComponentDTOList = ComponentService.GetFilteredList(parameters).ToList();
+            IEnumerable<ComponentVM> filteredComponentVMList = Mapper.Map<IEnumerable<ComponentVM>>(filteredComponentDTOList);
+
+            return View(filteredComponentVMList.ToPagedList(pageNumber, PageSize));
         }
 
         [Authorize(Roles = "admin")]
@@ -152,9 +161,18 @@ namespace Inventory.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(Guid id)
         {
-            try { ComponentService.Delete(id); }
-            catch (NotFoundException) { return HttpNotFound(); }
-            catch (HasRelationsException) { return Content("Удаление невозможно."); }
+            try
+            {
+                ComponentService.Delete(id);
+            }
+            catch (NotFoundException)
+            {
+                return HttpNotFound();
+            }
+            catch (HasRelationsException)
+            {
+                return Content("Удаление невозможно.");
+            }
 
             return RedirectToAction("Index");
         }
