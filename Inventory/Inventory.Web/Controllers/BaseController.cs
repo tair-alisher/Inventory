@@ -33,6 +33,11 @@ namespace Inventory.Web.Controllers
             EquipmentService = equipmentService;
         }
 
+        public BaseController(IEquipmentTypeService equipmentTypeService)
+        {
+            EquipmentTypeService = equipmentTypeService;
+        }
+
         public BaseController(IComponentTypeService compTypeService)
         {
             ComponentTypeService = compTypeService;

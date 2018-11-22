@@ -25,12 +25,31 @@ namespace Inventory.BLL.Services
             return Mapper.Map<EquipmentTypeDTO>(equipmentType);
         }
 
+        public EquipmentTypeDTO Get(Guid? id)
+        {
+            if (id == null)
+                throw new ArgumentNullException();
+
+            EquipmentType equipmentType = _unitOfWork.EquipmentTypes.Get(id);
+            if (equipmentType == null)
+                throw new NotFoundException();
+
+            return Mapper.Map<EquipmentTypeDTO>(equipmentType);
+        }
+
         public IEnumerable<EquipmentTypeDTO> GetAll()
         {
             List<EquipmentType> equipmentTypes = _unitOfWork
                 .EquipmentTypes
                 .GetAll()
                 .ToList();
+
+            return Mapper.Map<IEnumerable<EquipmentTypeDTO>>(equipmentTypes);
+        }
+
+        public IEnumerable<EquipmentTypeDTO> GetListOrderedByName()
+        {
+            List<EquipmentType> equipmentTypes = _unitOfWork.EquipmentTypes.GetAll().OrderBy(t => t.Name).ToList();
 
             return Mapper.Map<IEnumerable<EquipmentTypeDTO>>(equipmentTypes);
         }

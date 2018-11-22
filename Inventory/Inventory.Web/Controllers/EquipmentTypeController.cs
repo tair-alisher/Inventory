@@ -13,53 +13,48 @@ using System.Web.UI;
 
 namespace Inventory.Web.Controllers
 {
-    public class EquipmentTypeController : Controller
+    public class EquipmentTypeController : BaseController
     {
-        private IEquipmentTypeService EquipmentTypeService;
-        public EquipmentTypeController(IEquipmentTypeService equipmentTypeService)
-        {
-            EquipmentTypeService = equipmentTypeService;
-        }
+        public EquipmentTypeController(IEquipmentTypeService equipmentTypeService) : base(equipmentTypeService) { }
 
         [Authorize(Roles = "admin")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult AjaxEquipmentTypeList(int? page)
         {
-            int pageSize = 10;
-            int pageNumber = (page ?? 1);
-
-            IEnumerable<EquipmentTypeDTO> equipmentTypeDTOs = EquipmentTypeService.GetAll().ToList();
+            IEnumerable<EquipmentTypeDTO> equipmentTypeDTOs = EquipmentTypeService.GetListOrderedByName().ToList();
             IEnumerable<EquipmentTypeVM> equipmentTypeVMs = Mapper.Map<IEnumerable<EquipmentTypeVM>>(equipmentTypeDTOs);
 
-            return PartialView(equipmentTypeVMs.OrderBy(s => s.Name).ToPagedList(pageNumber, pageSize));
+            return PartialView(equipmentTypeVMs.ToPagedList(page ?? 1, PageSize));
         }
 
         [Authorize(Roles = "admin")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult Index(int? page)
         {
-            int pageSize = 10;
-            int pageNumber = (page ?? 1);
-
-            IEnumerable<EquipmentTypeDTO> equipmentTypeDTOs = EquipmentTypeService.GetAll().ToList();
+            IEnumerable<EquipmentTypeDTO> equipmentTypeDTOs = EquipmentTypeService.GetListOrderedByName().ToList();
             IEnumerable<EquipmentTypeVM> equipmentTypeVMs = Mapper.Map<IEnumerable<EquipmentTypeVM>>(equipmentTypeDTOs);
 
-            return View(equipmentTypeVMs.OrderBy(s => s.Name).ToPagedList(pageNumber, pageSize));
+            return View(equipmentTypeVMs.ToPagedList(page ?? 1, PageSize));
         }
 
         [Authorize(Roles = "admin")]
         public ActionResult Details(Guid? id)
         {
-            if (id == null)
+            try
+            {
+                EquipmentTypeDTO equipmentTypeDTO = EquipmentTypeService.Get(id);
+                EquipmentTypeVM equipmentTypeVM = Mapper.Map<EquipmentTypeVM>(equipmentTypeDTO);
+
+                return View(equipmentTypeVM);
+            }
+            catch (ArgumentNullException)
+            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            EquipmentTypeDTO equipmentTypeDTO = EquipmentTypeService.Get((Guid)id);
-            if (equipmentTypeDTO == null)
+            }
+            catch (NotFoundException)
+            {
                 return HttpNotFound();
-
-            EquipmentTypeVM equipmentTypeVM = Mapper.Map<EquipmentTypeVM>(equipmentTypeDTO);
-
-            return View(equipmentTypeVM);
+            }
         }
 
         public ActionResult Create()
@@ -86,16 +81,21 @@ namespace Inventory.Web.Controllers
         [Authorize(Roles = "admin")]
         public ActionResult Edit(Guid? id)
         {
-            if (id == null)
+            try
+            {
+                EquipmentTypeDTO equipmentTypeDTO = EquipmentTypeService.Get(id);
+                EquipmentTypeVM equipmentTypeVM = Mapper.Map<EquipmentTypeVM>(equipmentTypeDTO);
+
+                return View(equipmentTypeVM);
+            }
+            catch (ArgumentNullException)
+            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            EquipmentTypeDTO equipmentTypeDTO = EquipmentTypeService.Get((Guid)id);
-            if (equipmentTypeDTO == null)
+            }
+            catch (NotFoundException)
+            {
                 return HttpNotFound();
-
-            EquipmentTypeVM equipmentTypeVM = Mapper.Map<EquipmentTypeVM>(equipmentTypeDTO);
-
-            return View(equipmentTypeVM);
+            }
         }
 
         [HttpPost]
