@@ -6,10 +6,22 @@ namespace Inventory.Web.Controllers
 {
     public class BaseController : Controller
     {
+        public IEquipmentService EquipmentService;
+        public IEquipmentTypeService EquipmentTypeService;
+            public IEmployeeService EmployeeService;
         public IComponentService ComponentService;
         public IComponentTypeService ComponentTypeService;
-        public IEquipmentService EquipmentService;
         public const int PageSize = 10;
+
+        public BaseController(
+            IEquipmentService equipmentService,
+            IEquipmentTypeService equipmentTypeService,
+            IEmployeeService employeeService)
+        {
+            EquipmentService = equipmentService;
+            EquipmentTypeService = equipmentTypeService;
+            EmployeeService = employeeService;
+        }
 
         public BaseController(
             IComponentService componentService,
@@ -19,6 +31,16 @@ namespace Inventory.Web.Controllers
             ComponentService = componentService;
             ComponentTypeService = componentTypeService;
             EquipmentService = equipmentService;
+        }
+
+        public BaseController(IComponentTypeService compTypeService)
+        {
+            ComponentTypeService = compTypeService;
+        }
+
+        public SelectList GetEquipmentTypeIdSelectList(Guid? selectedValue = null)
+        {
+            return new SelectList(EquipmentTypeService.GetAll(), "Id", "Name", selectedValue);
         }
 
         public SelectList GetComponentTypeIdSelectList(Guid? selectedValue = null)

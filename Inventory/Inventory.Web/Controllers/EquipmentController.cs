@@ -13,72 +13,60 @@ using System.Web.UI;
 
 namespace Inventory.Web.Controllers
 {
-    public class EquipmentController : Controller
+    public class EquipmentController : BaseController
     {
-        private IEquipmentService EquipmentService;
-        private IEquipmentTypeService EquipmentTypeService;
-        private IEmployeeService EmployeeService;
-
         public EquipmentController
-            (IEquipmentService equipmentService,
-            IEmployeeService employeeService,
-            IEquipmentTypeService equipmentTypeService)
-        {
-            EquipmentService = equipmentService;
-            EmployeeService = employeeService;
-            EquipmentTypeService = equipmentTypeService;
-        }
+            (IEquipmentService equipService,
+            IEmployeeService empService,
+            IEquipmentTypeService equipTypeService) : base(equipService, equipTypeService, empService) { }
 
         [Authorize(Roles = "admin")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult AjaxEquipmentList(int? page)
         {
-            int pageSize = 10;
-            int pageNumber = (page ?? 1);
-
             IEnumerable<EquipmentDTO> equipmentDTOs = EquipmentService.GetAll().ToList();
             IEnumerable<EquipmentVM> equipmentVMs = Mapper.Map<IEnumerable<EquipmentVM>>(equipmentDTOs);
 
-            return PartialView(equipmentVMs.ToPagedList(pageNumber, pageSize));
+            return PartialView(equipmentVMs.ToPagedList(page ?? 1, PageSize));
         }
 
         [Authorize(Roles = "admin")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult Index(int? page)
         {
-            int pageSize = 10;
-            int pageNumber = (page ?? 1);
-
             IEnumerable<EquipmentDTO> equipmentDTOs = EquipmentService.GetAll().ToList();
             IEnumerable<EquipmentVM> equipmentVMs = Mapper.Map<IEnumerable<EquipmentVM>>(equipmentDTOs);
 
-            return View(equipmentVMs.ToPagedList(pageNumber, pageSize));
+            return View(equipmentVMs.ToPagedList(page ?? 1, PageSize));
         }
 
         [Authorize(Roles = "admin")]
         public ActionResult Details(Guid? id)
         {
-            if (id == null)
+            try
+            {
+                EquipmentDTO equipmentDTO = EquipmentService.Get(id);
+                EquipmentVM equipmentVM = Mapper.Map<EquipmentVM>(equipmentDTO);
+
+                IEnumerable<OwnerInfoDTO> ownerHistory = EquipmentService.GetOwnerHistory((Guid)id);
+                ViewBag.OwnerHistory = ownerHistory.ToList();
+
+                return View(equipmentVM);
+            }
+            catch (ArgumentNullException)
+            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            EquipmentDTO equipmentDTO = EquipmentService.Get((Guid)id);
-            if (equipmentDTO == null)
+            }
+            catch (NotFoundException)
+            {
                 return HttpNotFound();
-
-            IEnumerable<OwnerInfoDTO> ownerHistory = EquipmentService.GetOwnerHistory((Guid)id);
-            ViewBag.OwnerHistory = ownerHistory.ToList();
-            EquipmentVM equipmentVM = Mapper.Map<EquipmentVM>(equipmentDTO);
-
-            return View(equipmentVM);
+            }
         }
 
         [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
-            ViewBag.EquipmentTypeId = new SelectList(
-                EquipmentTypeService.GetAll(),
-                "Id",
-                "Name");
+            ViewBag.EquipmentTypeId = GetEquipmentTypeIdSelectList();
 
             return View();
         }
@@ -96,11 +84,7 @@ namespace Inventory.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.EquipmentTypeId = new SelectList(
-                    EquipmentTypeService.GetAll(),
-                    "Id",
-                    "Name",
-                    equipmentVM.EquipmentTypeId);
+            ViewBag.EquipmentTypeId = GetEquipmentTypeIdSelectList(equipmentVM.EquipmentTypeId);
 
             return View(equipmentVM);
         }
@@ -108,22 +92,23 @@ namespace Inventory.Web.Controllers
         [Authorize(Roles = "admin")]
         public ActionResult Edit(Guid? id)
         {
-            if (id == null)
+            try
+            {
+                EquipmentDTO equipmentDTO = EquipmentService.Get(id);
+                EquipmentVM equipmentVM = Mapper.Map<EquipmentVM>(equipmentDTO);
+
+                ViewBag.EquipmentTypeId = GetEquipmentTypeIdSelectList(equipmentVM.EquipmentTypeId);
+
+                return View(equipmentVM);
+            }
+            catch (ArgumentNullException)
+            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            EquipmentDTO equipmentDTO = EquipmentService.Get((Guid)id);
-            if (equipmentDTO == null)
+            }
+            catch (NotFoundException)
+            {
                 return HttpNotFound();
-
-            EquipmentVM equipmentVM = Mapper.Map<EquipmentVM>(equipmentDTO);
-
-            ViewBag.EquipmentTypeId = new SelectList(
-                EquipmentTypeService.GetAll(),
-                "Id",
-                "Name",
-                equipmentVM.EquipmentTypeId);
-
-            return View(equipmentVM);
+            }
         }
 
         [HttpPost]
@@ -154,23 +139,24 @@ namespace Inventory.Web.Controllers
         [Authorize(Roles = "admin")]
         public ActionResult Copy(Guid? id)
         {
-            if (id == null)
+            try
+            {
+                EquipmentDTO equipmentDTO = EquipmentService.Get(id);
+                EquipmentVM equipmentVM = Mapper.Map<EquipmentVM>(equipmentDTO);
+                equipmentVM.InventNumber = null;
+
+                ViewBag.EquipmentTypeId = GetEquipmentTypeIdSelectList(equipmentVM.EquipmentTypeId); ;
+
+                return View("Create", equipmentVM);
+            }
+            catch (ArgumentNullException)
+            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            EquipmentDTO equipmentDTO = EquipmentService.Get((Guid)id);
-            if (equipmentDTO == null)
+            }
+            catch (NotFoundException)
+            {
                 return HttpNotFound();
-
-            EquipmentVM equipmentVM = Mapper.Map<EquipmentVM>(equipmentDTO);
-            equipmentVM.InventNumber = null;
-
-            ViewBag.EquipmentTypeId = new SelectList(
-                EquipmentTypeService.GetAll(),
-                "Id",
-                "Name",
-                equipmentVM.EquipmentTypeId);
-
-            return View("Create", equipmentVM);
+            }
         }
 
         public ActionResult OwnerHistory(Guid? equipmentId)

@@ -13,57 +13,52 @@ using System.Web.UI;
 
 namespace Inventory.Web.Controllers
 {
-    public class ComponentTypeController : Controller
+    public class ComponentTypeController : BaseController
     {
-        private IComponentTypeService ComponentTypeService;
-        public ComponentTypeController(IComponentTypeService componentTypeService)
-        {
-            ComponentTypeService = componentTypeService;
-        }
+        public ComponentTypeController(IComponentTypeService componentTypeService) : base(componentTypeService) { }
 
         [Authorize(Roles = "admin")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult AjaxComponentTypeList(int? page)
         {
-            int pageSize = 10;
             int pageNumber = (page ?? 1);
 
-            IEnumerable<ComponentTypeDTO> componentTypeDTOs = ComponentTypeService
-               .GetAll()
-               .ToList();
+            IEnumerable<ComponentTypeDTO> componentTypeDTOs = ComponentTypeService.GetListOrderedByName().ToList();
             IEnumerable<ComponentTypeVM> componentTypeVMs = Mapper.Map<IEnumerable<ComponentTypeVM>>(componentTypeDTOs);
 
-            return PartialView(componentTypeVMs.OrderBy(s => s.Name).ToPagedList(pageNumber, pageSize));
+            return PartialView(componentTypeVMs.ToPagedList(pageNumber, PageSize));
         }
 
         [Authorize(Roles = "admin")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult Index(int? page)
         {
-            int pageSize = 10;
             int pageNumber = (page ?? 1);
 
-            IEnumerable<ComponentTypeDTO> componentTypeDTOs = ComponentTypeService
-                .GetAll()
-                .ToList();
+            IEnumerable<ComponentTypeDTO> componentTypeDTOs = ComponentTypeService.GetListOrderedByName().ToList();
             IEnumerable<ComponentTypeVM> componentTypeVMs = Mapper.Map<IEnumerable<ComponentTypeVM>>(componentTypeDTOs);
 
-            return View(componentTypeVMs.OrderBy(s => s.Name).ToPagedList(pageNumber, pageSize));
+            return View(componentTypeVMs.ToPagedList(pageNumber, PageSize));
         }
 
         [Authorize(Roles = "admin")]
         public ActionResult Details(Guid? id)
         {
-            if (id == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            try
+            {
+                ComponentTypeDTO componentTypeDTO = ComponentTypeService.Get(id);
+                ComponentTypeVM componentTypeVM = Mapper.Map<ComponentTypeVM>(componentTypeDTO);
 
-            ComponentTypeDTO componentTypeDTO = ComponentTypeService.Get((Guid)id);
-            if (componentTypeDTO == null)
+                return View(componentTypeVM);
+            }
+            catch (ArgumentNullException)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadGateway);
+            }
+            catch (NotFoundException)
+            {
                 return HttpNotFound();
-
-            ComponentTypeVM componentTypeVM = Mapper.Map<ComponentTypeVM>(componentTypeDTO);
-
-            return View(componentTypeVM);
+            }
         }
 
         [Authorize(Roles = "admin")]
@@ -91,16 +86,21 @@ namespace Inventory.Web.Controllers
         [Authorize(Roles = "admin")]
         public ActionResult Edit(Guid? id)
         {
-            if (id == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            try
+            {
+                ComponentTypeDTO componentTypeDTO = ComponentTypeService.Get(id);
+                ComponentTypeVM componentTypeVM = Mapper.Map<ComponentTypeVM>(componentTypeDTO);
 
-            ComponentTypeDTO componentTypeDTO = ComponentTypeService.Get((Guid)id);
-            if (componentTypeDTO == null)
+                return View(componentTypeVM);
+            }
+            catch (ArgumentNullException)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadGateway);
+            }
+            catch (NotFoundException)
+            {
                 return HttpNotFound();
-
-            ComponentTypeVM componentTypeVM = Mapper.Map<ComponentTypeVM>(componentTypeDTO);
-
-            return View(componentTypeVM);
+            }
         }
 
         [HttpPost]
@@ -124,9 +124,18 @@ namespace Inventory.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(Guid id)
         {
-            try { ComponentTypeService.Delete(id); }
-            catch (NotFoundException) { return HttpNotFound(); }
-            catch (HasRelationsException) { return Content("Удаление невозможно."); }
+            try
+            {
+                ComponentTypeService.Delete(id);
+            }
+            catch (NotFoundException)
+            {
+                return HttpNotFound();
+            }
+            catch (HasRelationsException)
+            {
+                return Content("Удаление невозможно.");
+            }
 
             return RedirectToAction("Index");
         }

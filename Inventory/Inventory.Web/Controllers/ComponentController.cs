@@ -41,7 +41,6 @@ namespace Inventory.Web.Controllers
             IEnumerable<ComponentVM> filteredComponentVMList = Mapper.Map<IEnumerable<ComponentVM>>(filteredComponentDTOList);
 
             return View(filteredComponentVMList.ToPagedList(pageNumber, PageSize));
-
         }
 
         [Authorize(Roles = "admin")]

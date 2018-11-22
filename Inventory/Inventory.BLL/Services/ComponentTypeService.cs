@@ -25,11 +25,30 @@ namespace Inventory.BLL.Services
             return Mapper.Map<ComponentTypeDTO>(componentType);
         }
 
+        public ComponentTypeDTO Get(Guid? id)
+        {
+            if (id == null)
+                throw new ArgumentNullException();
+
+            ComponentType componentType = _unitOfWork.ComponentTypes.Get(id);
+            if (componentType == null)
+                throw new NotFoundException();
+
+            return Mapper.Map<ComponentTypeDTO>(componentType);
+        }
+
         public IEnumerable<ComponentTypeDTO> GetAll()
         {
             List<ComponentType> componentTypes = _unitOfWork.ComponentTypes.GetAll().ToList();
 
             return Mapper.Map<IEnumerable<ComponentTypeDTO>>(componentTypes);
+        }
+
+        public IEnumerable<ComponentTypeDTO> GetListOrderedByName()
+        {
+            List<ComponentType> orderedComponentList = _unitOfWork.ComponentTypes.GetAll().OrderBy(t => t.Name).ToList();
+
+            return Mapper.Map<IEnumerable<ComponentTypeDTO>>(orderedComponentList);
         }
 
         public void Add(ComponentTypeDTO componentTypeDTO)

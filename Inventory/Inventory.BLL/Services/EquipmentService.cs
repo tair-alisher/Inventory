@@ -41,6 +41,7 @@ namespace Inventory.BLL.Services
 
             return equipment.Id;
         }
+
         private string GenerateQRCode(string qrcodeText, Guid id)
         {
             string folderPath = "~/Content/Images/";
@@ -69,10 +70,21 @@ namespace Inventory.BLL.Services
             return imagePath;
         }
 
-
         public EquipmentDTO Get(Guid id)
         {
             Equipment equipment = _unitOfWork.Equipments.Get(id);
+
+            return Mapper.Map<EquipmentDTO>(equipment);
+        }
+
+        public EquipmentDTO Get(Guid? id)
+        {
+            if (id == null)
+                throw new ArgumentNullException();
+
+            Equipment equipment = _unitOfWork.Equipments.Get(id);
+            if (equipment == null)
+                throw new NotFoundException();
 
             return Mapper.Map<EquipmentDTO>(equipment);
         }
