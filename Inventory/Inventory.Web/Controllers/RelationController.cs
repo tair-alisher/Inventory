@@ -4,8 +4,8 @@ using System.Web.Mvc;
 using System;
 using System.Net;
 using Inventory.Web.Models;
-using Inventory.Web.Util;
 using Inventory.BLL.DTO;
+using AutoMapper;
 
 namespace Inventory.Web.Controllers
 {
@@ -21,6 +21,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin, manager")]
         [ValidateAntiForgeryToken]
         public ActionResult UpdateOwnerHistory(Guid? equipmentId)
         {
@@ -55,6 +56,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin, manager")]
         [ValidateAntiForgeryToken]
         public ActionResult UpdateComponents(Guid? equipmentId)
         {
@@ -84,6 +86,7 @@ namespace Inventory.Web.Controllers
             });
         }
 
+        [Authorize(Roles = "admin, manager")]
         public ActionResult EditEquipmentEmployeeRelation()
         {
             Guid equipmentId;
@@ -108,19 +111,19 @@ namespace Inventory.Web.Controllers
                 return HttpNotFound();
             }
 
-            EquipmentEmployeeRelationVM relationVM = WebEquipmentEmployeeMapper.DtoToVm(relationDTO);
+            EquipmentEmployeeRelationVM relationVM = Mapper.Map<EquipmentEmployeeRelationVM>(relationDTO);
 
             return View(relationVM);
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin, manager")]
         [ValidateAntiForgeryToken]
         public ActionResult EditEquipmentEmployeeRelation([Bind(Include = "Id,EquipmentId,CreatedAt,UpdatedAt")] EquipmentEmployeeRelationVM relationVM)
         {
             if (ModelState.IsValid)
             {
-                EquipmentEmployeeRelationDTO relationDTO = WebEquipmentEmployeeMapper
-                    .VmToDto(relationVM);
+                EquipmentEmployeeRelationDTO relationDTO = Mapper.Map<EquipmentEmployeeRelationDTO>(relationVM);
                 EqEmpService.UpdateDates(relationDTO);
             }
             else

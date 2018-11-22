@@ -1,4 +1,5 @@
-﻿using Inventory.BLL.DTO;
+﻿using AutoMapper;
+using Inventory.BLL.DTO;
 using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.DAL.Entities;
@@ -22,28 +23,29 @@ namespace Inventory.BLL.Services
         public RepairPlaceDTO Get(Guid id)
         {
             RepairPlace repairPlace = _unitOfWork.RepairPlaces.Get(id);
-            return BLLRepairPlaceMapper.EntityToDto(repairPlace);
+
+            return Mapper.Map<RepairPlaceDTO>(repairPlace);
         }
 
         public IEnumerable<RepairPlaceDTO> GetAll()
         {
             List<RepairPlace> repairPlaces = _unitOfWork.RepairPlaces.GetAll().ToList();
 
-            return BLLRepairPlaceMapper.EntityToDto(repairPlaces);
+            return Mapper.Map<IEnumerable<RepairPlaceDTO>>(repairPlaces);
         }
 
-        public void Add(RepairPlaceDTO item)
+        public void Add(RepairPlaceDTO repairPlaceDTO)
         {
-            RepairPlace repairPlace = BLLRepairPlaceMapper.DtoToEntity(item);
+            RepairPlace repairPlace = Mapper.Map<RepairPlace>(repairPlaceDTO);
             repairPlace.Id = Guid.NewGuid();
 
             _unitOfWork.RepairPlaces.Create(repairPlace);
             _unitOfWork.Save();
         }
 
-        public void Update(RepairPlaceDTO item)
+        public void Update(RepairPlaceDTO repairPlaceDTO)
         {
-            RepairPlace repairPlace = BLLRepairPlaceMapper.DtoToEntity(item);
+            RepairPlace repairPlace = Mapper.Map<RepairPlace>(repairPlaceDTO);
 
             _unitOfWork.RepairPlaces.Update(repairPlace);
             _unitOfWork.Save();

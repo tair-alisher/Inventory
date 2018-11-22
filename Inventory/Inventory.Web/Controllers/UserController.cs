@@ -1,9 +1,11 @@
-﻿using Inventory.BLL.DTO;
+﻿using AutoMapper;
+using Inventory.BLL.DTO;
 using Inventory.BLL.Interfaces;
+using Inventory.Web.Models.Account;
 using Inventory.Web.Models.User;
-using Inventory.Web.Util;
 using PagedList;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -23,6 +25,7 @@ namespace Inventory.Web.Controllers
             AccountService = accountService;
         }
 
+        [Authorize(Roles = "admin")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult Index(int? page)
         {
@@ -30,11 +33,12 @@ namespace Inventory.Web.Controllers
             int pageNumber = (page ?? 1);
 
             var userDTOs = UserService.GetAllUsers().ToList();
-            var userVMs = WebUserMapper.DtoToVm(userDTOs).ToPagedList(pageNumber, pageSize);
+            var userVMs = Mapper.Map<IEnumerable<UserVM>>(userDTOs).ToPagedList(pageNumber, pageSize);
 
             return View(userVMs);
         }
 
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult> ChangeRole(string userId)
         {
             if (userId == null)
@@ -61,6 +65,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangeRole([Bind(Include = "UserId,OldRole,Role")] ChangeRoleModel model)
         {
@@ -94,6 +99,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(string id)
         {

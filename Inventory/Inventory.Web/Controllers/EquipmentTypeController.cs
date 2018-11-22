@@ -1,8 +1,8 @@
-﻿using Inventory.BLL.DTO;
+﻿using AutoMapper;
+using Inventory.BLL.DTO;
 using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.Web.Models;
-using Inventory.Web.Util;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -13,57 +13,48 @@ using System.Web.UI;
 
 namespace Inventory.Web.Controllers
 {
-    public class EquipmentTypeController : Controller
+    public class EquipmentTypeController : BaseController
     {
-        private IEquipmentTypeService EquipmentTypeService;
-        public EquipmentTypeController(IEquipmentTypeService equipmentTypeService)
-        {
-            EquipmentTypeService = equipmentTypeService;
-        }
+        public EquipmentTypeController(IEquipmentTypeService equipmentTypeService) : base(equipmentTypeService) { }
 
+        [Authorize(Roles = "admin, manager")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult AjaxEquipmentTypeList(int? page)
         {
-            int pageSize = 10;
-            int pageNumber = (page ?? 1);
+            IEnumerable<EquipmentTypeDTO> equipmentTypeDTOs = EquipmentTypeService.GetListOrderedByName().ToList();
+            IEnumerable<EquipmentTypeVM> equipmentTypeVMs = Mapper.Map<IEnumerable<EquipmentTypeVM>>(equipmentTypeDTOs);
 
-            IEnumerable<EquipmentTypeDTO> equipmentTypeDTOs = EquipmentTypeService
-              .GetAll()
-              .ToList();
-            IEnumerable<EquipmentTypeVM> equipmentTypeVMs = WebEquipmentTypeMapper
-                .DtoToVm(equipmentTypeDTOs);
-
-            return PartialView(equipmentTypeVMs.OrderBy(s => s.Name).ToPagedList(pageNumber, pageSize));
+            return PartialView(equipmentTypeVMs.ToPagedList(page ?? 1, PageSize));
         }
 
+        [Authorize(Roles = "admin, manager")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult Index(int? page)
         {
-            int pageSize = 10;
-            int pageNumber = (page ?? 1);
+            IEnumerable<EquipmentTypeDTO> equipmentTypeDTOs = EquipmentTypeService.GetListOrderedByName().ToList();
+            IEnumerable<EquipmentTypeVM> equipmentTypeVMs = Mapper.Map<IEnumerable<EquipmentTypeVM>>(equipmentTypeDTOs);
 
-            IEnumerable<EquipmentTypeDTO> equipmentTypeDTOs = EquipmentTypeService
-                .GetAll()
-                .ToList();
-            IEnumerable<EquipmentTypeVM> equipmentTypeVMs = WebEquipmentTypeMapper
-                .DtoToVm(equipmentTypeDTOs);
-
-            return View(equipmentTypeVMs.OrderBy(s => s.Name).ToPagedList(pageNumber, pageSize));
+            return View(equipmentTypeVMs.ToPagedList(page ?? 1, PageSize));
         }
 
+        [Authorize(Roles = "admin, manager")]
         public ActionResult Details(Guid? id)
         {
-            if (id == null)
+            try
+            {
+                EquipmentTypeDTO equipmentTypeDTO = EquipmentTypeService.Get(id);
+                EquipmentTypeVM equipmentTypeVM = Mapper.Map<EquipmentTypeVM>(equipmentTypeDTO);
+
+                return View(equipmentTypeVM);
+            }
+            catch (ArgumentNullException)
+            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            EquipmentTypeDTO equipmentTypeDTO = EquipmentTypeService.Get((Guid)id);
-            if (equipmentTypeDTO == null)
+            }
+            catch (NotFoundException)
+            {
                 return HttpNotFound();
-
-            EquipmentTypeVM equipmentTypeVM = WebEquipmentTypeMapper
-                .DtoToVm(equipmentTypeDTO);
-
-            return View(equipmentTypeVM);
+            }
         }
 
         public ActionResult Create()
@@ -72,15 +63,14 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin, manager")]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Name")] EquipmentTypeVM equipmentTypeVM)
         {
             if (ModelState.IsValid)
             {
-                EquipmentTypeDTO equipmentTypeDTO = WebEquipmentTypeMapper
-                    .VmToDto(equipmentTypeVM);
-                EquipmentTypeService
-                    .Add(equipmentTypeDTO);
+                EquipmentTypeDTO equipmentTypeDTO = Mapper.Map<EquipmentTypeDTO>(equipmentTypeVM);
+                EquipmentTypeService.Add(equipmentTypeDTO);
 
                 return RedirectToAction("Index");
             }
@@ -88,27 +78,34 @@ namespace Inventory.Web.Controllers
             return View();
         }
 
+        [Authorize(Roles = "admin, manager")]
         public ActionResult Edit(Guid? id)
         {
-            if (id == null)
+            try
+            {
+                EquipmentTypeDTO equipmentTypeDTO = EquipmentTypeService.Get(id);
+                EquipmentTypeVM equipmentTypeVM = Mapper.Map<EquipmentTypeVM>(equipmentTypeDTO);
+
+                return View(equipmentTypeVM);
+            }
+            catch (ArgumentNullException)
+            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            EquipmentTypeDTO equipmentTypeDTO = EquipmentTypeService.Get((Guid)id);
-            if (equipmentTypeDTO == null)
+            }
+            catch (NotFoundException)
+            {
                 return HttpNotFound();
-
-            EquipmentTypeVM equipmentTypeVM = WebEquipmentTypeMapper.DtoToVm(equipmentTypeDTO);
-
-            return View(equipmentTypeVM);
+            }
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin, manager")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name")] EquipmentTypeVM equipmentTypeVM)
         {
             if (ModelState.IsValid)
             {
-                EquipmentTypeDTO equipmentTypeDTO = WebEquipmentTypeMapper.VmToDto(equipmentTypeVM);
+                EquipmentTypeDTO equipmentTypeDTO = Mapper.Map<EquipmentTypeDTO>(equipmentTypeVM);
                 EquipmentTypeService.Update(equipmentTypeDTO);
 
                 return RedirectToAction("Index");
@@ -118,6 +115,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(Guid id)
         {

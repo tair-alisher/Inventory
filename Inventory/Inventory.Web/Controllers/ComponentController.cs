@@ -1,8 +1,8 @@
-﻿using Inventory.BLL.DTO;
+﻿using AutoMapper;
+using Inventory.BLL.DTO;
 using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.Web.Models;
-using Inventory.Web.Util;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -13,165 +13,171 @@ using System.Web.UI;
 
 namespace Inventory.Web.Controllers
 {
-    public class ComponentController : Controller
+    public class ComponentController : BaseController
     {
-        private IComponentService ComponentService;
-        private IComponentTypeService ComponentTypeService;
-        private IEquipmentService EquipmentService;
         public ComponentController(
-            IComponentService componentService,
-            IComponentTypeService componentTypeService,
-            IEquipmentService equipmentService
-            )
+            IComponentService compService,
+            IComponentTypeService compTypeService,
+            IEquipmentService equipService) : base(compService, compTypeService, equipService) { }
+
+        [Authorize(Roles = "admin, manager, user")]
+        [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
+        public ActionResult AjaxComponentList(int? page)
         {
-            ComponentService = componentService;
-            ComponentTypeService = componentTypeService;
-            EquipmentService = equipmentService;
+            int pageNumber = (page ?? 1);
+
+            ViewBag.ComponentTypeId = GetComponentTypeIdSelectList();
+            ViewBag.ModelName = GetModelNameSelectList();
+            ViewBag.Name = GetComponentNameSelectList();
+
+            FilterParamsDTO parameters = new FilterParamsDTO
+            {
+                ComponentTypeId = Request.QueryString["componentTypeId"],
+                ModelName = Request.QueryString["modelName"],
+                Name = Request.QueryString["Name"]
+            };
+
+            IEnumerable<ComponentDTO> filteredComponentDTOList = ComponentService.GetFilteredList(parameters).ToList();
+            IEnumerable<ComponentVM> filteredComponentVMList = Mapper.Map<IEnumerable<ComponentVM>>(filteredComponentDTOList);
+
+            return View(filteredComponentVMList.ToPagedList(pageNumber, PageSize));
         }
 
+        [Authorize(Roles = "admin, manager, user")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
-        public ActionResult AjaxComponentList(int? page, string componentTypeId, string modelName, string name)
+        public ActionResult Index(int? page)
         {
-            int pageSize = 10;
             int pageNumber = (page ?? 1);
 
             IEnumerable<ComponentDTO> componentDTOs = ComponentService
                 .GetAll()
                 .ToList();
-            IEnumerable<ComponentVM> componentVMs = WebComponentMapper.DtoToVm(componentDTOs);
+            IEnumerable<ComponentVM> componentVMs = Mapper.Map<IEnumerable<ComponentVM>>(componentDTOs);
 
-            ViewBag.ComponentTypeId = new SelectList(ComponentTypeService.GetAll(), "Id", "Name");
-            ViewBag.ModelName = new SelectList(ComponentService.GetAll(), "ModelName", "ModelName");
-            ViewBag.Name = new SelectList(ComponentService.GetAll(), "Name", "Name");
+            ViewBag.ComponentTypeId = GetComponentTypeIdSelectList();
+            ViewBag.ModelName = GetModelNameSelectList();
+            ViewBag.Name = GetComponentNameSelectList();
 
-            var filteredComponents = (!String.IsNullOrEmpty(componentTypeId)) || (!String.IsNullOrEmpty(modelName)) || (!String.IsNullOrEmpty(name))
-            ? ComponentService.Filter(pageNumber, pageSize, componentDTOs, componentTypeId, modelName, name).OrderBy(x => x.ComponentType.Name)
-            : null;
+            FilterParamsDTO parameters = new FilterParamsDTO
+            {
+                ComponentTypeId = Request.QueryString["componentTypeId"],
+                ModelName = Request.QueryString["modelName"],
+                Name = Request.QueryString["Name"]
+            };
 
-            return filteredComponents == null ? View(componentVMs.ToPagedList(pageNumber, pageSize)) : View(WebComponentMapper.DtoToVm(filteredComponents).ToPagedList(pageNumber, pageSize));
+            IEnumerable<ComponentDTO> filteredComponentDTOList = ComponentService.GetFilteredList(parameters).ToList();
+            IEnumerable<ComponentVM> filteredComponentVMList = Mapper.Map<IEnumerable<ComponentVM>>(filteredComponentDTOList);
 
+            return View(filteredComponentVMList.ToPagedList(pageNumber, PageSize));
         }
 
-        [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
-        public ActionResult Index(int? page, string componentTypeId, string modelName, string name)
-        {
-            int pageSize = 10;
-            int pageNumber = (page ?? 1);
-
-            IEnumerable<ComponentDTO> componentDTOs = ComponentService
-                .GetAll()
-                .ToList();
-            IEnumerable<ComponentVM> componentVMs = WebComponentMapper.DtoToVm(componentDTOs);
-
-            ViewBag.ComponentTypeId = new SelectList( ComponentTypeService.GetAll(), "Id", "Name");
-            ViewBag.ModelName = new SelectList(ComponentService.GetAll(), "ModelName", "ModelName");
-            ViewBag.Name = new SelectList(ComponentService.GetAll(), "Name", "Name");
-
-            var filteredComponents = (!String.IsNullOrEmpty(componentTypeId)) || (!String.IsNullOrEmpty(modelName)) || (!String.IsNullOrEmpty(name))
-            ? ComponentService.Filter(pageNumber, pageSize, componentDTOs, componentTypeId, modelName, name).OrderBy(x => x.ComponentType.Name)
-            : null;
-
-            return filteredComponents == null ? View(componentVMs.ToPagedList(pageNumber, pageSize)) : View(WebComponentMapper.DtoToVm(filteredComponents).ToPagedList(pageNumber, pageSize));
-
-            //return View(componentVMs.ToPagedList(pageNumber, pageSize));
-        }
-
+        [Authorize(Roles = "admin, manager")]
         public ActionResult Details(Guid? id)
         {
-            if (id == null)
+            try
+            {
+                ComponentDTO componentDTO = ComponentService.Get((Guid)id);
+                ComponentVM componentVM = Mapper.Map<ComponentVM>(componentDTO);
+
+                return View(componentVM);
+            }
+            catch (ArgumentNullException)
+            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            ComponentDTO componentDTO = ComponentService.Get((Guid)id);
-            if (componentDTO == null)
+            }
+            catch (NotFoundException)
+            {
                 return HttpNotFound();
-
-            ComponentVM componentVM = WebComponentMapper.DtoToVm(componentDTO);
-
-            return View(componentVM);
+            }
         }
 
+        [Authorize(Roles = "admin, manager, user")]
         public ActionResult Create()
         {
-            ViewBag.ComponentTypeId = new SelectList(
-                ComponentTypeService.GetAll(),
-                "Id",
-                "Name");
+            ViewBag.ComponentTypeId = GetComponentTypeIdSelectList();
 
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin, manager, user")]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ComponentTypeId,ModelName,Name,Description,Price,InventNumber,Supplier")] ComponentVM componentVM)
         {
             if (ModelState.IsValid)
             {
-                ComponentDTO componentDTO = WebComponentMapper.VmToDto(componentVM);
+                ComponentDTO componentDTO = Mapper.Map<ComponentDTO>(componentVM);
                 ComponentService.Add(componentDTO);
 
                 return RedirectToAction("Index");
             }
-
-            ViewBag.ComponentTypeId = new SelectList(
-                ComponentTypeService.GetAll(),
-                "Id",
-                "Name");
+            ViewBag.ComponentTypeId = GetComponentTypeIdSelectList();
 
             return View(componentVM);
         }
 
+        [Authorize(Roles = "admin, manager")]
         public ActionResult Edit(Guid? id)
         {
-            if (id == null)
+            try
+            {
+                ComponentDTO componentDTO = ComponentService.Get(id);
+                ComponentVM componentVM = Mapper.Map<ComponentVM>(componentDTO);
+                ViewBag.ComponentTypeId = GetComponentTypeIdSelectList(componentVM.ComponentTypeId);
+
+                return View(componentVM);
+            }
+            catch (ArgumentNullException)
+            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            ComponentDTO componentDTO = ComponentService.Get((Guid)id);
-            if (componentDTO == null)
+            }
+            catch (NotFoundException)
+            {
                 return HttpNotFound();
-
-            ComponentVM componentVM = WebComponentMapper.DtoToVm(componentDTO);
-            ViewBag.ComponentTypeId = new SelectList(
-                ComponentTypeService.GetAll(),
-                "Id",
-                "Name",
-                componentVM.ComponentTypeId);
-
-            return View(componentVM);
+            }
         }
-
+    
         [HttpPost]
+        [Authorize(Roles = "admin, manager")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,ComponentTypeId,ModelName,Name,Description,Price,InventNumber,Supplier")] ComponentVM componentVM)
         {
             if (ModelState.IsValid)
             {
-                ComponentDTO componentDTO = WebComponentMapper.VmToDto(componentVM);
+                ComponentDTO componentDTO = Mapper.Map<ComponentDTO>(componentVM);
                 ComponentService.Update(componentDTO);
 
                 return RedirectToAction("Index");
             }
-
-            ViewBag.ComponentTypeId = new SelectList(
-                ComponentTypeService.GetAll(),
-                "Id",
-                "Name",
-                componentVM.ComponentTypeId);
+            
+            ViewBag.ComponentTypeId = GetComponentTypeIdSelectList(componentVM.ComponentTypeId);
 
             return View(componentVM);
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(Guid id)
         {
-            try { ComponentService.Delete(id); }
-            catch (NotFoundException) { return HttpNotFound(); }
-            catch (HasRelationsException) { return Content("Удаление невозможно."); }
+            try
+            {
+                ComponentService.Delete(id);
+            }
+            catch (NotFoundException)
+            {
+                return HttpNotFound();
+            }
+            catch (HasRelationsException)
+            {
+                return Content("Удаление невозможно.");
+            }
 
             return RedirectToAction("Index");
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public ActionResult FindComponents(string value, string type)
         {
@@ -181,9 +187,7 @@ namespace Inventory.Web.Controllers
                 .GetComponentsBy(type, value)
                 .ToList();
 
-            List<ComponentVM> componentVMs = WebComponentMapper
-                .DtoToVm(componentDTOs)
-                .ToList();
+            List<ComponentVM> componentVMs = Mapper.Map<IEnumerable<ComponentVM>>(componentDTOs).ToList();
 
             return PartialView(componentVMs);
         }

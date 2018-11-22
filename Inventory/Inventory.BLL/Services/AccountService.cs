@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AutoMapper;
 using Inventory.BLL.DTO;
 using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
@@ -60,14 +60,14 @@ namespace Inventory.BLL.Services
         {
             ApplicationUser user = await worker.UserManager.FindByIdAsync(id.ToString());
 
-            return BLLUserMapper.EntityToDto(user);
+            return Mapper.Map<UserDTO>(user);
         }
 
         public IEnumerable<RoleDTO> GetAllRoles()
         {
             var roles = worker.RoleManager.Roles.ToList();
 
-            return BLLRoleMapper.EntityToDto(roles);
+            return Mapper.Map<IEnumerable<RoleDTO>>(roles);
         }
 
         public async Task UpdateEmail(UserDTO userDTO)
