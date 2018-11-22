@@ -120,18 +120,13 @@ namespace Inventory.Web.Controllers
             {
                 EquipmentDTO equipmentDTO = Mapper.Map<EquipmentDTO>(equipmentVM);
                 EquipmentService.Update(equipmentDTO);
+
+                return RedirectToAction("Index");
             }
             else
                 ModelState.AddModelError(null, "Что-то пошло не так. Не удалось сохранить изменения.");
 
-            EquipmentDTO dto = EquipmentService.Get(equipmentVM.Id);
-            equipmentVM = Mapper.Map<EquipmentVM>(dto);
-
-            ViewBag.EquipmentTypeId = new SelectList(
-                EquipmentTypeService.GetAll(),
-                "Id",
-                "Name",
-                equipmentVM.EquipmentTypeId);
+            ViewBag.EquipmentTypeId = GetEquipmentTypeIdSelectList(equipmentVM.EquipmentTypeId);
 
             return View(equipmentVM);
         }
@@ -172,33 +167,39 @@ namespace Inventory.Web.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        public ActionResult OwnerInfo(Guid? equipmentId, int employeeId)
+        public ActionResult OwnerInfo(Guid? equipmentId, int? employeeId)
         {
-            if (equipmentId == null)
+            try
+            {
+                OwnerInfoDTO ownerInfoDTO = EquipmentService.GetOwnerInfo(equipmentId, employeeId);
+                OwnerInfoVM ownerInfoVM = Mapper.Map<OwnerInfoVM>(ownerInfoDTO);
+
+                ViewBag.EquipmentId = equipmentId;
+
+                return View(ownerInfoVM);
+            }
+            catch (ArgumentNullException)
+            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            ViewBag.EquipmentId = equipmentId;
-
-            OwnerInfoDTO ownerInfoDTO = EquipmentService.GetOwnerInfo((Guid)equipmentId, employeeId);
-            OwnerInfoVM ownerInfoVM = Mapper.Map<OwnerInfoVM>(ownerInfoDTO);
-
-            return View(ownerInfoVM);
+            }
         }
 
         [Authorize(Roles = "admin")]
         public ActionResult Components(Guid? equipmentId)
         {
-            if (equipmentId == null)
+            try
+            {
+                IEnumerable<ComponentDTO> components = EquipmentService.GetComponents(equipmentId).ToList();
+                IEnumerable<ComponentVM> componentVMs = Mapper.Map<IEnumerable<ComponentVM>>(components);
+
+                ViewBag.EquipmentId = equipmentId;
+
+                return View(componentVMs);
+            }
+            catch (ArgumentNullException)
+            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            ViewBag.EquipmentId = equipmentId;
-
-            IEnumerable<ComponentDTO> components = EquipmentService
-                .GetComponents((Guid)equipmentId)
-                .ToList();
-            IEnumerable<ComponentVM> componentVMs = Mapper.Map<IEnumerable<ComponentVM>>(components);
-
-            return View(componentVMs);
+            }
         }
 
         [HttpPost]
@@ -226,28 +227,10 @@ namespace Inventory.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult FindEmployees(string name)
         {
-            const int MaxNumberOfWordsInFullName = 3;
+            IEnumerable<OwnerInfoDTO> ownerDTOList = EmployeeService.ValidateNameAndGetEmployeesByName(name).ToList();
+            IEnumerable<OwnerInfoVM> ownerVMList = Mapper.Map<IEnumerable<OwnerInfoVM>>(ownerDTOList);
 
-            name = name.Trim();
-            if (name.Length <= 0)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            string[] nameParts = name.Split(' ');
-            int wordsAmount;
-            if (nameParts.Length < MaxNumberOfWordsInFullName)
-                wordsAmount = nameParts.Length;
-            else
-                wordsAmount = MaxNumberOfWordsInFullName;
-
-            IEnumerable<OwnerInfoDTO> employees = Enumerable.Empty<OwnerInfoDTO>();
-            if (wordsAmount == 1)
-                employees = EmployeeService.GetEmployeesByName(nameParts.First());
-            else if (wordsAmount == 2)
-                employees = EmployeeService.GetEmployeesByName(nameParts[0], nameParts[1]);
-            else if (wordsAmount == 3)
-                employees = EmployeeService.GetEmployeesByName(nameParts[0], nameParts[1], nameParts[2]);
-
-            return PartialView(employees.ToList());
+            return PartialView(ownerVMList.ToList());
         }
 
         protected override void Dispose(bool disposing)

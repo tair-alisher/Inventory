@@ -11,7 +11,9 @@ namespace Inventory.BLL.Services
 {
     public class EmployeeService : IEmployeeService
     {
+        const int MaxNumberOfWordsInFullName = 3;
         private IUnitOfWork _unitOfWork { get; set; }
+
         public EmployeeService(IUnitOfWork uow)
         {
             _unitOfWork = uow;
@@ -36,7 +38,30 @@ namespace Inventory.BLL.Services
             return Mapper.Map<IEnumerable<EmployeeDTO>>(employees);
         }
 
-        public IEnumerable<OwnerInfoDTO> GetEmployeesByName(string fname)
+        public IEnumerable<OwnerInfoDTO> ValidateNameAndGetEmployeesByName(string inputName)
+        {
+            IEnumerable<OwnerInfoDTO> foundEmployees = Enumerable.Empty<OwnerInfoDTO>();
+
+            string name = inputName.Trim();
+            if (string.IsNullOrEmpty(name))
+                return foundEmployees;
+
+            string[] nameParts = name.Split(' ');
+            int wordsAmount = MaxNumberOfWordsInFullName;
+            if (nameParts.Length < MaxNumberOfWordsInFullName)
+                wordsAmount = nameParts.Length;
+
+            if (wordsAmount == 1)
+                foundEmployees = GetEmployeesByName(nameParts[0]);
+            else if (wordsAmount == 2)
+                foundEmployees = GetEmployeesByName(nameParts[0], nameParts[1]);
+            else if (wordsAmount == 3)
+                foundEmployees = GetEmployeesByName(nameParts[0], nameParts[1], nameParts[2]);
+
+            return foundEmployees;
+        }
+
+        private IEnumerable<OwnerInfoDTO> GetEmployeesByName(string fname)
         {
             IEnumerable<OwnerInfoDTO> employees = (
                 from
@@ -68,7 +93,7 @@ namespace Inventory.BLL.Services
             return employees;
         }
 
-        public IEnumerable<OwnerInfoDTO> GetEmployeesByName(string fname, string lname)
+        private IEnumerable<OwnerInfoDTO> GetEmployeesByName(string fname, string lname)
         {
             IEnumerable<OwnerInfoDTO> employees = (
                 from
@@ -101,7 +126,7 @@ namespace Inventory.BLL.Services
             return employees;
         }
 
-        public IEnumerable<OwnerInfoDTO> GetEmployeesByName(string fname, string lname, string mname)
+        private IEnumerable<OwnerInfoDTO> GetEmployeesByName(string fname, string lname, string mname)
         {
             IEnumerable<OwnerInfoDTO> employees = (
                 from

@@ -195,8 +195,11 @@ namespace Inventory.BLL.Services
             return ownerHistory;
         }
 
-        public OwnerInfoDTO GetOwnerInfo(Guid equipmentId, int EmployeeId)
+        public OwnerInfoDTO GetOwnerInfo(Guid? equipmentId, int? employeeId)
         {
+            if (equipmentId == null || employeeId == null)
+                throw new ArgumentNullException();
+
             OwnerInfoDTO ownerInfoDTO = (
                 from
                     relation in _unitOfWork.EquipmentEmployeeRelations.GetAll()
@@ -221,7 +224,7 @@ namespace Inventory.BLL.Services
                 on
                     adm.DivisionId equals div.DivisionId
                 where relation.EquipmentId == equipmentId &&
-                    relation.EmployeeId == EmployeeId
+                    relation.EmployeeId == employeeId
                 select new OwnerInfoDTO
                 {
                     EmployeeId = emp.EmployeeId,
@@ -239,8 +242,10 @@ namespace Inventory.BLL.Services
             return ownerInfoDTO;
         }
 
-        public IEnumerable<ComponentDTO> GetComponents(Guid id)
+        public IEnumerable<ComponentDTO> GetComponents(Guid? id)
         {
+            if (id == null)
+                throw new ArgumentNullException();
 
             IEnumerable<Guid> equipmentComponentIds = _unitOfWork
                 .EquipmentComponentRelations
