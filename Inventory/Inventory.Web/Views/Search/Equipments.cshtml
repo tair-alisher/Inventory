@@ -8,8 +8,13 @@
                 <p><b>@item.EquipmentType.Name</b></p>
                 <p><b>Инвентаризационный номер:</b> @item.InventNumber</p>
                 <p><b>Источник поступления:</b> @item.Supplier</p>
-
-                <p><b>Текущий владелец:</b> @(!String.IsNullOrEmpty(((IEnumerable<dynamic>)item.EquipmentEmployeeRelations).Where(r => r.IsOwner == true).FirstOrDefault().Employee.EmployeeFullName))</p>
+                @foreach (var employeeRelation in item.EquipmentEmployeeRelations)
+                {
+                    if (employeeRelation.IsOwner)
+                    {
+                        <p><b>Текущий владелец:</b> @employeeRelation.Employee.EmployeeFullName</p>
+                    }
+                }
             </div>
             @if (User.IsInRole("admin"))
             {
