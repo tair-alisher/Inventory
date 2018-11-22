@@ -21,7 +21,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         [ValidateAntiForgeryToken]
         public ActionResult UpdateOwnerHistory(Guid? equipmentId)
         {
@@ -56,7 +56,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         [ValidateAntiForgeryToken]
         public ActionResult UpdateComponents(Guid? equipmentId)
         {
@@ -86,7 +86,7 @@ namespace Inventory.Web.Controllers
             });
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         public ActionResult EditEquipmentEmployeeRelation()
         {
             Guid equipmentId;
@@ -117,7 +117,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         [ValidateAntiForgeryToken]
         public ActionResult EditEquipmentEmployeeRelation([Bind(Include = "Id,EquipmentId,CreatedAt,UpdatedAt")] EquipmentEmployeeRelationVM relationVM)
         {

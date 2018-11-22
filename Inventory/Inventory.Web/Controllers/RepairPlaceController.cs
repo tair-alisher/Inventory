@@ -22,7 +22,7 @@ namespace Inventory.Web.Controllers
             RepairPlaceService = repairPlaceService;
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult AjaxRepairPlaceList(int? page)
         {
@@ -38,7 +38,7 @@ namespace Inventory.Web.Controllers
         }
 
         // GET: StatusType
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         [OutputCache(Duration = 30,  Location = OutputCacheLocation.Downstream)]
         public ActionResult Index(int? page)
         {
@@ -54,7 +54,7 @@ namespace Inventory.Web.Controllers
             return View(repairPlaceVMs.OrderBy(n => n.Name).ToPagedList(pageNumber, pageSize));
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         public ActionResult Details(Guid? id)
         {
             if (id == null)
@@ -75,7 +75,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Name")] RepairPlaceVM repairPlaceVM)
         {
@@ -90,7 +90,7 @@ namespace Inventory.Web.Controllers
             return View();
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
@@ -105,7 +105,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name")] RepairPlaceVM repairPlaceVM)
         {

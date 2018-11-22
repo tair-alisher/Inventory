@@ -21,7 +21,7 @@ namespace Inventory.Web.Controllers
             ComponentTypeService = componentTypeService;
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult AjaxComponentTypeList(int? page)
         {
@@ -37,7 +37,7 @@ namespace Inventory.Web.Controllers
             return PartialView(componentTypeVMs.OrderBy(s => s.Name).ToPagedList(pageNumber, pageSize));
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult Index(int? page)
         {
@@ -53,7 +53,7 @@ namespace Inventory.Web.Controllers
             return View(componentTypeVMs.OrderBy(s => s.Name).ToPagedList(pageNumber, pageSize));
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         public ActionResult Details(Guid? id)
         {
             if (id == null)
@@ -69,14 +69,14 @@ namespace Inventory.Web.Controllers
             return View(componentTypeVM);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         public ActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Name")] ComponentTypeVM componentTypeVM)
         {
@@ -93,7 +93,7 @@ namespace Inventory.Web.Controllers
             return View();
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
@@ -109,7 +109,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name")] ComponentTypeVM componentTypeVM)
         {

@@ -36,7 +36,7 @@ namespace Inventory.Web.Controllers
             HistoryService = historyService;
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager, user")]
         public ActionResult AdminSearch(string title, string type)
         {
             string view = "~/Views/Search/";

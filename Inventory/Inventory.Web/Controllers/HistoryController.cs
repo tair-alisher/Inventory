@@ -31,7 +31,7 @@ namespace Inventory.Web.Controllers
             EmployeeService = employeeService;
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager, user")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult Index(int? page, string equipmentId, string employeeId, string repairPlaceId, string statusTypeId)
         {
@@ -73,7 +73,7 @@ namespace Inventory.Web.Controllers
             return filteredHistories == null ? View(historyVMs.ToPagedList(pageNumber, pageSize)) : View(WebHistoryMapper.DtoToVm(filteredHistories).ToPagedList(pageNumber, pageSize));
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         public ActionResult Details(Guid? id)
         {
             if (id == null)
@@ -88,7 +88,7 @@ namespace Inventory.Web.Controllers
             return View(historyVM);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager, user")]
         public ActionResult Create()
         {
             List<EquipmentSelectModel> equipmentSelectModel = new List<EquipmentSelectModel>();
@@ -130,7 +130,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager, user")]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "EquipmentId,ChangeDate,EmployeeId,RepairPlaceId,StatusTypeId,Comments")] HistoryVM historyVM)
         {
@@ -181,7 +181,7 @@ namespace Inventory.Web.Controllers
             return View(historyVM);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
@@ -236,7 +236,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,EquipmentId,ChangeDate,EmployeeId,RepairPlaceId,StatusTypeId,Comments")] HistoryVM historyVM)
         {

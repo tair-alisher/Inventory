@@ -21,7 +21,7 @@ namespace Inventory.Web.Controllers
             EquipmentTypeService = equipmentTypeService;
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult AjaxEquipmentTypeList(int? page)
         {
@@ -37,7 +37,7 @@ namespace Inventory.Web.Controllers
             return PartialView(equipmentTypeVMs.OrderBy(s => s.Name).ToPagedList(pageNumber, pageSize));
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult Index(int? page)
         {
@@ -53,7 +53,7 @@ namespace Inventory.Web.Controllers
             return View(equipmentTypeVMs.OrderBy(s => s.Name).ToPagedList(pageNumber, pageSize));
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         public ActionResult Details(Guid? id)
         {
             if (id == null)
@@ -75,7 +75,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Name")] EquipmentTypeVM equipmentTypeVM)
         {
@@ -92,7 +92,7 @@ namespace Inventory.Web.Controllers
             return View();
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
@@ -108,7 +108,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name")] EquipmentTypeVM equipmentTypeVM)
         {

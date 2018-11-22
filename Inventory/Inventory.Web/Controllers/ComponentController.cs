@@ -29,7 +29,7 @@ namespace Inventory.Web.Controllers
             EquipmentService = equipmentService;
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager, user")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult AjaxComponentList(int? page, string componentTypeId, string modelName, string name)
         {
@@ -53,7 +53,7 @@ namespace Inventory.Web.Controllers
 
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager, user")]
         [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult Index(int? page, string componentTypeId, string modelName, string name)
         {
@@ -78,7 +78,7 @@ namespace Inventory.Web.Controllers
             //return View(componentVMs.ToPagedList(pageNumber, pageSize));
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         public ActionResult Details(Guid? id)
         {
             if (id == null)
@@ -93,7 +93,7 @@ namespace Inventory.Web.Controllers
             return View(componentVM);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager, user")]
         public ActionResult Create()
         {
             ViewBag.ComponentTypeId = new SelectList(
@@ -105,7 +105,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager, user")]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ComponentTypeId,ModelName,Name,Description,Price,InventNumber,Supplier")] ComponentVM componentVM)
         {
@@ -125,7 +125,7 @@ namespace Inventory.Web.Controllers
             return View(componentVM);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
@@ -146,7 +146,7 @@ namespace Inventory.Web.Controllers
         }
     
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, manager")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,ComponentTypeId,ModelName,Name,Description,Price,InventNumber,Supplier")] ComponentVM componentVM)
         {
