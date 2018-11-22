@@ -1,14 +1,13 @@
-﻿using Inventory.BLL.DTO;
+﻿using AutoMapper;
+using Inventory.BLL.DTO;
 using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.Web.Models;
-using Inventory.Web.Util;
 using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
 
@@ -52,10 +51,10 @@ namespace Inventory.Web.Controllers
                 );
             }
 
-            List<StatusTypeVM> statusTypeVMs = WebStatusTypeMapper.DtoToVm(StatusTypeService.GetAll()).ToList();
+            List<StatusTypeVM> statusTypeVMs = Mapper.Map<IEnumerable<StatusTypeVM>>(StatusTypeService.GetAll()).ToList();
             ViewBag.StatusTypeId = new SelectList(statusTypeVMs,"Id","Name");
 
-            List<RepairPlaceVM> repairPlaceVMs = WebRepairPlaceMapper.DtoToVm(RepairPlaceService.GetAll()).ToList();
+            List<RepairPlaceVM> repairPlaceVMs = Mapper.Map<IEnumerable<RepairPlaceVM>>(RepairPlaceService.GetAll()).ToList();
             ViewBag.RepairPlaceId = new SelectList(repairPlaceVMs, "Id", "Name");
 
             ViewBag.EquipmentId = new SelectList(equipmentSelectModel,"Id","TypeAndInventNumber");
@@ -64,13 +63,13 @@ namespace Inventory.Web.Controllers
 
             IEnumerable<HistoryDTO> historyDTOs = HistoryService.GetAll().ToList();
 
-            IEnumerable<HistoryVM> historyVMs = WebHistoryMapper.DtoToVm(historyDTOs);
+            IEnumerable<HistoryVM> historyVMs = Mapper.Map<IEnumerable<HistoryVM>>(historyDTOs);
 
             var filteredHistories = (!String.IsNullOrEmpty(equipmentId)) || (!String.IsNullOrEmpty(employeeId)) || (!String.IsNullOrEmpty(repairPlaceId)) || (!String.IsNullOrEmpty(statusTypeId))
               ? HistoryService.Filter(pageNumber, pageSize, historyDTOs, equipmentId, employeeId, repairPlaceId, statusTypeId).OrderBy(x => x.Employee.EmployeeFullName)
               : null;
-
-            return filteredHistories == null ? View(historyVMs.ToPagedList(pageNumber, pageSize)) : View(WebHistoryMapper.DtoToVm(filteredHistories).ToPagedList(pageNumber, pageSize));
+            
+            return filteredHistories == null ? View(historyVMs.ToPagedList(pageNumber, pageSize)) : View(Mapper.Map<IEnumerable<HistoryVM>>(filteredHistories).ToPagedList(pageNumber, pageSize));
         }
 
         [Authorize(Roles = "admin, manager")]
@@ -83,7 +82,7 @@ namespace Inventory.Web.Controllers
             if (historyDTO == null)
                 return HttpNotFound();
 
-            HistoryVM historyVM = WebHistoryMapper.DtoToVm(historyDTO);
+            HistoryVM historyVM = Mapper.Map<HistoryVM>(historyDTO);
 
             return View(historyVM);
         }
@@ -150,7 +149,7 @@ namespace Inventory.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                HistoryDTO historyDTO = WebHistoryMapper.VmToDto(historyVM);
+                HistoryDTO historyDTO = Mapper.Map<HistoryDTO>(historyVM);
                 HistoryService.Add(historyDTO);
 
                 return RedirectToAction("Index");
@@ -191,7 +190,7 @@ namespace Inventory.Web.Controllers
             if (historyDTO == null)
                 return HttpNotFound();
 
-            HistoryVM historyVM = WebHistoryMapper.DtoToVm(historyDTO);
+            HistoryVM historyVM = Mapper.Map<HistoryVM>(historyDTO);
 
             List<EquipmentSelectModel> equipmentSelectModel = new List<EquipmentSelectModel>();
             var eqipmentWithInventNumber = EquipmentService.GetAll();
@@ -242,7 +241,7 @@ namespace Inventory.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                HistoryDTO historyDTO = WebHistoryMapper.VmToDto(historyVM);
+                HistoryDTO historyDTO = Mapper.Map<HistoryDTO>(historyVM);
                 HistoryService.Update(historyDTO);
 
                 return RedirectToAction("Index");

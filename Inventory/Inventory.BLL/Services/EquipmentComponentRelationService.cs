@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Inventory.BLL.DTO;
 using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
@@ -21,7 +22,7 @@ namespace Inventory.BLL.Services
         {
             EquipmentComponentRelation relation = _unitOfWork.EquipmentComponentRelations.Get(id);
 
-            return BLLEquipmentComponentMapper.EntityToDto(relation);
+            return Mapper.Map<EquipmentComponentRelationDTO>(relation);
         }
 
         public IEnumerable<EquipmentComponentRelationDTO> GetAll()
@@ -31,7 +32,7 @@ namespace Inventory.BLL.Services
                 .GetAll()
                 .ToList();
 
-            return BLLEquipmentComponentMapper.EntityToDto(relations);
+            return Mapper.Map <IEnumerable<EquipmentComponentRelationDTO>>(relations);
         }
 
         public void Create(Guid equipmentId, Guid componentId)
@@ -44,9 +45,9 @@ namespace Inventory.BLL.Services
             this.Add(relation);
         }
 
-        public void Add(EquipmentComponentRelationDTO item)
+        public void Add(EquipmentComponentRelationDTO relationDTO)
         {
-            EquipmentComponentRelation relation = BLLEquipmentComponentMapper.DtoToEntity(item);
+            EquipmentComponentRelation relation = Mapper.Map<EquipmentComponentRelation>(relationDTO);
 
             relation.Id = Guid.NewGuid();
             relation.CreatedAt = DateTime.Now;

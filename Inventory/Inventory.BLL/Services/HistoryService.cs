@@ -1,5 +1,4 @@
-﻿using CatalogEntities;
-using Inventory.BLL.DTO;
+﻿using Inventory.BLL.DTO;
 using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.DAL.Entities;
@@ -7,9 +6,8 @@ using Inventory.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PagedList;
+using AutoMapper;
 
 namespace Inventory.BLL.Services
 {
@@ -24,27 +22,29 @@ namespace Inventory.BLL.Services
         public HistoryDTO Get(Guid id)
         {
             History history = _unitOfWork.History.Get(id);
-            return BLLHistoryMapper.EntityToDto(history);
+
+            return Mapper.Map<HistoryDTO>(history);
         }
 
         public IEnumerable<HistoryDTO> GetAll()
         {
             List<History> histories = _unitOfWork.History.GetAll().ToList();
-            return BLLHistoryMapper.EntityToDto(histories);
+
+            return Mapper.Map<IEnumerable<HistoryDTO>>(histories);
         }
 
-        public void Add(HistoryDTO item)
+        public void Add(HistoryDTO historyDTO)
         {
-            History history = BLLHistoryMapper.DtoToEntity(item);
+            History history = Mapper.Map<History>(historyDTO);
             history.Id = Guid.NewGuid();
             history.ChangeDate = DateTime.Now;
             _unitOfWork.History.Create(history);
             _unitOfWork.Save();
         }
 
-        public void Update(HistoryDTO item)
+        public void Update(HistoryDTO historyDTO)
         {
-            History history = BLLHistoryMapper.DtoToEntity(item);
+            History history = Mapper.Map<History>(historyDTO);
             history.ChangeDate = DateTime.Now;
             _unitOfWork.History.Update(history);
             _unitOfWork.Save();

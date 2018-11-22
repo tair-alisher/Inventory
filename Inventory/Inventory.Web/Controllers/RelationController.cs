@@ -4,8 +4,8 @@ using System.Web.Mvc;
 using System;
 using System.Net;
 using Inventory.Web.Models;
-using Inventory.Web.Util;
 using Inventory.BLL.DTO;
+using AutoMapper;
 
 namespace Inventory.Web.Controllers
 {
@@ -111,7 +111,7 @@ namespace Inventory.Web.Controllers
                 return HttpNotFound();
             }
 
-            EquipmentEmployeeRelationVM relationVM = WebEquipmentEmployeeMapper.DtoToVm(relationDTO);
+            EquipmentEmployeeRelationVM relationVM = Mapper.Map<EquipmentEmployeeRelationVM>(relationDTO);
 
             return View(relationVM);
         }
@@ -123,8 +123,7 @@ namespace Inventory.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                EquipmentEmployeeRelationDTO relationDTO = WebEquipmentEmployeeMapper
-                    .VmToDto(relationVM);
+                EquipmentEmployeeRelationDTO relationDTO = Mapper.Map<EquipmentEmployeeRelationDTO>(relationVM);
                 EqEmpService.UpdateDates(relationDTO);
             }
             else

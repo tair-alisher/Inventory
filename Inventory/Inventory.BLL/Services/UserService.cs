@@ -1,4 +1,5 @@
-﻿using Inventory.BLL.DTO;
+﻿using AutoMapper;
+using Inventory.BLL.DTO;
 using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.DAL.Entities;
@@ -24,7 +25,7 @@ namespace Inventory.BLL.Services
         {
             List<ApplicationUser> users = worker.UserManager.Users.ToList();
 
-            return BLLUserMapper.EntityToDto(users);
+            return Mapper.Map<IEnumerable<UserDTO>>(users);
         }
 
         public async Task<string> GetUserRole(string userId)

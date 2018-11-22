@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Inventory.BLL.DTO;
 using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
@@ -18,31 +19,36 @@ namespace Inventory.BLL.Services
             _unitOfWork = uow;
         }
 
+        public ComponentDTO Get(Guid? id)
+        {
+            if (id == null)
+                throw new ArgumentNullException();
+
+            Component component = _unitOfWork.Components.Get(id);
+            if (component == null)
+                throw new NotFoundException();
+
+            return Mapper.Map<ComponentDTO>(component);
+        }
+
         public ComponentDTO Get(Guid id)
         {
             Component component = _unitOfWork.Components.Get(id);
 
-            return BLLComponentMapper.EntityToDto(component);
+            return Mapper.Map<ComponentDTO>(component);
         }
 
         public IEnumerable<ComponentDTO> GetAll()
         {
             List<Component> components = _unitOfWork.Components.GetAll().ToList();
 
-            return BLLComponentMapper.EntityToDto(components);
+            return Mapper.Map<IEnumerable<ComponentDTO>>(components);
         }
 
         public void Add(ComponentDTO item)
         {
             AddAndGetId(item);
         }
-
-        //public IEnumerable<ComponentDTO> GetAllIndex(int pageNumber, int pageSize, string search)
-        //{
-        //    List<Component> component = _unitOfWork.Components.GetAll().ToList();
-        //    component.Where(x => x.InventNumber.Contains(search) || search == null).ToPagedList(pageNumber, pageSize);
-        //    return component;
-        //}
 
         public IEnumerable<ComponentDTO> Filter(int pageNumber, int pageSize, IEnumerable<ComponentDTO> components, string componentTypeId, string modelName, string name)
         {
@@ -61,9 +67,28 @@ namespace Inventory.BLL.Services
             return components;
         }
 
+        public IEnumerable<ComponentDTO> GetFilteredList(FilterParamsDTO parameters)
+        {
+            IEnumerable<ComponentDTO> filteredComponents = GetAll();
+
+            if (!string.IsNullOrEmpty(parameters.ComponentTypeId))
+            {
+                Guid guidComponentTypeId = Guid.Parse(parameters.ComponentTypeId);
+                filteredComponents = filteredComponents.Where(c => c.ComponentTypeId == guidComponentTypeId);
+            }
+
+            if (!string.IsNullOrEmpty(parameters.ModelName))
+                filteredComponents = filteredComponents.Where(c => c.ModelName == parameters.ModelName);
+
+            if (!string.IsNullOrEmpty(parameters.Name))
+                filteredComponents = filteredComponents.Where(c => c.Name != null && c.Name == parameters.Name);
+
+            return filteredComponents.OrderBy(c => c.Name);
+        }
+
         public Guid AddAndGetId(ComponentDTO componentDTO)
         {
-            Component component = BLLComponentMapper.DtoToEntity(componentDTO);
+            Component component = Mapper.Map<Component>(componentDTO);
             component.Id = Guid.NewGuid();
 
             _unitOfWork.Components.Create(component);
@@ -72,9 +97,9 @@ namespace Inventory.BLL.Services
             return component.Id;
         }
 
-        public void Update(ComponentDTO item)
+        public void Update(ComponentDTO componentDTO)
         {
-            Component component = BLLComponentMapper.DtoToEntity(item);
+            Component component = Mapper.Map<Component>(componentDTO);
 
             _unitOfWork.Components.Update(component);
             _unitOfWork.Save();
@@ -135,7 +160,7 @@ namespace Inventory.BLL.Services
             if (components.Count() <= 0)
                 return Enumerable.Empty<ComponentDTO>();
 
-            return BLLComponentMapper.EntityToDto(components);
+            return Mapper.Map<IEnumerable<ComponentDTO>>(components);
         }
 
         private IEnumerable<ComponentDTO> GetComponentsByModel(string value)
@@ -147,7 +172,7 @@ namespace Inventory.BLL.Services
             if (components.Count() <= 0)
                 return Enumerable.Empty<ComponentDTO>();
 
-            return BLLComponentMapper.EntityToDto(components);
+            return Mapper.Map<IEnumerable<ComponentDTO>>(components);
         }
 
         private IEnumerable<ComponentDTO> GetComponentsByNumber(string value)
@@ -159,7 +184,7 @@ namespace Inventory.BLL.Services
             if (components.Count() <= 0)
                 return Enumerable.Empty<ComponentDTO>();
 
-            return BLLComponentMapper.EntityToDto(components);
+            return Mapper.Map<IEnumerable<ComponentDTO>>(components);
         }
 
         public void Dispose()
