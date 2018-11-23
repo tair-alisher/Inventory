@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Inventory.BLL</RootNamespace>
     <AssemblyName>Inventory.BLL</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -36,16 +38,29 @@
     <Reference Include="CatalogEntities">
       <HintPath>..\CatalogEntities.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.0.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.0.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
     </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
@@ -71,6 +86,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTO\AdministrationDTO.cs" />
+    <Compile Include="DTO\ChangePasswordDTO.cs" />
+    <Compile Include="DTO\ChangeRoleDTO.cs" />
     <Compile Include="DTO\ComponentDTO.cs" />
     <Compile Include="DTO\ComponentTypeDTO.cs" />
     <Compile Include="DTO\DepartmentDTO.cs" />
@@ -80,24 +97,22 @@
     <Compile Include="DTO\EquipmentDTO.cs" />
     <Compile Include="DTO\EquipmentEmployeeRelationDTO.cs" />
     <Compile Include="DTO\EquipmentTypeDTO.cs" />
+    <Compile Include="DTO\FilterParamsDTO.cs" />
     <Compile Include="DTO\HistoryDTO.cs" />
     <Compile Include="DTO\OwnerInfoDTO.cs" />
     <Compile Include="DTO\PositionDTO.cs" />
     <Compile Include="DTO\RepairPlaceDTO.cs" />
+    <Compile Include="DTO\RoleDTO.cs" />
     <Compile Include="DTO\StatusTypeDTO.cs" />
     <Compile Include="DTO\StructuredEquipmentDTO.cs" />
-    <Compile Include="Infrastructure\BLLComponentMapper.cs" />
-    <Compile Include="Infrastructure\BLLComponentTypeMapper.cs" />
-    <Compile Include="Infrastructure\BLLEmployeeMapper.cs" />
-    <Compile Include="Infrastructure\BLLEquipmentComponentMapper.cs" />
-    <Compile Include="Infrastructure\BLLEquipmentEmployeeMapper.cs" />
-    <Compile Include="Infrastructure\BLLEquipmentMapper.cs" />
-    <Compile Include="Infrastructure\BLLEquipmentTypeMapper.cs" />
-    <Compile Include="Infrastructure\BLLHistoryMapper.cs" />
-    <Compile Include="Infrastructure\BLLRepairPlaceMapper.cs" />
-    <Compile Include="Infrastructure\BLLStatusTypeMapper.cs" />
-    <Compile Include="Infrastructure\HasRelationsException.cs" />
-    <Compile Include="Infrastructure\NotFoundException.cs" />
+    <Compile Include="DTO\UserDTO.cs" />
+    <Compile Include="Infrastructure\AccountModule.cs" />
+    <Compile Include="Infrastructure\Exceptions\HasRelationsException.cs" />
+    <Compile Include="Infrastructure\Exceptions\InsecurePasswordException.cs" />
+    <Compile Include="Infrastructure\Exceptions\OldPasswordIsWrongException.cs" />
+    <Compile Include="Infrastructure\Exceptions\UserAlreadyExistsException.cs" />
+    <Compile Include="Interfaces\IAccountService.cs" />
+    <Compile Include="Infrastructure\Exceptions\NotFoundException.cs" />
     <Compile Include="Infrastructure\ServiceModule.cs" />
     <Compile Include="Interfaces\IComponentService.cs" />
     <Compile Include="Interfaces\IComponentTypeService.cs" />
@@ -111,12 +126,15 @@
     <Compile Include="Interfaces\IRepairPlaceService.cs" />
     <Compile Include="Interfaces\IService.cs" />
     <Compile Include="Interfaces\IStatusTypeService.cs" />
+    <Compile Include="Interfaces\IUserService.cs" />
+    <Compile Include="MappingProfiles\BLLMappingProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\ComponentService.cs" />
     <Compile Include="Services\ComponentTypeService.cs" />
     <Compile Include="Services\EmployeeService.cs" />
@@ -127,6 +145,7 @@
     <Compile Include="Services\HistoryService.cs" />
     <Compile Include="Services\RepairPlaceService.cs" />
     <Compile Include="Services\StatusTypeService.cs" />
+    <Compile Include="Services\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Inventory.DAL\Inventory.DAL.csproj">
@@ -135,6 +154,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +165,9 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\PagedList.css" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

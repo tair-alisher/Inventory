@@ -9,10 +9,9 @@ using Inventory.BLL.Infrastructure;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Net;
 using System.Web;
-using System.Web.Mvc;
 using ZXing;
+using AutoMapper;
 
 namespace Inventory.BLL.Services
 {
@@ -31,10 +30,10 @@ namespace Inventory.BLL.Services
 
         public Guid AddAndGetId(EquipmentDTO equipmentDTO)
         {
-            Equipment equipment = BLLEquipmentMapper.DtoToEntity(equipmentDTO);
+            Equipment equipment = Mapper.Map<Equipment>(equipmentDTO);
             equipment.Id = Guid.NewGuid();
-
-            string url = $"http://localhost:58644/Equipment/Details/{equipment.Id}";
+            string domainName = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority);
+            string url = $"{domainName}/Equipment/Details/{equipment.Id}";
             equipment.QRCode = GenerateQRCode(url, equipment.Id);
 
             _unitOfWork.Equipments.Create(equipment);
@@ -42,6 +41,7 @@ namespace Inventory.BLL.Services
 
             return equipment.Id;
         }
+
         private string GenerateQRCode(string qrcodeText, Guid id)
         {
             string folderPath = "~/Content/Images/";
@@ -70,19 +70,30 @@ namespace Inventory.BLL.Services
             return imagePath;
         }
 
-
         public EquipmentDTO Get(Guid id)
         {
             Equipment equipment = _unitOfWork.Equipments.Get(id);
 
-            return BLLEquipmentMapper.EntityToDto(equipment);
+            return Mapper.Map<EquipmentDTO>(equipment);
+        }
+
+        public EquipmentDTO Get(Guid? id)
+        {
+            if (id == null)
+                throw new ArgumentNullException();
+
+            Equipment equipment = _unitOfWork.Equipments.Get(id);
+            if (equipment == null)
+                throw new NotFoundException();
+
+            return Mapper.Map<EquipmentDTO>(equipment);
         }
 
         public IEnumerable<EquipmentDTO> GetAll()
         {
             List<Equipment> equipments = _unitOfWork.Equipments.GetAll().ToList();
 
-            return BLLEquipmentMapper.EntityToDto(equipments);
+            return Mapper.Map<IEnumerable<EquipmentDTO>>(equipments);
         }
 
         public void Update(EquipmentDTO item)
@@ -184,8 +195,11 @@ namespace Inventory.BLL.Services
             return ownerHistory;
         }
 
-        public OwnerInfoDTO GetOwnerInfo(Guid equipmentId, int EmployeeId)
+        public OwnerInfoDTO GetOwnerInfo(Guid? equipmentId, int? employeeId)
         {
+            if (equipmentId == null || employeeId == null)
+                throw new ArgumentNullException();
+
             OwnerInfoDTO ownerInfoDTO = (
                 from
                     relation in _unitOfWork.EquipmentEmployeeRelations.GetAll()
@@ -210,7 +224,7 @@ namespace Inventory.BLL.Services
                 on
                     adm.DivisionId equals div.DivisionId
                 where relation.EquipmentId == equipmentId &&
-                    relation.EmployeeId == EmployeeId
+                    relation.EmployeeId == employeeId
                 select new OwnerInfoDTO
                 {
                     EmployeeId = emp.EmployeeId,
@@ -228,8 +242,10 @@ namespace Inventory.BLL.Services
             return ownerInfoDTO;
         }
 
-        public IEnumerable<ComponentDTO> GetComponents(Guid id)
+        public IEnumerable<ComponentDTO> GetComponents(Guid? id)
         {
+            if (id == null)
+                throw new ArgumentNullException();
 
             IEnumerable<Guid> equipmentComponentIds = _unitOfWork
                 .EquipmentComponentRelations
@@ -313,11 +329,11 @@ namespace Inventory.BLL.Services
                 {
                     DepartmentId = dep.DepartmentId,
                     DepartmentName = dep.DepartmentName,
-                    Equipments = GetDepartmentEquipment(dep.DepartmentId)
+                    Equipments = GetDepartmentEquipments(dep.DepartmentId)
                 }).ToList();
         }
 
-        private List<StructuredEquipmentDTO> GetDepartmentEquipment(int departmentId)
+        private List<StructuredEquipmentDTO> GetDepartmentEquipments(int departmentId)
         {
             return (
                 from
@@ -335,12 +351,15 @@ namespace Inventory.BLL.Services
                 on
                     relation.EmployeeId equals emp.EmployeeId
                 where
-                    emp.DepartmentId == departmentId
+                    emp.DepartmentId == departmentId && relation.IsOwner == true
                 select new StructuredEquipmentDTO
                 {
                     Id = equip.Id,
                     EquipmentType = eq_type.Name,
-                    InventNumber = equip.InventNumber
+                    InventNumber = equip.InventNumber,
+                    Supplier = equip.Supplier,
+                    Components = GetComponents(equip.Id),
+                    Owners = GetOwnerHistory(equip.Id)
                 }).ToList();
         }
 

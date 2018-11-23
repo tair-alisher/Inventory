@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using System.Web.UI;
 
 namespace Inventory.Web.Controllers
 {
@@ -20,9 +21,12 @@ namespace Inventory.Web.Controllers
             EquipmentService = equipmentService;
         }
 
+        //[AllowAnonymous]
+        [Authorize(Roles = "admin, manager, user")]
+        [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
         public ActionResult Index()
         {
-            IEnumerable<DivisionEquipmentDTO> structuredEquipment = EquipmentService
+           IEnumerable<DivisionEquipmentDTO> structuredEquipment = EquipmentService
                 .GetEquipmentByStructure()
                 .ToList();
 

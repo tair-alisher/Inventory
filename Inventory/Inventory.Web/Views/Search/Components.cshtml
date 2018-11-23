@@ -1,0 +1,77 @@
+﻿@model IEnumerable<Inventory.Web.Models.ComponentVM>
+<table class="table table-responsive-sm table-responsive-md table-responsive-lg table-sm" id="listTable">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.First().ComponentTypeId)</th>
+            <th>@Html.DisplayNameFor(model => model.First().ModelName)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Name)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Description)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Price)</th>
+            <th>@Html.DisplayNameFor(model => model.First().InventNumber)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Supplier)</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in ViewBag.Items)
+        {
+        <tr id="@item.Id">
+            <td>@item.ComponentType.Name</td>
+            <td>@item.ModelName</td>
+            <td>@item.Name</td>
+            <td>@item.Description</td>
+            <td>@item.Price</td>
+            <td>@item.InventNumber</td>
+            <td>@item.Supplier</td>
+
+            <td>
+                @if (User.IsInRole("admin"))
+                {
+                    <div class="btn-group float-right" role="group">
+                        <a class="btn btn-info" name="editButton" id="editButton" href="@Url.Action("Edit", "Component", new { id = item.Id })"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"></i> Редактировать</a>
+                        <a class="btn btn-warning" name="detailsButton" id="detailsButton" href="@Url.Action("Details", "Component", new { id = item.Id })"><i class="fa fa-eye" aria-hidden="true" title="Просмотреть" data-toggle="tooltip" data-placement="top"></i> Просмотреть</a>
+                        <a class="btn btn-danger delete-prompt" name="deleteButton" id="@item.Id"><i class="fa fa-trash" aria-hidden="true" title="Удалить" data-toggle="tooltip" data-placement="top"></i> Удалить</a>
+                    </div>
+                }
+                else if (User.IsInRole("manager"))
+                {
+                    <div class="btn-group float-right" role="group">
+                        <a class="btn btn-info" name="editButton" id="editButton" href="@Url.Action("Edit", "Component", new { id = item.Id })"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"></i> Редактировать</a>
+                        <a class="btn btn-warning" name="detailsButton" id="detailsButton" href="@Url.Action("Details", "Component", new { id = item.Id })"><i class="fa fa-eye" aria-hidden="true" title="Просмотреть" data-toggle="tooltip" data-placement="top"></i> Просмотреть</a>
+                    </div>
+                }
+                else if (User.IsInRole("user"))
+                { }
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+<button class="btn btn-default" onclick="toPrevMain()">Вернуться к списку</button>
+
+<!-- Bootstrap modal popup -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Удаление</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="success-message"> Вы действительно хотите удалить запись? </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger delete-confirm">Да</button>
+                <button class="btn btn-default delete-cancel" data-dismiss="modal">Нет</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    modalRemovalWindow('/Component/Delete');
+</script>

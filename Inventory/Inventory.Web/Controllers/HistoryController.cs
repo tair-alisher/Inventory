@@ -1,14 +1,15 @@
-﻿using Inventory.BLL.DTO;
+﻿using AutoMapper;
+using Inventory.BLL.DTO;
 using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.Web.Models;
-using Inventory.Web.Util;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 
 namespace Inventory.Web.Controllers
 {
@@ -29,15 +30,49 @@ namespace Inventory.Web.Controllers
             EmployeeService = employeeService;
         }
 
-        public ActionResult Index()
+        [Authorize(Roles = "admin, manager, user")]
+        [OutputCache(Duration = 30, Location = OutputCacheLocation.Downstream)]
+        public ActionResult Index(int? page, string equipmentId, string employeeId, string repairPlaceId, string statusTypeId)
         {
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
+            List<EquipmentSelectModel> equipmentSelectModel = new List<EquipmentSelectModel>();
+            var equipmentWithInventNumber = EquipmentService.GetAll();
+
+            foreach (var item in equipmentWithInventNumber)
+            {
+                equipmentSelectModel.Add(
+                    new EquipmentSelectModel
+                    {
+                        Id = item.Id,
+                        TypeAndInventNumber = item.EquipmentType.Name + " (Номер: " + item.InventNumber + ")"
+                    }
+                );
+            }
+
+            List<StatusTypeVM> statusTypeVMs = Mapper.Map<IEnumerable<StatusTypeVM>>(StatusTypeService.GetAll()).ToList();
+            ViewBag.StatusTypeId = new SelectList(statusTypeVMs,"Id","Name");
+
+            List<RepairPlaceVM> repairPlaceVMs = Mapper.Map<IEnumerable<RepairPlaceVM>>(RepairPlaceService.GetAll()).ToList();
+            ViewBag.RepairPlaceId = new SelectList(repairPlaceVMs, "Id", "Name");
+
+            ViewBag.EquipmentId = new SelectList(equipmentSelectModel,"Id","TypeAndInventNumber");
+
+            ViewBag.EmployeeId = new SelectList(EmployeeService.GetAll(),"EmployeeId","EmployeeFullName");
+
             IEnumerable<HistoryDTO> historyDTOs = HistoryService.GetAll().ToList();
 
-            IEnumerable<HistoryVM> historyVMs = WebHistoryMapper.DtoToVm(historyDTOs);
+            IEnumerable<HistoryVM> historyVMs = Mapper.Map<IEnumerable<HistoryVM>>(historyDTOs);
 
-            return View(historyVMs.ToList());
+            var filteredHistories = (!String.IsNullOrEmpty(equipmentId)) || (!String.IsNullOrEmpty(employeeId)) || (!String.IsNullOrEmpty(repairPlaceId)) || (!String.IsNullOrEmpty(statusTypeId))
+              ? HistoryService.Filter(pageNumber, pageSize, historyDTOs, equipmentId, employeeId, repairPlaceId, statusTypeId).OrderBy(x => x.Employee.EmployeeFullName)
+              : null;
+            
+            return filteredHistories == null ? View(historyVMs.ToPagedList(pageNumber, pageSize)) : View(Mapper.Map<IEnumerable<HistoryVM>>(filteredHistories).ToPagedList(pageNumber, pageSize));
         }
 
+        [Authorize(Roles = "admin, manager")]
         public ActionResult Details(Guid? id)
         {
             if (id == null)
@@ -47,11 +82,12 @@ namespace Inventory.Web.Controllers
             if (historyDTO == null)
                 return HttpNotFound();
 
-            HistoryVM historyVM = WebHistoryMapper.DtoToVm(historyDTO);
+            HistoryVM historyVM = Mapper.Map<HistoryVM>(historyDTO);
 
             return View(historyVM);
         }
 
+        [Authorize(Roles = "admin, manager, user")]
         public ActionResult Create()
         {
             List<EquipmentSelectModel> equipmentSelectModel = new List<EquipmentSelectModel>();
@@ -67,6 +103,7 @@ namespace Inventory.Web.Controllers
                     }
                 );
             }
+            ViewBag.ChangeDateNow = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss");
 
             ViewBag.StatusTypeId = new SelectList(
                 StatusTypeService.GetAll(),
@@ -92,6 +129,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin, manager, user")]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "EquipmentId,ChangeDate,EmployeeId,RepairPlaceId,StatusTypeId,Comments")] HistoryVM historyVM)
         {
@@ -111,11 +149,13 @@ namespace Inventory.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                HistoryDTO historyDTO = WebHistoryMapper.VmToDto(historyVM);
+                HistoryDTO historyDTO = Mapper.Map<HistoryDTO>(historyVM);
                 HistoryService.Add(historyDTO);
 
                 return RedirectToAction("Index");
             }
+
+            ViewBag.ChangeDateNow = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss");
 
             ViewBag.StatusTypeId = new SelectList(
                 StatusTypeService.GetAll(),
@@ -140,6 +180,7 @@ namespace Inventory.Web.Controllers
             return View(historyVM);
         }
 
+        [Authorize(Roles = "admin, manager")]
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
@@ -149,7 +190,7 @@ namespace Inventory.Web.Controllers
             if (historyDTO == null)
                 return HttpNotFound();
 
-            HistoryVM historyVM = WebHistoryMapper.DtoToVm(historyDTO);
+            HistoryVM historyVM = Mapper.Map<HistoryVM>(historyDTO);
 
             List<EquipmentSelectModel> equipmentSelectModel = new List<EquipmentSelectModel>();
             var eqipmentWithInventNumber = EquipmentService.GetAll();
@@ -164,6 +205,7 @@ namespace Inventory.Web.Controllers
                     }
                 );
             }
+            ViewBag.ChangeDateNow = ((DateTime)historyVM.ChangeDate).ToString("dd.MM.yyyy HH:mm:ss");
 
             ViewBag.StatusTypeId = new SelectList(
                 StatusTypeService.GetAll(),
@@ -193,12 +235,13 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin, manager")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,EquipmentId,ChangeDate,EmployeeId,RepairPlaceId,StatusTypeId,Comments")] HistoryVM historyVM)
         {
             if (ModelState.IsValid)
             {
-                HistoryDTO historyDTO = WebHistoryMapper.VmToDto(historyVM);
+                HistoryDTO historyDTO = Mapper.Map<HistoryDTO>(historyVM);
                 HistoryService.Update(historyDTO);
 
                 return RedirectToAction("Index");
@@ -218,6 +261,8 @@ namespace Inventory.Web.Controllers
                 );
             }
 
+            ViewBag.ChangeDateNow = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss");
+
             ViewBag.StatusTypeId = new SelectList(
                 StatusTypeService.GetAll(),
                 "Id",
@@ -246,6 +291,7 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(Guid id)
         {

@@ -4,66 +4,76 @@
     ViewBag.Title = "Оборудование";
 }
 
-<h2>@Model.EquipmentType.Name</h2>
+<div class="block">
+    <div>
+        <p><b>@Html.DisplayFor(model => model.EquipmentType.Name)</b></p>
+        <p><b>@Html.DisplayNameFor(model => model.InventNumber):</b> @Html.DisplayFor(model => model.InventNumber)</p>
+        <p><b>@Html.DisplayNameFor(model => model.Supplier):</b> @Html.DisplayFor(modelItem => Model.Supplier)</p>
+        <p>
+            <b>@Html.DisplayNameFor(model => model.QRCode):</b> <img src="@Url.Content(Model.QRCode)" alt="Image" />
+            <button onclick="QRCodePrint('@Model.QRCode'); return false;" class="btn btn-secondary"><i class="fa fa-print" aria-hidden="true" title="Печать" data-toggle="tooltip" data-placement="top"> Печать</i></button>
+        </p>
+        <p><b>@Html.DisplayNameFor(model => model.Price):</b> @Html.DisplayFor(model => model.Price)</p>
+        <p><b>Текущий владелец:</b> @Html.DisplayFor(modelItem => Model.EquipmentEmployeeRelations.Where(r => r.IsOwner == true).FirstOrDefault().Employee.EmployeeFullName)</p>
+    </div>
 
-<div>
-    <h4>Инвентаризационный номер: <b>@Model.InventNumber</b></h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.EquipmentTypeId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EquipmentType.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.InventNumber)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.InventNumber)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.QRCode)
-        </dt>
-
-        <dd>
-            <img src="@Url.Content(Model.QRCode)" alt="Image" />
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Supplier)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Supplier)
-        </dd>
-
-    @if (ViewBag.OwnerHistory != null)
-    {
-        <dt>История владельцев</dt>
-        foreach (var owner in ViewBag.OwnerHistory)
+    <div>
+        @if (Model.EquipmentComponentRelations.Count() > 0)
         {
-            <dd>@owner.FullName (@owner.StartDate @{ if (!owner.IsActual) { String.Format("- {0}", owner.EndDate); } }) <a href="http://phone.stat.kg/crud/Employee/Details/@owner.EmployeeId" target="_blank">Просмотреть</a></dd>
+            <div class="row">
+                <p>
+                    <b>
+                        <a class="btn btn-link app-color app-link" data-toggle="collapse" href="#components-@Model.Id" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            <i class="fa fa-eye" aria-hidden="true"></i> Просмотреть комплектующие
+                        </a>
+                    </b>
+                </p>
+            </div>
+            <div class="collapse" id="components-@Model.Id">
+                @foreach (var componentRelation in Model.EquipmentComponentRelations)
+                {
+                    <div class="card card-body row col-md-6">
+                        <p><b>Комплектующее:</b> @componentRelation.Component.ComponentType.Name  (@componentRelation.Component.Name - @componentRelation.Component.ModelName)</p>
+                        <p><b>Инвентаризационный номер:</b> @componentRelation.Component.InventNumber</p>
+                        <p><b>Модель:</b> @componentRelation.Component.ModelName</p>
+                        <p><b>Источник поступления:</b> @componentRelation.Component.Supplier</p>
+                    </div>
+                }
+            </div>
         }
-    }
+        else
+        {
+            <p>Нет комплектующих</p>
+        }
+    </div>
 
-    </dl>
-</div>
-<div class="form-group">
-    <div class="btn-group" role="group">
-        <a href="@Url.Action("Edit", "Equipment", new { id = Model.Id})" class="btn btn-success"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"><span style="padding: 5px;">Редактировать</span></i></a>
-        <a href="@Url.Action("Index", "Equipment")" class="btn btn-info"><i class="fa fa-arrow-left" aria-hidden="true" title="Назад" data-toggle="tooltip" data-placement="top"><span style="padding: 5px;">Назад</span></i></a>
+    <div>
+        @if (ViewBag.OwnerHistory != null)
+        {
+            <div class="row">
+                <p>
+                    <b>
+                        <a class="btn btn-link app-color app-link" data-toggle="collapse" href="#owners-@Model.Id" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            <i class="fa fa-eye" aria-hidden="true"></i> Просмотреть владельцев
+                        </a>
+                    </b>
+                </p>
+            </div>
+            <div class="collapse" id="owners-@Model.Id">
+                @foreach (var owner in ViewBag.OwnerHistory)
+                {
+                    <div class="card card-body row col-md-6">
+                        <p>@owner.FullName (@owner.StartDate @{ if (owner.IsActual != true) { <span>@String.Format("- {0}", owner.EndDate)</span>; } }) <a href="http://phone.stat.kg/crud/Employee/Details/@owner.EmployeeId" class="btn btn-link app-color app-link" target="_blank"><i class="fa fa-eye" aria-hidden="true"></i> Просмотреть</a></p>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+    <br />
+    <div class="form-group">
+        <div class="btn-group" role="group">
+            <a href="@Url.Action("Edit", "Equipment", new { id = Model.Id})" class="btn btn-success"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"></i> Редактировать</a>
+            <a href="@Url.Action("Index", "Equipment")" class="btn btn-info"><i class="fa fa-arrow-left" aria-hidden="true" title="Назад" data-toggle="tooltip" data-placement="top"></i> Назад</a>
+        </div>
     </div>
 </div>

@@ -1,43 +1,94 @@
-﻿@model IEnumerable<Inventory.Web.Models.ComponentTypeVM>
+﻿@model PagedList.IPagedList<Inventory.Web.Models.ComponentTypeVM>
+@using PagedList;
+@using PagedList.Mvc;
 
 @{
     ViewBag.Title = "Тип комплектующего";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Тип комплектующего</h2>
+<div class="block">
+    <h2 class="block-title">Тип комплектующего</h2>
 
-@Html.AntiForgeryToken()
+    @Html.AntiForgeryToken()
 
-<p>
-    <a type="button" class="btn btn-primary" href="@Url.Action("Create", "ComponentType")"><i class="fa fa-plus"></i> Добавить новую запись</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.Name)</th>
-            <th></th>
-        </tr>
-    </thead>
+    <p>
+        <a type="button" class="btn btn-primary app-btn app-btn-main" href="@Url.Action("Create", "ComponentType")"><i class="fa fa-plus"></i> Добавить новую запись</a>
+    </p>
 
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr id="@item.Id">
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
+    @using (Ajax.BeginForm("AdminSearch", "Search", null,
+    new AjaxOptions
+    {
+        UpdateTargetId = "results",
+        LoadingElementId = "loading",
+        OnSuccess = "hideAccordion()"
+    },
+    new { @class = "ajax-form", @id = "ajax-form" }))
+    {
+        <input type="hidden" name="type" value="componentType" />
 
-                <td>
-                    <div class="btn-group float-right" role="group">
-                        <a class="btn btn-info" name="editButton" id="editButton" href="@Url.Action("Edit", "ComponentType", new { id = item.Id })"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"> Редактировать</i></a>
-                        <a class="btn btn-warning" name="detailsButton" id="detailsButton" href="@Url.Action("Details", "ComponentType", new { id = item.Id })"><i class="fa fa-eye" aria-hidden="true" title="Просмотреть" data-toggle="tooltip" data-placement="top"> Просмотреть</i></a>
-                        <a class="btn btn-danger delete-prompt" name="deleteButton" id="@item.Id"><i class="fa fa-trash" aria-hidden="true" title="Удалить" data-toggle="tooltip" data-placement="top"> Удалить</i></a>
-                    </div>
-                </td>
-            </tr>
-        }
-    </tbody>   
-</table>
+        <div class="input-group mb-3">
+            <input type="text" id="xyz-search-input" name="title" class="form-control" placeholder="Введите наименование комплектующего" required>
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-default"><span class="fa fa-search"></span> Искать <span id="loading" class="loading" style="display:none"><svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" width="16px" height="16px" viewBox="0 0 128 128" xml:space="preserve"><g transform="rotate(352.65 64.0001 64.0001)"><linearGradient id="linear-gradient"><stop offset="0%" stop-color="#ffffff"></stop><stop offset="100%" stop-color="#454445"></stop></linearGradient><path d="M63.85 0A63.85 63.85 0 1 1 0 63.85 63.85 63.85 0 0 1 63.85 0zm.65 19.5a44 44 0 1 1-44 44 44 44 0 0 1 44-44z" fill="url(#linear-gradient)" fill-rule="evenodd"></path><animateTransform attributeName="transform" type="rotate" from="0 64 64" to="360 64 64" dur="1080ms" repeatCount="indefinite"></animateTransform></g></svg></span></button>
+            </div>
+        </div>
+    }
+
+    <div id="results" class="content"></div>
+
+    <div class="content" id="accordion">
+        <table class="table table-responsive-sm table-responsive-md table-responsive-lg table-sm" id="listTable">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.First().Name)</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr id="@item.Id">
+                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+
+                        <td>
+                            @if (User.IsInRole("admin"))
+                            {
+                                <div class="btn-group float-right" role="group">
+                                    <a class="btn btn-info" name="editButton" id="editButton" href="@Url.Action("Edit", "ComponentType", new { id = item.Id })"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"></i> Редактировать</a>
+                                    <a class="btn btn-warning" name="detailsButton" id="detailsButton" href="@Url.Action("Details", "ComponentType", new { id = item.Id })"><i class="fa fa-eye" aria-hidden="true" title="Просмотреть" data-toggle="tooltip" data-placement="top"></i> Просмотреть</a>
+                                    <a class="btn btn-danger delete-prompt" name="deleteButton" id="@item.Id"><i class="fa fa-trash" aria-hidden="true" title="Удалить" data-toggle="tooltip" data-placement="top"></i> Удалить</a>
+                                </div>
+                            }
+                            else if (User.IsInRole("manager"))
+                            {
+                                <div class="btn-group float-right" role="group">
+                                    <a class="btn btn-info" name="editButton" id="editButton" href="@Url.Action("Edit", "ComponentType", new { id = item.Id })"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"></i> Редактировать</a>
+                                    <a class="btn btn-warning" name="detailsButton" id="detailsButton" href="@Url.Action("Details", "ComponentType", new { id = item.Id })"><i class="fa fa-eye" aria-hidden="true" title="Просмотреть" data-toggle="tooltip" data-placement="top"></i> Просмотреть</a>
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+        <div id="result"> </div>
+
+        <div id="paginationToDelete">
+            @Html.PagedListPager(Model, page => Url.Action("AjaxComponentTypeList", new { page }),
+             PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "result", OnSuccess = "removeListAndPagination()" }))
+
+            @if (!(Model.PageCount <= 0))
+            {
+                <p class="pagination-info">Страница @Model.PageNumber из @Model.PageCount</p>
+            }
+        </div>
+    </div>
+</div>
 
 <!-- Bootstrap modal popup -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -63,5 +114,6 @@
 @section scripts {
     <script>
         modalRemovalWindow('/ComponentType/Delete');
+        pagination();
     </script>
 }

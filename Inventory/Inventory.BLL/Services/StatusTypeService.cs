@@ -1,4 +1,5 @@
-﻿using Inventory.BLL.DTO;
+﻿using AutoMapper;
+using Inventory.BLL.DTO;
 using Inventory.BLL.Infrastructure;
 using Inventory.BLL.Interfaces;
 using Inventory.DAL.Entities;
@@ -18,31 +19,33 @@ namespace Inventory.BLL.Services
         {
             _unitOfWork = uow;
         }
+
         public StatusTypeDTO Get(Guid id)
         {
             StatusType statusType = _unitOfWork.StatusTypes.Get(id);
-            return BLLStatusTypeMapper.EntityToDto(statusType);
+
+            return Mapper.Map<StatusTypeDTO>(statusType);
         }
 
         public IEnumerable<StatusTypeDTO> GetAll()
         {
             List<StatusType> statusTypes = _unitOfWork.StatusTypes.GetAll().ToList();
 
-            return BLLStatusTypeMapper.EntityToDto(statusTypes);
+            return Mapper.Map<IEnumerable<StatusTypeDTO>>(statusTypes);
         }
 
-        public void Add(StatusTypeDTO item)
+        public void Add(StatusTypeDTO statusTypeDTO)
         {
-            StatusType statusType = BLLStatusTypeMapper.DtoToEntity(item);
+            StatusType statusType = Mapper.Map<StatusType>(statusTypeDTO);
             statusType.Id = Guid.NewGuid();
 
             _unitOfWork.StatusTypes.Create(statusType);
             _unitOfWork.Save();
         }
 
-        public void Update(StatusTypeDTO item)
+        public void Update(StatusTypeDTO statusTypeDTO)
         {
-            StatusType statusType = BLLStatusTypeMapper.DtoToEntity(item);
+            StatusType statusType = Mapper.Map<StatusType>(statusTypeDTO);
 
             _unitOfWork.StatusTypes.Update(statusType);
             _unitOfWork.Save();
