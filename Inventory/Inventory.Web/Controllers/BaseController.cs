@@ -8,7 +8,7 @@ namespace Inventory.Web.Controllers
     {
         public IEquipmentService EquipmentService;
         public IEquipmentTypeService EquipmentTypeService;
-            public IEmployeeService EmployeeService;
+        public IEmployeeService EmployeeService;
         public IComponentService ComponentService;
         public IComponentTypeService ComponentTypeService;
         public const int PageSize = 10;
