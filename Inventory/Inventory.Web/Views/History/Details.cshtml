@@ -1,69 +1,68 @@
 ﻿@model Inventory.Web.Models.HistoryVM
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Просмотр";
 }
 
-<h2>Details</h2>
+<div class="block">
+    <h2 class="block-title">Просмотр</h2>
 
-<div>
-    <h4>HistoryVM</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.EquipmentId)
-        </dt>
+    <div>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.EquipmentId)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Equipment.EquipmentType.Name)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Equipment.EquipmentType.Name)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.EmployeeId)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.EmployeeId)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Employee.EmployeeFullName)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Employee.EmployeeFullName)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.RepairPlaceId)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.RepairPlaceId)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.RepairPlace.Name)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.RepairPlace.Name)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.StatusTypeId)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.StatusTypeId)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.StatusType.Name)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.StatusType.Name)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ChangeDate)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ChangeDate)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ChangeDate)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ChangeDate)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Comments)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Comments)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Comments)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Comments)
+            </dd>
 
-    </dl>
-</div>
-<div class="form-group">
-    <div class="btn-group" role="group">
-        <a href="@Url.Action("Edit", "History", new { id = Model.Id})" class="btn btn-success"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"><span style="padding: 5px;">Редактировать</span></i></a>
-        <a href="@Url.Action("Index", "History")" class="btn btn-info"><i class="fa fa-arrow-left" aria-hidden="true" title="Назад" data-toggle="tooltip" data-placement="top"><span style="padding: 5px;">Назад</span></i></a>
+        </dl>
+    </div>
+    <div class="form-group">
+        <div class="btn-group" role="group">
+            <a href="@Url.Action("Edit", "History", new { id = Model.Id})" class="btn btn-success"><i class="fa fa-pencil" aria-hidden="true" title="Редактировать" data-toggle="tooltip" data-placement="top"></i> Редактировать</a>
+            <a href="@Url.Action("Index", "History")" class="btn btn-info"><i class="fa fa-arrow-left" aria-hidden="true" title="Назад" data-toggle="tooltip" data-placement="top"></i> Назад</a>
+        </div>
     </div>
 </div>
-

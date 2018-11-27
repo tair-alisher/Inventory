@@ -9,58 +9,108 @@
     {
         if (division.Administrations.Any(a => a.Departments.Any(d => d.Equipments.Count() > 0)))
         {
-            <div class="card">
+            <div class="card custom-card-style">
                 <div class="card-header" id="division-@division.Divisionid">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#administrations-@division.Divisionid" aria-expanded="true" aria-controls="administrations-@division.Divisionid">
-                            @division.DivisionName (@division.Administrations.Sum(a => a.Departments.Select(d => d.Equipments.Count()).Sum()))
-                        </button>
-                    </h5>
+                    <a href="#administrations-@division.Divisionid" class="card-link text-dark" data-toggle="collapse">
+                        @division.DivisionName
+                        <span class="badge badge-pill badge-secondary">@division.Administrations.Sum(a => a.Departments.Select(d => d.Equipments.Count()).Sum())</span>
+                    </a>
                 </div>
             </div>
 
             <div id="administrations-@division.Divisionid" class="collapse" aria-labelledby="division-@division.Divisionid" data-parent="#division-accordion">
-                <div class="card-body">
+                <div>
                     <div class="accordion" id="administrations-accordion-@division.Divisionid">
                         @foreach (var administration in division.Administrations)
                         {
                             if (administration.Departments.Any(d => d.Equipments.Count() > 0))
                             {
-                                <div class="card">
+                                <div class="card custom-card-style">
                                     <div class="card-header" id="administration-@administration.AdministrationId">
-                                        <h5 class="mb-0">
-                                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#departments-@administration.AdministrationId" aria-expanded="true" aria-controls="#department-@administration.AdministrationId">
-                                                @administration.AdministrationName (@administration.Departments.Select(d => d.Equipments.Count()).Sum())
-                                            </button>
-                                        </h5>
+                                        <a href="#departments-@administration.AdministrationId" class="card-link text-dark ml-2" data-toggle="collapse">
+                                            <small class="text-muted">Орган управления:</small>  @administration.AdministrationName
+                                            <span class="badge badge-pill badge-secondary">@administration.Departments.Select(d => d.Equipments.Count()).Sum()</span>
+                                        </a>
                                     </div>
                                 </div>
 
                                 <div id="departments-@administration.AdministrationId" class="collapse" aria-labelledby="administration-@administration.AdministrationId" data-parent="#administrations-accordion-@division.Divisionid">
-                                    <div class="card-body">
+                                    <div>
                                         <div class="accordion" id="departments-accordion-@administration.AdministrationId">
                                             @foreach (var department in administration.Departments)
                                             {
                                                 if (department.Equipments.Count() > 0)
                                                 {
-                                                    <div class="card">
+                                                    <div class="card custom-card-style">
                                                         <div class="card-header" id="department-@department.DepartmentId">
-                                                            <h5 class="mb-0">
-                                                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#equipments-@department.DepartmentId" aria-expanded="true" aria-controls="equipments-@department.DepartmentId">
-                                                                    @department.DepartmentName (@department.Equipments.Count())
-                                                                </button>
-                                                            </h5>
+                                                            <a href="#equipments-@department.DepartmentId" class="card-link text-dark ml-3" data-toggle="collapse">
+                                                                <small class="text-muted">Отдел:</small>   @department.DepartmentName
+                                                                <span class="badge badge-pill badge-secondary">@department.Equipments.Count()</span>
+                                                            </a>
                                                         </div>
                                                     </div>
 
                                                     <div id="equipments-@department.DepartmentId" class="collapse" aria-labelledby="department-@department.DepartmentId" data-parent="#departments-accordion-@administration.AdministrationId">
-                                                        <div class="card-body">
+                                                        <div>
                                                             <div class="list-group list-group-flush">
-                                                                @foreach (var equipment in department.Equipments)
+                                                                @foreach (var item in department.Equipments)
                                                                 {
-                                                                    <a href="@Url.Action("Details", "Equipment", new { id = equipment.Id })" class="list-group-item list-group-item-action" target="_blank">
-                                                                        @equipment.EquipmentType (@equipment.InventNumber)
-                                                                    </a>
+                                                                    <div class="index-equipment-block">
+                                                                        <div class="item-block index-equipment-block-item row">
+                                                                            <div class="col-md-4">
+                                                                                <p><b>@item.EquipmentType</b></p>
+                                                                                <p><b>Инвентаризационный номер:</b> @item.InventNumber</p>
+                                                                                <p><b>Источник поступления:</b> @item.Supplier</p>
+                                                                                <p><b>Текущий владелец:</b> @item.Owners.Where(o => o.IsActual == true).FirstOrDefault().FullName</p>
+                                                                            </div>
+                                                                            <div class="col-md-4">
+                                                                                <a href="@Url.Action("Edit", "Equipment", new { id = item.Id })" class="btn btn-link app-color app-link">
+                                                                                    <i class="fa fa-pencil" aria-hidden="true"></i> Редактировать
+                                                                                </a><br />
+                                                                                <a href="@Url.Action("Details", "Equipment", new { id = item.Id })" class="btn btn-link app-color app-link">
+                                                                                    <i class="fa fa-eye" aria-hidden="true"></i> Просмотреть
+                                                                                </a><br />
+                                                                                <a href="@Url.Action("Index", "History", new { equipmentId = item.Id })" class="btn btn-link app-color app-link">
+                                                                                    <i class="fa fa-history" aria-hidden="true"></i> История компьютера
+                                                                                </a><br />
+                                                                                <a href="@Url.Action("OwnerHistory", "Equipment", new { equipmentId = item.Id})" class="btn btn-link app-color app-link">
+                                                                                    <i class="fa fa-users" aria-hidden="true"></i> История владельцев
+                                                                                </a><br />
+                                                                                <a href="@Url.Action("Components", "Equipment", new { equipmentId = item.Id })" class="btn btn-link app-color app-link">
+                                                                                    <i class="fa fa-headphones" aria-hidden="true"></i> Список комплектующих
+                                                                                </a><br />
+                                                                                <a href="#" class="btn btn-link delete-prompt app-color app-link" name="deleteButton" id="@item.Id">
+                                                                                    <i class="fa fa-trash" aria-hidden="true" title="Удалить" data-toggle="tooltip" data-placement="top"></i> Удалить запись
+                                                                                </a><br />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="item-block item-components-block row">
+                                                                            @if (item.Components.Count() > 0)
+                                                                            {
+                                                                                <div class="col-md-12">
+                                                                                    <p>
+                                                                                        <b>
+                                                                                            <a class="btn btn-link app-color app-link" data-toggle="collapse" href="#components-@item.Id" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                                                                                <i class="fa fa-eye" aria-hidden="true"></i> Просмотреть комплектующие
+                                                                                            </a>
+                                                                                        </b>
+                                                                                    </p>
+                                                                                </div>
+                                                                                <ul class="list-group my-list collapse col-md-4" id="components-@item.Id">
+                                                                                    @foreach (var component in item.Components)
+                                                                                    {
+                                                                                        <li class="list-group-item">
+                                                                                            <b>@component.ComponentType.Name  (@component.Name - @component.ModelName)</b>
+                                                                                        </li>
+                                                                                    }
+                                                                                </ul>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <p>Нет комплектующих</p>
+                                                                            }
+                                                                        </div>
+                                                                    </div>
                                                                 }
                                                             </div>
                                                         </div>
@@ -78,3 +128,30 @@
         }
     }
 </div>
+
+<!-- Bootstrap modal popup -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Удаление</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="success-message"> Вы действительно хотите удалить запись? </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger delete-confirm">Да</button>
+                <button class="btn btn-default delete-cancel" data-dismiss="modal">Нет</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        modalRemovalWindow('/Equipment/Delete');
+    </script>
+}
